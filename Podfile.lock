@@ -4,6 +4,7 @@ PODS:
   - Charts (2.2.3):
     - Charts/Core (= 2.2.3)
   - Charts/Core (2.2.3)
+  - CSwiftV (0.0.3)
   - JSONJoy-Swift (2.0.0)
   - Result (1.0.2)
   - SnapKit (0.19.1)
@@ -13,6 +14,7 @@ PODS:
 DEPENDENCIES:
   - BrightFutures (= 3.3.0)
   - Charts (= 2.2.3)
+  - CSwiftV (= 0.0.3)
   - JSONJoy-Swift (= 2.0.0)
   - SnapKit (= 0.19.1)
   - SwiftHTTP (= 1.0.4)
@@ -21,6 +23,7 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   BrightFutures: f4b491b3107487a0469973a74f81f334eb0ed60a
   Charts: f54267bb3f0f0e74520c6f248517cf5074dfd6fc
+  CSwiftV: 93e3d4e1501f2a9b1eac3ae51d53a5edf41beb5b
   JSONJoy-Swift: 9dc31dfb9e551c3ae7781513a86e369598102653
   Result: dd3dd71af3fa2e262f1a999e14fba2c25ec14f16
   SnapKit: eff58d6e3451bf2f482db2eccf86aecf371dc62d
