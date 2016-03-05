@@ -85,6 +85,7 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods/BrightFutures.framework"
+  install_framework "Pods/CSwiftV.framework"
   install_framework "Pods/Charts.framework"
   install_framework "Pods/JSONJoy.framework"
   install_framework "Pods/Result.framework"
@@ -94,6 +95,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods/BrightFutures.framework"
+  install_framework "Pods/CSwiftV.framework"
   install_framework "Pods/Charts.framework"
   install_framework "Pods/JSONJoy.framework"
   install_framework "Pods/Result.framework"

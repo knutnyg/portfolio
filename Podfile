@@ -17,6 +17,9 @@ link_with 'Portfolio', 'PortfolioTests'
 pod 'Charts', '2.2.3'
 link_with 'Portfolio', 'PortfolioTests'
 
+pod 'CSwiftV', '0.0.3'
+link_with 'Portfolio', 'PortfolioTests'
+
 post_install do |installer|
   plist_buddy = "/usr/libexec/PlistBuddy"
 
