@@ -10,8 +10,7 @@ class StoreTests : XCTestCase {
 
     func testStoreAndLoadCache() {
 
-        var store = Store()
-        store.storedFileName = "store_test.dat"
+        var store = Store(dataFile: "store_test.dat")
 
         var cache = StockCache()
         let stock = Stock(ticker: "Test")
@@ -25,10 +24,10 @@ class StoreTests : XCTestCase {
 
         cache.entrys.setObject(CacheEntry(stockHistory: stockHistory, date: NSDate()),forKey: stock.ticker)
 
-        store.updateCache(CacheEntry(stockHistory: stockHistory, date: NSDate()), stock: stock)
-        store.loadCache()
+        store.updateStore(CacheEntry(stockHistory: stockHistory, date: NSDate()), stock: stock)
+        let s = store.loadStore()!
 
-        let entry = store.historicalDataCache.entrys.valueForKey(stock.ticker) as! CacheEntry
+        let entry = s.historicalDataCache.entrys.valueForKey(stock.ticker) as! CacheEntry
 
         XCTAssertEqual(entry.stockHistory.history.count, 3)
     }

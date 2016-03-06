@@ -1,57 +1,70 @@
 import Foundation
 
-class Store {
-    var portfolio: Portfolio!
+class Store: NSObject {
+    var trades: [Trade] = []
     var historicalDataCache: StockCache!
+    var storedFileName: String!
 
-    var storedFileName:String!
+    init(dataFile: String) {
+        super.init()
 
-    init(dataFile:String) {
         storedFileName = dataFile
-        if let cache = loadCache() {
-            historicalDataCache = cache
+
+        if let store: Store = self.loadStore() {
+            self.trades = store.trades
+            self.historicalDataCache = store.historicalDataCache
         } else {
-            historicalDataCache = StockCache()
+            print("Failed to load store!")
+            self.trades = []
+            self.historicalDataCache = StockCache()
         }
     }
 
-    func updateCache(entry: CacheEntry, stock: Stock) {
-        historicalDataCache.entrys.setObject(entry, forKey: stock.ticker)
-        synced(self) {
-            self.saveCache(self.historicalDataCache)
-        }
-    }
-
-    func saveCache(cache: StockCache) {
+    func loadStore() -> Store? {
         if let filePath = getFileURL(storedFileName) {
-            NSKeyedArchiver.archiveRootObject(cache, toFile: filePath.path!)
-        }
-    }
-
-    func loadCache() -> StockCache? {
-
-        if let filePath = getFileURL(storedFileName) {
-            if let cache = try NSKeyedUnarchiver.unarchiveObjectWithFile(filePath.path!) {
-                return cache as? StockCache
+            if let store = try NSKeyedUnarchiver.unarchiveObjectWithFile(filePath.path!) {
+                print("Loading store...")
+                return store as? Store
             }
-
         }
         return nil
     }
 
-    func getFileURL(fileName: String) -> NSURL? {
-        do {
-            return try NSFileManager.defaultManager().URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false).URLByAppendingPathComponent(fileName)
-        } catch {
-            print("Error loading file from device...")
-        }
-        return nil
+    func updateStore(trades: [Trade]) {
+        self.trades = trades
+        saveStore()
     }
 
-}
+    func updateStore(entry: CacheEntry, stock: Stock) {
+        historicalDataCache.entrys.setObject(entry, forKey: stock.ticker)
+        saveStore()
+    }
 
-func synced(lock: AnyObject, closure: () -> ()) {
-    objc_sync_enter(lock)
-    closure()
-    objc_sync_exit(lock)
+    internal func saveStore() {
+        synced(self) {
+            if let filePath = getFileURL(self.storedFileName) {
+                print("Saving store...")
+                NSKeyedArchiver.archiveRootObject(self, toFile: filePath.path!)
+            }
+        }
+    }
+
+    // -----   SERIALIZATION   ----- //
+
+    init(trades:[Trade], historicalDataCache: StockCache){
+        self.trades = trades
+        self.historicalDataCache = historicalDataCache
+    }
+
+    required convenience init?(coder decoder: NSCoder) {
+        self.init(
+            trades: decoder.decodeObjectForKey("trades") as! [Trade],
+            historicalDataCache: decoder.decodeObjectForKey("historicalDataCache") as! StockCache
+        )
+    }
+
+    func encodeWithCoder(coder: NSCoder) {
+        coder.encodeObject(self.trades, forKey: "trades")
+        coder.encodeObject(self.historicalDataCache, forKey: "historicalDataCache")
+    }
 }

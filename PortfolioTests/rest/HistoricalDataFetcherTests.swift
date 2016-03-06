@@ -55,7 +55,7 @@ class HistoricalDataFetcherTests: XCTestCase {
         stock.history = stockHistory
         cache.entrys.setObject(CacheEntry(stockHistory: stockHistory, date: NSDate()),forKey: stock.ticker)
 
-        let store = Store("store_test.dat")
+        let store = Store(dataFile: "store_test.dat")
         store.historicalDataCache = cache
 
         HistoricalDataFetcher.getHistoricalData(store, stock: stock).onSuccess {

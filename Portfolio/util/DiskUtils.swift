@@ -13,3 +13,18 @@ func loadConfig() -> NSDictionary? {
         return nil
     }
 }
+
+func getFileURL(fileName: String) -> NSURL? {
+    do {
+        return try NSFileManager.defaultManager().URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false).URLByAppendingPathComponent(fileName)
+    } catch {
+        print("Error loading file from device...")
+    }
+    return nil
+}
+
+func synced(lock: AnyObject, closure: () -> ()) {
+    objc_sync_enter(lock)
+    closure()
+    objc_sync_exit(lock)
+}

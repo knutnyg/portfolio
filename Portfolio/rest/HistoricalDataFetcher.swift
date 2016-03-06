@@ -32,7 +32,7 @@ class HistoricalDataFetcher {
                 let csv = CSwiftV(String: resstr)
 
                 let stockHistory = StockHistory(history: self.t(csv.keyedRows!))
-                store.updateCache(CacheEntry(stockHistory: stockHistory, date: NSDate()), stock: stock)
+                store.updateStore(CacheEntry(stockHistory: stockHistory, date: NSDate()), stock: stock)
 
                 promise.success(stockHistory)
             }
