@@ -15,7 +15,9 @@ class PortfolioView : UIViewController{
         let nasStock = Stock(ticker: "NAS.OL")
         let nodStock = Stock(ticker: "NOD.OL")
 
-        let seq = [HistoricalDataFetcher().getHistoricalData(nasStock), HistoricalDataFetcher().getHistoricalData(nodStock)]
+        let store = Store(dataFile: "store.dat")
+
+        let seq = [HistoricalDataFetcher.getHistoricalData(store, stock: nasStock), HistoricalDataFetcher.getHistoricalData(store, stock: nodStock)]
 
         chart = LineChartView()
         view.addSubview(chart)
@@ -57,16 +59,19 @@ class PortfolioView : UIViewController{
         let earliestDate = trades[0].date
         var dateInc = earliestDate
         let today = NSDate()
-        var XYData:[DateValue] = []
+        var portfolioData:[DateValue] = []
+        var stockDatas:[Stock:[DateValue]] = [:]
+
+
 
         while dateInc.earlierDate(today) == dateInc {
             if let value = Portfolio.valueAtDay(trades, date: dateInc) {
-                XYData.append(DateValue(date: dateInc, value: value))
+                portfolioData.append(DateValue(date: dateInc, value: value))
             }
             dateInc = NSDate(timeInterval: 86400, sinceDate: dateInc)
         }
 
-        setChart(XYData)
+        setChart(portfolioData)
     }
 
     func setChart(data: [DateValue]) {

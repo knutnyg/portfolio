@@ -4,11 +4,6 @@ import XCTest
 
 class PortfolioTests: XCTestCase {
 
-    override func setUp() {
-        super.setUp()
-
-    }
-
     func testStocksAtDay() {
 
         let nodStock = Stock(ticker: "NOD.OL")
@@ -107,7 +102,7 @@ class PortfolioTests: XCTestCase {
     func testValueAtDay(){
         let expectation = expectationWithDescription("promise")
 
-        HistoricalDataFetcherMock().getHistoricalData(Stock(ticker: "NOD.OL")).onSuccess{
+        HistoricalDataFetcherMock.getHistoricalDataMock(Stock(ticker: "NOD.OL")).onSuccess{
             nodHistory in
             let trades = [
                     Trade(date: NSDate(dateString: "2016-02-22"),

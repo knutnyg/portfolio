@@ -1,26 +1,38 @@
-//
-// Created by Knut Nygaard on 05/03/16.
-// Copyright (c) 2016 Knut Nygaard. All rights reserved.
-//
-
 import Foundation
 
-class StockPriceInstance {
+class StockPriceInstance: NSObject {
 
-    var stock:Stock!
-    var date:NSDate!
-    var price:Double!
+    var date: NSDate!
+    var price: Double!
 
-    init(stock:Stock, date:NSDate, price:Double){
-        self.stock = stock
+    init(date: NSDate, price: Double) {
         self.date = date
         self.price = price
     }
 
-    init(csvRow:[String:String]){
+    init(csvRow: [String:String]) {
         self.date = NSDate(dateString: csvRow["Date"]!)
-        self.stock = Stock(ticker: "NAS.OL")
         self.price = Double(csvRow["Close"]!)
     }
+
+    // MARK: NSCoding
+
+    required convenience init?(coder decoder: NSCoder) {
+        guard
+        let date = decoder.decodeObjectForKey("date") as? NSDate,
+        let price = decoder.decodeObjectForKey("price") as? Double
+        else {
+            return nil
+        }
+
+        self.init(
+            date: date,
+            price: price
+        )
+    }
+
+    func encodeWithCoder(coder: NSCoder) {
+        coder.encodeObject(self.date, forKey: "date")
+        coder.encodeObject(self.price, forKey: "price")
+    }
 }
-//2004-01-12,30.00,31.40,30.00,31.40,155100,31.40

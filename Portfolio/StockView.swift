@@ -11,6 +11,8 @@ class StockView: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor.whiteColor()
 
+        let store = Store(dataFile: "store.dat")
+
         let portfolio = Portfolio()
 //        portfolio.trades = [
 //                Trade(date: NSDate(dateString: "22.05.2015"),
@@ -29,7 +31,7 @@ class StockView: UIViewController {
         chart.rightAxis.enabled = false
 
         let stock = Stock(ticker: "NAS.OL")
-        HistoricalDataFetcher().getHistoricalData(stock).onSuccess {
+        HistoricalDataFetcher.getHistoricalData(store, stock: stock).onSuccess {
             stockHistory in
             let labels = stockHistory.history.map({spi in spi.date.shortPrintable()})
             let values:[Double] = stockHistory.history.map({spi in spi.price})

@@ -3,10 +3,6 @@ import BrightFutures
 
 class Portfolio {
 
-    func calculateValueNow() {
-
-    }
-
     static func stocksAtDay(trades: [Trade], date: NSDate) throws -> [Stock:Double] {
 
         var assets: [Stock:Double] = [:]
@@ -65,20 +61,4 @@ class Portfolio {
             return nil
         }
     }
-
-    static func caluculatePortfolioValueOverTime() -> Double {
-
-
-        let valueOverTime: [NSDate:Double]
-
-
-
-        return 0
-    }
-
-    func stocks(trades: [Trade]) {
-
-    }
-
-
 }
