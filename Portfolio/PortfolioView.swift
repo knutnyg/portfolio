@@ -1,8 +1,8 @@
-import UIKit
+import Foundation
 import Charts
 import SnapKit
 
-class StockView: UIViewController {
+class PortfolioView : UIViewController{
 
     var chart: LineChartView!
     var weeks: [String]!
@@ -12,27 +12,32 @@ class StockView: UIViewController {
         view.backgroundColor = UIColor.whiteColor()
 
         let portfolio = Portfolio()
-//        portfolio.trades = [
-//                Trade(date: NSDate(dateString: "22.05.2015"),
-//                    price: 297.00,
-//                    stock: Stock(ticker: "NAS"),
-//                    count: 16
-//                ),
-//                Trade(date: NSDate(dateString: "10.07.2015"),
-//                price: 49.30,
-//                stock: Stock(ticker: "NOD"),
-//                count: 60
-//        )]
+        let trades = [
+                Trade(date: NSDate(dateString: "2015-07-01"),
+                        price: 297.00,
+                        stock: Stock(ticker: "NAS.OL"),
+                        count: 16,
+                        action: Action.BUY
+                ),
+                Trade(date: NSDate(dateString: "2015-06-13"),
+                        price: 49.30,
+                        stock: Stock(ticker: "NOD.OL"),
+                        count: 60,
+                        action: Action.BUY
+                )].sort({ $0.date.compare($1.date) == NSComparisonResult.OrderedAscending })
 
         chart = LineChartView()
         view.addSubview(chart)
         chart.rightAxis.enabled = false
 
+
+
+
         let stock = Stock(ticker: "NAS.OL")
         HistoricalDataFetcher().getHistoricalData(stock).onSuccess {
             stockHistory in
-            let labels = stockHistory.history.map({spi in spi.date.shortPrintable()})
-            let values:[Double] = stockHistory.history.map({spi in spi.price})
+            let labels = stockHistory.history.map({ spi in spi.date.shortPrintable() })
+            let values: [Double] = stockHistory.history.map({ spi in spi.price })
 
             self.setChart(labels, values: values)
         }
@@ -50,7 +55,7 @@ class StockView: UIViewController {
 
         var dataEntries: [ChartDataEntry] = []
 
-        for i in 0..<dataPoints.count {
+        for i in 0 ..< dataPoints.count {
             let dataEntry = ChartDataEntry(value: values[i], xIndex: i)
             dataEntries.append(dataEntry)
         }
@@ -72,6 +77,4 @@ class StockView: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-
 }
-

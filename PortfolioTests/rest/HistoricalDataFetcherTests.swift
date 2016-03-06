@@ -8,15 +8,33 @@ import XCTest
 
 class HistoricalDataFetcherTests : XCTestCase {
 
-    func testGetHistoricalData(){
+    func testGetHistoricalDataIntegration(){
 
         let expectation = expectationWithDescription("promise")
 
-        let stock = Stock(ticker: "NAS.OL")
+        let stock = Stock(ticker: "NOD.OL")
 
-        HistoricalDataFetcher.getHistoricalData(stock).onSuccess {
-            data in
-            XCTAssertTrue(data.count > 0)
+        HistoricalDataFetcher().getHistoricalData(stock).onSuccess {
+            stockHistory in
+            XCTAssertTrue(stockHistory.history.count > 0)
+            expectation.fulfill()
+        }
+
+        waitForExpectationsWithTimeout(5, handler: {error in
+            XCTAssertNil(error, "Error")
+        })
+    }
+
+    func testGetHistoricalDataMock(){
+
+        let expectation = expectationWithDescription("promise")
+
+        let stock = Stock(ticker: "NOD.OL")
+
+        HistoricalDataFetcherMock().getHistoricalData(stock).onSuccess {
+            stockHistory in
+            XCTAssertTrue(stockHistory.history.count > 0)
+            XCTAssertTrue(stockHistory.history[5].price > 0)
             expectation.fulfill()
         }
 

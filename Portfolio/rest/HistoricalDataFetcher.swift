@@ -6,9 +6,9 @@ import CSwiftV
 
 class HistoricalDataFetcher {
 
-    static func getHistoricalData(stock:Stock) -> Future<[StockPriceInstance], NSError> {
+    func getHistoricalData(stock:Stock) -> Future<StockHistory, NSError> {
 
-        let promise = Promise<[StockPriceInstance],NSError>()
+        let promise = Promise<StockHistory,NSError>()
 
         let url = "https://ichart.finance.yahoo.com/table.csv?s=\(stock.ticker)&c=1962&ignore=.csv"
 
@@ -21,13 +21,12 @@ class HistoricalDataFetcher {
                     promise.failure(err)
                     return
                 }
-//                print(response.description)
+                print(response.description)
                 let resstr:String = NSString(data: response.data, encoding: NSUTF8StringEncoding)! as! String
                 let csv = CSwiftV(String: resstr)
 
-                let data = t(csv.keyedRows!)
-
-                promise.success(data)
+                let stockHistory = StockHistory(history: self.t(csv.keyedRows!))
+                promise.success(stockHistory)
             }
         } catch {
             print("LoginHandler: got error in logInWithDefault")
@@ -36,7 +35,7 @@ class HistoricalDataFetcher {
         return promise.future
     }
 
-    static func t(keyedRows:[[String:String]]) -> [StockPriceInstance] {
+    func t(keyedRows:[[String:String]]) -> [StockPriceInstance] {
         return keyedRows.map({kr in StockPriceInstance(csvRow: kr)}).reverse()
     }
 
