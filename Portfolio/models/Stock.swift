@@ -8,7 +8,7 @@ func ==(lhs: Stock, rhs: Stock) -> Bool {
 class Stock : Hashable {
 
     var ticker:String!
-    var history:StockHistory!
+    var history:StockHistory?
 
     var hashValue : Int {
         get {
@@ -18,5 +18,10 @@ class Stock : Hashable {
 
     init(ticker:String){
         self.ticker = ticker
+    }
+
+    init(ticker:String, history:StockHistory){
+        self.ticker = ticker
+        self.history = history
     }
 }

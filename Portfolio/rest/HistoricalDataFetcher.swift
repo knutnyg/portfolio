@@ -6,6 +6,8 @@ import CSwiftV
 
 class HistoricalDataFetcher {
 
+    var stockCache:[Stock:(StockHistory, NSDate)] = [:]
+
     func getHistoricalData(stock:Stock) -> Future<StockHistory, NSError> {
 
         let promise = Promise<StockHistory,NSError>()
@@ -13,6 +15,10 @@ class HistoricalDataFetcher {
         let url = "https://ichart.finance.yahoo.com/table.csv?s=\(stock.ticker)&c=1962&ignore=.csv"
 
         do {
+            if let (cachedResult, date) = stockCache[stock] {
+                return Future(value:cachedResult)
+            }
+
             let request = try HTTP.GET(url)
 
             request.start { response in
@@ -26,6 +32,7 @@ class HistoricalDataFetcher {
                 let csv = CSwiftV(String: resstr)
 
                 let stockHistory = StockHistory(history: self.t(csv.keyedRows!))
+                self.stockCache[stock] = (stockHistory,NSDate())
                 promise.success(stockHistory)
             }
         } catch {

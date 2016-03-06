@@ -30,9 +30,6 @@ class PortfolioView : UIViewController{
         view.addSubview(chart)
         chart.rightAxis.enabled = false
 
-
-
-
         let stock = Stock(ticker: "NAS.OL")
         HistoricalDataFetcher().getHistoricalData(stock).onSuccess {
             stockHistory in

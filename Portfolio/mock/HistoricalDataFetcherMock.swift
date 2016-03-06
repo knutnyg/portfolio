@@ -21,12 +21,9 @@ class HistoricalDataFetcherMock: HistoricalDataFetcher {
             res = resNOD
         }
 
-        Queue.global.async {
-            let csv = CSwiftV(String: res)
-            let stockHistory = StockHistory(history: self.t(csv.keyedRows!))
-            promise.success(stockHistory)
-        }
+        let csv = CSwiftV(String: res)
+        let stockHistory = StockHistory(history: self.t(csv.keyedRows!))
 
-        return promise.future
+        return Future(value: stockHistory)
     }
 }

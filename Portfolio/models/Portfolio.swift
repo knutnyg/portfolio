@@ -7,9 +7,9 @@ class Portfolio {
 
     }
 
-    static func stocksAtDay(trades: [Trade], date: NSDate) throws -> [String:Double] {
+    static func stocksAtDay(trades: [Trade], date: NSDate) throws -> [Stock:Double] {
 
-        var assets: [String:Double] = [:]
+        var assets: [Stock:Double] = [:]
 
         let sortedTrades = trades
         .filter({ $0.date.earlierDate(date) == $0.date })
@@ -19,17 +19,17 @@ class Portfolio {
             let action: Action = trade.action
             switch action {
             case Action.BUY:
-                if let currentAmount = assets[trade.stock.ticker] {
-                    assets[trade.stock.ticker] = trade.count + currentAmount
+                if let currentAmount = assets[trade.stock] {
+                    assets[trade.stock] = trade.count + currentAmount
                 } else {
-                    assets[trade.stock.ticker] = trade.count
+                    assets[trade.stock] = trade.count
                 }; break
             case Action.SELL:
-                if let currentAmount = assets[trade.stock.ticker] {
+                if let currentAmount = assets[trade.stock] {
                     let newValue = currentAmount - trade.count
 
                     if newValue >= 0 {
-                        assets[trade.stock.ticker] = currentAmount - trade.count
+                        assets[trade.stock] = currentAmount - trade.count
                     } else {
                         print("Error: Sold more than owned of a stock!")
                         throw Errors.IllegalTrade
@@ -44,23 +44,24 @@ class Portfolio {
         return assets
     }
 
-    static func valueAtDay(stockHistory:[StockHistory], trades:[Trade], date: NSDate) -> Double{
+    static func valueAtDay(trades:[Trade], date: NSDate) -> Double{
         do {
-            let stocks = try stocksAtDay(trades, date: date)
+            let assets:[Stock:Double] = try stocksAtDay(trades, date: date)
 
-            let value = 0.0
+            var value = 0.0
 
-            for (ticker,amount) in stocksAtDay {
-                HistoricalDataFetcher().getHistoricalData(Stock(ticker: ticker)).onSuccess{
-                    history in
-                    let stockValue = history.stockValueAtDay(date)
-                    value += stockValue * amount
+            for stockDict in assets{
+
+                if let stockHistory = stockDict.0.history {
+                    let stockValue = stockHistory.stockValueAtDay(date)
+                    value += stockValue * stockDict.1
                 }
             }
-
             return value
         } catch {
+            return 0
         }
+        return 0
     }
 
     static func caluculatePortfolioValueOverTime() -> Double {
