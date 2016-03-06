@@ -28,6 +28,18 @@
                ReferencedContainer = "container:Portfolio.xcodeproj">
             </BuildableReference>
             <SkippedTests>
+               <Test
+                  Identifier = "HistoricalDataFetcherTests">
+               </Test>
+               <Test
+                  Identifier = "PortfolioTests/testFailsIfSoldTooMany()">
+               </Test>
+               <Test
+                  Identifier = "PortfolioTests/testSoldStockNotOwned()">
+               </Test>
+               <Test
+                  Identifier = "PortfolioTests/testStocksAtDay()">
+               </Test>
             </SkippedTests>
          </TestableReference>
       </Testables>

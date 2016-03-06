@@ -1,6 +1,7 @@
 import Foundation
 import Charts
 import SnapKit
+import BrightFutures
 
 class PortfolioView : UIViewController{
 
@@ -11,62 +12,84 @@ class PortfolioView : UIViewController{
         super.viewDidLoad()
         view.backgroundColor = UIColor.whiteColor()
 
-        let portfolio = Portfolio()
-        let trades = [
-                Trade(date: NSDate(dateString: "2015-07-01"),
-                        price: 297.00,
-                        stock: Stock(ticker: "NAS.OL"),
-                        count: 16,
-                        action: Action.BUY
-                ),
-                Trade(date: NSDate(dateString: "2015-06-13"),
-                        price: 49.30,
-                        stock: Stock(ticker: "NOD.OL"),
-                        count: 60,
-                        action: Action.BUY
-                )].sort({ $0.date.compare($1.date) == NSComparisonResult.OrderedAscending })
+        let nasStock = Stock(ticker: "NAS.OL")
+        let nodStock = Stock(ticker: "NOD.OL")
+
+        let seq = [HistoricalDataFetcher().getHistoricalData(nasStock), HistoricalDataFetcher().getHistoricalData(nodStock)]
 
         chart = LineChartView()
         view.addSubview(chart)
         chart.rightAxis.enabled = false
+        chart.noDataText = "You must give me the datas!"
 
-        let stock = Stock(ticker: "NAS.OL")
-        HistoricalDataFetcher().getHistoricalData(stock).onSuccess {
-            stockHistory in
-            let labels = stockHistory.history.map({ spi in spi.date.shortPrintable() })
-            let values: [Double] = stockHistory.history.map({ spi in spi.price })
+        seq.sequence().onSuccess{
+            histories in
+            nasStock.history = histories[0]
+            nodStock.history = histories[1]
 
-            self.setChart(labels, values: values)
+            let trades = [
+                    Trade(date: NSDate(dateString: "2003-02-22"),
+                            price: 49.30,
+                            stock: nasStock,
+                            count: 60,
+                            action: Action.BUY
+                    ),
+                    Trade(date: NSDate(dateString: "2016-02-25"),
+                            price: 43.30,
+                            stock: nodStock,
+                            count: 40,
+                            action: Action.BUY
+                    )]
+
+            self.updateChart(trades)
         }
+
+
 
         let comp: [ComponentWrapper] = [
                 ComponentWrapper(view: chart, rules: ConstraintRules().horizontalFullWithMargin(view, margin: 10).snapBottom(view.snp_bottom).height(400))]
 
         SnapKitHelpers.setConstraints(view, components: comp)
-
-        // Do any additional setup after loading the view, typically from a nib.
     }
 
-    func setChart(dataPoints: [String], values: [Double]) {
-        chart.noDataText = "You must give me the datas!"
+    func updateChart(trades:[Trade]){
+
+        let earliestDate = trades[0].date
+        var dateInc = earliestDate
+        let today = NSDate()
+        var XYData:[DateValue] = []
+
+        while dateInc.earlierDate(today) == dateInc {
+            if let value = Portfolio.valueAtDay(trades, date: dateInc) {
+                XYData.append(DateValue(date: dateInc, value: value))
+            }
+            dateInc = NSDate(timeInterval: 86400, sinceDate: dateInc)
+        }
+
+        setChart(XYData)
+    }
+
+    func setChart(data: [DateValue]) {
+
 
         var dataEntries: [ChartDataEntry] = []
 
-        for i in 0 ..< dataPoints.count {
-            let dataEntry = ChartDataEntry(value: values[i], xIndex: i)
-            dataEntries.append(dataEntry)
+        for i in 0..<data.count {
+            dataEntries.append(ChartDataEntry(value: data[i].value, xIndex: i))
         }
 
         let dataset = LineChartDataSet(yVals: dataEntries, label: "Value")
-        dataset.circleRadius = 0.0
         dataset.lineWidth = 2.0
+        dataset.drawCircleHoleEnabled = false
+        dataset.drawCubicEnabled = true
+        dataset.circleRadius = 0.0
+        dataset.drawValuesEnabled = false
 
+        let datas = LineChartData(xVals: data.map{$0.date.shortPrintable()}, dataSets: [dataset])
 
-        let data = LineChartData(xVals: dataPoints, dataSets: [dataset])
-
-        chart.data = data
+        chart.data = datas
         chart.setVisibleXRangeMaximum(31)
-        chart.moveViewToX(CGFloat(values.count - 31))
+        chart.moveViewToX(CGFloat(data.count - 31))
     }
 
     override func didReceiveMemoryWarning() {

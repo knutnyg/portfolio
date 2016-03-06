@@ -44,7 +44,7 @@ class Portfolio {
         return assets
     }
 
-    static func valueAtDay(trades:[Trade], date: NSDate) -> Double{
+    static func valueAtDay(trades:[Trade], date: NSDate) -> Double?{
         do {
             let assets:[Stock:Double] = try stocksAtDay(trades, date: date)
 
@@ -53,15 +53,17 @@ class Portfolio {
             for stockDict in assets{
 
                 if let stockHistory = stockDict.0.history {
-                    let stockValue = stockHistory.stockValueAtDay(date)
-                    value += stockValue * stockDict.1
+                    if let stockValue = stockHistory.stockValueAtDay(date) {
+                        value += stockValue * stockDict.1
+                    } else {
+                        return nil
+                    }
                 }
             }
             return value
         } catch {
-            return 0
+            return nil
         }
-        return 0
     }
 
     static func caluculatePortfolioValueOverTime() -> Double {

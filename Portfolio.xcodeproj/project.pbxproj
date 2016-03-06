@@ -26,6 +26,7 @@
 		324F468DAEB18B8AA72928AF /* DiskUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F441292FB301A2832A467 /* DiskUtils.swift */; };
 		324F4698355A300A3C5C29A3 /* SnapKitHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F42DC23274717E9AF481A /* SnapKitHelpers.swift */; };
 		324F46E70481CE9F535347FC /* PortfolioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4019829AAEC60E4D805B /* PortfolioView.swift */; };
+		324F471CE9BA42C82DC8FBCC /* DateValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4182F6E0BCDCDA5DE130 /* DateValue.swift */; };
 		324F475A8931103EC0D3D472 /* Portfolio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4E5BF0A257E1C62B06BE /* Portfolio.swift */; };
 		324F47CD4A10FF9424FF88F2 /* Stock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F44552945E81E5746DAA0 /* Stock.swift */; };
 		324F4800DC517FFF1D3B75AE /* DiskUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F441292FB301A2832A467 /* DiskUtils.swift */; };
@@ -82,6 +83,7 @@
 		2BB9D1EBD57848ADFD8E7E2B /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		324F4019829AAEC60E4D805B /* PortfolioView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortfolioView.swift; sourceTree = "<group>"; };
 		324F4030AC695B64F945EC1F /* DateUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateUtils.swift; sourceTree = "<group>"; };
+		324F4182F6E0BCDCDA5DE130 /* DateValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateValue.swift; sourceTree = "<group>"; };
 		324F42DC23274717E9AF481A /* SnapKitHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapKitHelpers.swift; sourceTree = "<group>"; };
 		324F42F612A4D35462F82112 /* DateStockCountInstance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateStockCountInstance.swift; sourceTree = "<group>"; };
 		324F43401E9B18470233BD3E /* Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 				324F42F612A4D35462F82112 /* DateStockCountInstance.swift */,
 				324F48A3FB577DD7409EEDD1 /* Store.swift */,
 				324F436672F9E9AE1A19F8D8 /* Errors.swift */,
+				324F4182F6E0BCDCDA5DE130 /* DateValue.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -499,6 +502,7 @@
 				324F43B8283D0D5BB4384874 /* Store.swift in Sources */,
 				324F48F0EFEC51C7C8201565 /* Errors.swift in Sources */,
 				324F498316AA3B57855CF81F /* HistoricalDataFetcherMock.swift in Sources */,
+				324F471CE9BA42C82DC8FBCC /* DateValue.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
