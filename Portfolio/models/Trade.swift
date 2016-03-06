@@ -3,9 +3,6 @@ import Foundation
 
 class Trade : NSObject{
 
-    let BUY = "BUY"
-    let SELL = "SELL"
-
     var date:NSDate!
     var price:Double!
     var stock:Stock!
@@ -19,8 +16,6 @@ class Trade : NSObject{
         self.count = count
         self.action = action
     }
-
-    // MARK: NSCoding
 
     required convenience init?(coder decoder: NSCoder) {
 
@@ -40,14 +35,4 @@ class Trade : NSObject{
         coder.encodeObject(self.count, forKey: "count")
         coder.encodeObject(self.action.rawValue, forKey: "action")
     }
-//
-//    required init(coder aDecoder: NSCoder) {
-//        self.idx   = aDecoder.decodeIntegerForKey( "idx" )
-//        self.stage = Stage(rawValue: (aDecoder.decodeObjectForKey( "stage" ) as! String)) ?? .DisplayAll
-//    }
-//
-//    func encodeWithCoder(aCoder: NSCoder) {
-//        aCoder.encodeInteger( self.idx, forKey:"idx" )
-//        aCoder.encodeObject(  self.stage.rawValue, forKey:"stage" )
-//    }
 }
