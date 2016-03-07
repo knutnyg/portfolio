@@ -9,10 +9,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
-        let rootViewController = PortfolioView()
-        let navigationController: UINavigationController = UINavigationController(rootViewController: rootViewController)
-        window!.rootViewController = navigationController
-        window!.makeKeyAndVisible()
+
+        let tabBarController = MyTabBarController()
+        let portfolio = PortfolioView()
+        let trades = TradesView()
+
+        let controllers = [portfolio, trades]
+        tabBarController.viewControllers = controllers
+
+        window!.rootViewController = tabBarController
+        window?.makeKeyAndVisible()
+
         return true
     }
 

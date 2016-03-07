@@ -8,31 +8,38 @@ import SnapKit
 
 class ConstraintRules {
 
-    var i_height:Int?
-    var i_marginTop:Int?
-    var i_marginBottom:Int?
-    var i_centerY:Bool?
-    var i_snapTop:ConstraintItem?
-    var i_snapBottom:ConstraintItem?
+    var parentView: View!
 
-    var i_width:Int?
-    var i_centerX:Bool?
-    var i_marginLeft:Int?
-    var i_marginRight:Int?
-    var i_snapLeft:ConstraintItem?
-    var i_snapRight:ConstraintItem?
+    var i_height: Int?
+    var i_marginTop: Int?
+    var i_marginBottom: Int?
+    var i_centerY: Bool?
+    var i_snapTop: ConstraintItem?
+    var i_snapBottom: ConstraintItem?
 
-    func height(height:Int?) -> ConstraintRules {
+    var i_width: Int?
+    var i_centerX: Bool?
+    var i_marginLeft: Int?
+    var i_marginRight: Int?
+    var i_snapLeft: ConstraintItem?
+    var i_snapRight: ConstraintItem?
+
+
+    init(parentView: View) {
+        self.parentView = parentView
+    }
+
+    func height(height: Int?) -> ConstraintRules {
         i_height = height
         return self
     }
 
-    func marginTop(margin:Int) -> ConstraintRules {
+    func marginTop(margin: Int) -> ConstraintRules {
         i_marginTop = margin
         return self
     }
 
-    func marginBottom(margin:Int) -> ConstraintRules {
+    func marginBottom(margin: Int) -> ConstraintRules {
         i_marginBottom = margin
         return self
     }
@@ -42,17 +49,32 @@ class ConstraintRules {
         return self
     }
 
-    func snapTop(view:ConstraintItem) -> ConstraintRules {
-        i_snapTop = view
+    func snapTop() -> ConstraintRules {
+        i_snapTop = parentView.snp_top
         return self
     }
 
-    func snapBottom(view:ConstraintItem) -> ConstraintRules {
-        i_snapBottom = view
+    func snapTop(snap: ConstraintItem?) -> ConstraintRules {
+        if let s = snap {
+            i_snapTop = s
+        } else {
+            i_snapTop = parentView.snp_top
+        }
+
         return self
     }
 
-    func width(width:Int?) -> ConstraintRules {
+    func snapBottom() -> ConstraintRules {
+        i_snapBottom = parentView.snp_bottom
+        return self
+    }
+
+    func snapBottom(snap: ConstraintItem) -> ConstraintRules {
+        i_snapBottom = snap
+        return self
+    }
+
+    func width(width: Int?) -> ConstraintRules {
         i_width = width
         return self
     }
@@ -62,29 +84,39 @@ class ConstraintRules {
         return self
     }
 
-    func marginLeft(margin:Int) -> ConstraintRules {
+    func marginLeft(margin: Int) -> ConstraintRules {
         i_marginLeft = margin
         return self
     }
 
-    func marginRight(margin:Int) -> ConstraintRules {
+    func marginRight(margin: Int) -> ConstraintRules {
         i_marginRight = margin
         return self
     }
 
-    func snapLeft(view:ConstraintItem) -> ConstraintRules {
-        i_snapLeft = view
+    func snapLeft() -> ConstraintRules {
+        i_snapLeft = parentView.snp_left
         return self
     }
 
-    func snapRight(view:ConstraintItem) -> ConstraintRules {
-        i_snapRight = view
+    func snapLeft(leftsnp: ConstraintItem) -> ConstraintRules {
+        i_snapLeft = leftsnp
         return self
     }
 
-    func horizontalFullWithMargin(view:UIView, margin: Int) -> ConstraintRules{
-        i_snapLeft = view.snp_left
-        i_snapRight = view.snp_right
+    func snapRight() -> ConstraintRules {
+        i_snapRight = parentView.snp_right
+        return self
+    }
+
+    func snapRight(rightsnp: ConstraintItem) -> ConstraintRules {
+        i_snapRight = rightsnp
+        return self
+    }
+
+    func horizontalFullWithMargin(margin: Int) -> ConstraintRules {
+        i_snapLeft = parentView.snp_left
+        i_snapRight = parentView.snp_right
         i_marginLeft = margin
         i_marginRight = margin
         return self

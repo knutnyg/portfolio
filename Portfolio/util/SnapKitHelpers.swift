@@ -145,8 +145,9 @@ class SnapKitHelpers {
         }
     }
 
-    static func setConstraints(view: UIView, components: [ComponentWrapper]) {
+    static func setConstraints(components: [ComponentWrapper]) {
         for i in 0 ... components.count - 1 {
+            var view = components[i].rules.parentView
             components[i].view.snp_makeConstraints() {
                 (comp) -> Void in
 

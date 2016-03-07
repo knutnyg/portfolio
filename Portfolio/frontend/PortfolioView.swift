@@ -10,12 +10,15 @@ class PortfolioView : UIViewController{
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        //get the reference to the shared model
+        let tbvc = tabBarController as! MyTabBarController
+        let store = tbvc.store
+
         view.backgroundColor = UIColor.whiteColor()
 
         let nasStock = Stock(ticker: "NAS.OL")
         let nodStock = Stock(ticker: "NOD.OL")
-
-        let store = Store(dataFile: "store.dat")
 
         let seq = [HistoricalDataFetcher.getHistoricalData(store, stock: nasStock), HistoricalDataFetcher.getHistoricalData(store, stock: nodStock)]
 
@@ -46,10 +49,17 @@ class PortfolioView : UIViewController{
             self.updateChart(trades)
         }
 
-        let comp: [ComponentWrapper] = [
-                ComponentWrapper(view: chart, rules: ConstraintRules().horizontalFullWithMargin(view, margin: 10).snapBottom(view.snp_bottom).height(400))]
+        var button = createButton("to trades")
+        button.addTarget(self, action: "toTrades:", forControlEvents: .TouchUpInside)
 
-        SnapKitHelpers.setConstraints(view, components: comp)
+        let comp: [ComponentWrapper] = [
+                ComponentWrapper(view: chart, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(10).snapBottom().height(400))]
+
+        SnapKitHelpers.setConstraints(comp)
+    }
+
+    func toTrades(sender:UIButton){
+
     }
 
     func updateChart(trades:[Trade]){

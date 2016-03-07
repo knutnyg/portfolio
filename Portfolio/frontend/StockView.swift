@@ -40,9 +40,9 @@ class StockView: UIViewController {
         }
 
         let comp: [ComponentWrapper] = [
-                ComponentWrapper(view: chart, rules: ConstraintRules().horizontalFullWithMargin(view, margin: 10).snapBottom(view.snp_bottom).height(400))]
+                ComponentWrapper(view: chart, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(10).snapBottom(view.snp_bottom).height(400))]
 
-        SnapKitHelpers.setConstraints(view, components: comp)
+        SnapKitHelpers.setConstraints(comp)
 
         // Do any additional setup after loading the view, typically from a nib.
     }
