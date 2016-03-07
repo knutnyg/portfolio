@@ -1,0 +1,6 @@
+automatic_release false
+
+ipa "Portfolio.ipa"
+
+screenshots_path "./screenshots"
+force true	

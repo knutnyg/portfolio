@@ -1,0 +1,55 @@
+
+default_platform :ios
+
+platform :ios do
+
+  before_all do
+      cocoapods
+      ENV["SLACK_URL"] = "https://hooks.slack.com/services/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"
+	
+  end
+
+desc "test"
+  lane :test do
+      scan
+      slack({
+        message: "Finished running tests"
+      })
+  end
+
+  desc "Submit a new Beta Build to Apple TestFlight"
+  lane :deploy do
+      cert
+      sigh
+      scan
+      gym
+      deliver
+      sh "../increment_build_number.sh"
+      sh "../commit_release.sh"
+      slack({
+        message: "Finished deploying to appstore"
+      })
+  end
+
+  after_all do |lane|
+    # This block is called, only if the executed lane was successful
+    
+    # slack({
+    #   message: "Successfully deployed new App Update."
+    # })
+  end
+
+
+  error do |lane, exception|
+    # slack({
+    #   message: exception.message
+    #   success: false
+    # })
+  end
+
+end
+
+
+# More information about multiple platforms in fastlane: 
+# https://github.com/KrauseFx/fastlane/blob/master/docs/Platforms.md
+

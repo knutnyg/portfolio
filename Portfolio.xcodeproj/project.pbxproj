@@ -340,6 +340,7 @@
 				TargetAttributes = {
 					7294453A1C8B049F00764DD0 = {
 						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = E9A359GGU4;
 					};
 					7294454E1C8B049F00764DD0 = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -663,6 +664,7 @@
 			baseConfigurationReference = 37951CEED284ABB67DD93952 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Knut Nygaard (5GK5JYF47Q)";
 				INFOPLIST_FILE = Portfolio/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = xyz.nygaard.Portfolio;
@@ -675,6 +677,7 @@
 			baseConfigurationReference = 19044EB3517651A37CA85DCC /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Knut Nygaard (E9A359GGU4)";
 				INFOPLIST_FILE = Portfolio/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = xyz.nygaard.Portfolio;

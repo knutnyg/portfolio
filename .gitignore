@@ -5,3 +5,12 @@
 *.iml
 .idea
 Pods
+
+*.mobileprovision
+*test_output*
+fastlane/report.xml
+Portfolio.ipa
+Portfolio.app.dSYM.zip
+*.xcuserstate
+
+*.cer

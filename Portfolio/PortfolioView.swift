@@ -46,8 +46,6 @@ class PortfolioView : UIViewController{
             self.updateChart(trades)
         }
 
-
-
         let comp: [ComponentWrapper] = [
                 ComponentWrapper(view: chart, rules: ConstraintRules().horizontalFullWithMargin(view, margin: 10).snapBottom(view.snp_bottom).height(400))]
 
