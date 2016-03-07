@@ -13,7 +13,7 @@ class SnapKitHelpers {
                 var marginLeft = 0
                 var marginRight = 0
 
-                var constraints = rules[i]
+                let constraints = rules[i]
 
                 //Snap top
                 if let margin = constraints.i_marginTop {
@@ -67,7 +67,7 @@ class SnapKitHelpers {
                 }
 
                 //CenterY
-                if let centerX = constraints.i_centerX {
+                if let _ = constraints.i_centerX {
                     comp.centerX.equalTo(view.snp_centerX)
                 }
             }
@@ -84,7 +84,7 @@ class SnapKitHelpers {
                 var marginLeft = 0
                 var marginRight = 0
 
-                var constraints = rules[i]
+                let constraints = rules[i]
 
                 //Snap top
                 if let margin = constraints.i_marginTop {
@@ -138,7 +138,7 @@ class SnapKitHelpers {
                 }
 
                 //CenterY
-                if let centerX = constraints.i_centerX {
+                if let _ = constraints.i_centerX {
                     comp.centerX.equalTo(view.snp_centerX)
                 }
             }
@@ -147,7 +147,7 @@ class SnapKitHelpers {
 
     static func setConstraints(components: [ComponentWrapper]) {
         for i in 0 ... components.count - 1 {
-            var view = components[i].rules.parentView
+            let view = components[i].rules.parentView
             components[i].view.snp_makeConstraints() {
                 (comp) -> Void in
 
@@ -156,7 +156,7 @@ class SnapKitHelpers {
                 var marginLeft = 0
                 var marginRight = 0
 
-                var constraints = components[i].rules
+                let constraints = components[i].rules
 
                 //Snap top
                 if let margin = constraints.i_marginTop {
@@ -210,7 +210,7 @@ class SnapKitHelpers {
                 }
 
                 //CenterY
-                if let centerX = constraints.i_centerX {
+                if let _ = constraints.i_centerX {
                     comp.centerX.equalTo(view.snp_centerX)
                 }
             }
@@ -227,7 +227,7 @@ class SnapKitHelpers {
                 var marginLeft = 0
                 var marginRight = 0
 
-                var constraints = components[i].rules
+                let constraints = components[i].rules
 
                 //Snap top
                 if let margin = constraints.i_marginTop {
@@ -281,7 +281,7 @@ class SnapKitHelpers {
                 }
 
                 //CenterY
-                if let centerX = constraints.i_centerX {
+                if let _ = constraints.i_centerX {
                     comp.centerX.equalTo(view.snp_centerX)
                 }
             }

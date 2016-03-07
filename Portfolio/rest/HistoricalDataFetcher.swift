@@ -28,7 +28,7 @@ class HistoricalDataFetcher {
                     return
                 }
                 print(response.description)
-                let resstr: String = NSString(data: response.data, encoding: NSUTF8StringEncoding)! as! String
+                let resstr: String = NSString(data: response.data, encoding: NSUTF8StringEncoding)! as String
                 let csv = CSwiftV(String: resstr)
 
                 let stockHistory = StockHistory(history: self.t(csv.keyedRows!))

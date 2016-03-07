@@ -13,7 +13,7 @@ class StockView: UIViewController {
 
         let store = Store(dataFile: "store.dat")
 
-        let portfolio = Portfolio()
+        _ = Portfolio()
 //        portfolio.trades = [
 //                Trade(date: NSDate(dateString: "22.05.2015"),
 //                    price: 297.00,

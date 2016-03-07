@@ -49,7 +49,7 @@ class PortfolioView : UIViewController{
             self.updateChart(trades)
         }
 
-        var button = createButton("to trades")
+        let button = createButton("to trades")
         button.addTarget(self, action: "toTrades:", forControlEvents: .TouchUpInside)
 
         let comp: [ComponentWrapper] = [
@@ -68,9 +68,6 @@ class PortfolioView : UIViewController{
         var dateInc = earliestDate
         let today = NSDate()
         var portfolioData:[DateValue] = []
-        var stockDatas:[Stock:[DateValue]] = [:]
-
-
 
         while dateInc.earlierDate(today) == dateInc {
             if let value = Portfolio.valueAtDay(trades, date: dateInc) {

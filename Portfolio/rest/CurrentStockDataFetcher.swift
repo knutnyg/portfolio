@@ -6,7 +6,7 @@ import SwiftHTTP
 class CurrentStockDataFetcher {
 
     static func fetchStockData(stock:Stock) -> StockPriceInstance? {
-        let url = "http://finance.yahoo.com/webservice/v1/symbols/\(stock.ticker)/quote?format=json"
+        _ = "http://finance.yahoo.com/webservice/v1/symbols/\(stock.ticker)/quote?format=json"
         return nil
     }
 

@@ -22,7 +22,7 @@ class Store: NSObject {
 
     func loadStore() -> Store? {
         if let filePath = getFileURL(storedFileName) {
-            if let store = try NSKeyedUnarchiver.unarchiveObjectWithFile(filePath.path!) {
+            if let store = NSKeyedUnarchiver.unarchiveObjectWithFile(filePath.path!) {
                 print("Loading store...")
                 return store as? Store
             }

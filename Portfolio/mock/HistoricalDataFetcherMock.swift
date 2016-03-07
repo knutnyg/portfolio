@@ -14,8 +14,6 @@ class HistoricalDataFetcherMock: HistoricalDataFetcher {
 
     static func getHistoricalDataMock(stock: Stock) -> Future<StockHistory, NSError> {
 
-        let promise = Promise<StockHistory, NSError>()
-
         var res = ""
 
         if stock.ticker == "NAS.OL" {
