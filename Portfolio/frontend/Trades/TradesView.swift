@@ -7,11 +7,18 @@ class TradesView: UIViewController {
     var addTrade:UIButton!
     var tradesTable:TradesTable!
 
+    var controller:MyTabBarController!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        controller = tabBarController as! MyTabBarController
+
         addTrade = createButton("Add Trade")
+        addTrade.addTarget(self, action: "addTrade:", forControlEvents: .TouchUpInside)
+
         tradesTable = TradesTable()
+        tradesTable.store = controller.store
 
         view.addSubview(addTrade)
         view.addSubview(tradesTable.view)
@@ -24,6 +31,11 @@ class TradesView: UIViewController {
         ]
 
         SnapKitHelpers.setConstraints(components)
+    }
+
+    func addTrade(sender:UIButton){
+        controller.store.trades.append(Trade(date: NSDate(),price: 20.0, stock: Stock(ticker: "NAS.OL"), count: 10, action: Action.BUY))
+        tradesTable.tableView.reloadData()
     }
 
 
