@@ -34,6 +34,7 @@
 		324F46C49A6E0A114D934200 /* TradesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F41257CFE52E9421CFEAA /* TradesView.swift */; };
 		324F471CE9BA42C82DC8FBCC /* DateValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4182F6E0BCDCDA5DE130 /* DateValue.swift */; };
 		324F475A8931103EC0D3D472 /* Portfolio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4E5BF0A257E1C62B06BE /* Portfolio.swift */; };
+		324F475DFF8D017B5EC2D80D /* MyTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F44B0695D580D520E0414 /* MyTabBarController.swift */; };
 		324F47CD4A10FF9424FF88F2 /* Stock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F44552945E81E5746DAA0 /* Stock.swift */; };
 		324F4800DC517FFF1D3B75AE /* DiskUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F441292FB301A2832A467 /* DiskUtils.swift */; };
 		324F48F05B2658CF1D8C3E1A /* StockOwned.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4410342C0A73CDA613AB /* StockOwned.swift */; };
@@ -583,6 +584,7 @@
 				324F4CB76FA1989DEA30104D /* StoreTests.swift in Sources */,
 				324F4585CAEF4E05C04665D1 /* StockView.swift in Sources */,
 				324F4CCA54D5AED18F74D0F3 /* PortfolioView.swift in Sources */,
+				324F475DFF8D017B5EC2D80D /* MyTabBarController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
