@@ -7,12 +7,6 @@ class Stock : NSObject{
     var ticker:String!
     var history:StockHistory?
 
-    override var hashValue : Int {
-        get {
-            return self.ticker.hashValue
-        }
-    }
-
     init(ticker:String){
         self.ticker = ticker
     }
@@ -28,7 +22,6 @@ class Stock : NSObject{
         } else {
             return nil
         }
-
     }
 
     // MARK: NSCoding
@@ -45,9 +38,17 @@ class Stock : NSObject{
     func encodeWithCoder(coder: NSCoder) {
         coder.encodeObject(self.ticker, forKey: "ticker")
     }
+
+    override var hashValue : Int {
+        get {
+            return self.ticker.hashValue
+        }
+    }
+
+    override func isEqual(object: AnyObject?) -> Bool {
+        guard let object = object as? Stock else { return false }
+        return ticker == object.ticker
+    }
 }
 
 
-func ==(lhs: Stock, rhs: Stock) -> Bool {
-    return lhs.hashValue == rhs.hashValue
-}
