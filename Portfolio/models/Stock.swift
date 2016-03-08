@@ -24,8 +24,6 @@ class Stock : NSObject{
         }
     }
 
-    // MARK: NSCoding
-
     required convenience init?(coder decoder: NSCoder) {
         guard let ticker = decoder.decodeObjectForKey("ticker") as? String
         else { return nil }
