@@ -9,6 +9,12 @@ class TradesView: UIViewController {
 
     var controller:MyTabBarController!
 
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        tradesTable.trades = controller.store.trades
+        tradesTable.tableView.reloadData()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -18,7 +24,7 @@ class TradesView: UIViewController {
         addTrade.addTarget(self, action: "addTrade:", forControlEvents: .TouchUpInside)
 
         tradesTable = TradesTable()
-        tradesTable.store = controller.store
+        tradesTable.trades = controller.store.trades
 
         view.addSubview(addTrade)
         view.addSubview(tradesTable.view)
@@ -34,9 +40,11 @@ class TradesView: UIViewController {
     }
 
     func addTrade(sender:UIButton){
-        controller.store.trades.append(Trade(date: NSDate(),price: 20.0, stock: Stock(ticker: "NAS.OL"), count: 10, action: Action.BUY))
-        tradesTable.tableView.reloadData()
+        let vc = NewTrade()
+        vc.store = controller.store
+        presentViewController(vc, animated: false, completion: nil)
+//
+//        controller.store.trades.append(Trade(date: NSDate(),price: 20.0, stock: Stock(ticker: "NAS.OL"), count: 10, action: Action.BUY))
+//        tradesTable.tableView.reloadData()
     }
-
-
 }

@@ -8,7 +8,7 @@ import UIKit
 
 class TradesTable : UITableViewController {
 
-    var store:Store!
+    var trades:[Trade]!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,7 +19,7 @@ class TradesTable : UITableViewController {
 
         let cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
 
-        let sortedTrades = store.trades
+        let sortedTrades = trades
         .sort({ $0.date.compare($1.date) == NSComparisonResult.OrderedAscending })
 
         cell.textLabel?.text = sortedTrades[indexPath.item].stock.ticker
@@ -33,7 +33,7 @@ class TradesTable : UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return store.trades.count
+        return trades.count
     }
 
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {

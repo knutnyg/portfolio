@@ -2,12 +2,12 @@
 import Foundation
 
 
-class Stock : Hashable {
+class Stock : NSObject{
 
     var ticker:String!
     var history:StockHistory?
 
-    var hashValue : Int {
+    override var hashValue : Int {
         get {
             return self.ticker.hashValue
         }

@@ -30,6 +30,11 @@ class Store: NSObject {
         return nil
     }
 
+    func addTrade(trade: Trade) {
+        self.trades.append(trade)
+        saveStore()
+    }
+
     func updateStore(trades: [Trade]) {
         self.trades = trades
         saveStore()
