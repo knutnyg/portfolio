@@ -101,7 +101,7 @@ class NewTrade: UIViewController, UITextFieldDelegate{
         store.addTrade(
             Trade(  date: datePicker.date,
                     price: Double(priceTextField.text!)!,
-                    stock: Stock(ticker: tickerTextField.text!),
+                    ticker: tickerTextField.text!,
                     count: Double(countTextField.text!)!,
                     action: action))
         self.dismissViewControllerAnimated(false, completion: nil)

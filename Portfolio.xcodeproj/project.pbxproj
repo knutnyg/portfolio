@@ -20,6 +20,7 @@
 		324F43B1A457488676EE1D9F /* HistoricalDataFetcherMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F471B08718717E2DDD169 /* HistoricalDataFetcherMock.swift */; };
 		324F43B8283D0D5BB4384874 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F48A3FB577DD7409EEDD1 /* Store.swift */; };
 		324F440C2B47AC89029AA0A6 /* Stock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F44552945E81E5746DAA0 /* Stock.swift */; };
+		324F443F6D45D3F39F1FF8E2 /* StoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4AC9867C9CCCAE66B97B /* StoreTests.swift */; };
 		324F44992B97C2651999610D /* CommonComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F48ACA03E397682E1A4DA /* CommonComponents.swift */; };
 		324F44CE19B6CEC02C734B1B /* MyTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F44B0695D580D520E0414 /* MyTabBarController.swift */; };
 		324F44DACB703A3C2C30033F /* LocaleUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4B2C8F36E27EC9C08723 /* LocaleUtils.swift */; };
@@ -55,7 +56,6 @@
 		324F4B6C1A866E819341C2AA /* Trade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F457F7978E0DE7E537B72 /* Trade.swift */; };
 		324F4BAA5D4CEE82117D4402 /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F436202DDD844B2DE6237 /* StringUtils.swift */; };
 		324F4CB3542233079153DD3A /* FAHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4B4BAC996EBC1C14D6B4 /* FAHelpers.swift */; };
-		324F4CB76FA1989DEA30104D /* StoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F40DAB79B25FF032666D4 /* StoreTests.swift */; };
 		324F4CCA54D5AED18F74D0F3 /* PortfolioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4543E037F86F23822FF2 /* PortfolioView.swift */; };
 		324F4CCAA76DAAEF69FDE23D /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4030AC695B64F945EC1F /* DateUtils.swift */; };
 		324F4CF00C4ECC1E63B44B0F /* ConstraintRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4758553072204141BBC4 /* ConstraintRules.swift */; };
@@ -92,7 +92,6 @@
 		19044EB3517651A37CA85DCC /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		2BB9D1EBD57848ADFD8E7E2B /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		324F4030AC695B64F945EC1F /* DateUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateUtils.swift; sourceTree = "<group>"; };
-		324F40DAB79B25FF032666D4 /* StoreTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreTests.swift; sourceTree = "<group>"; };
 		324F41257CFE52E9421CFEAA /* TradesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradesView.swift; sourceTree = "<group>"; };
 		324F4182F6E0BCDCDA5DE130 /* DateValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateValue.swift; sourceTree = "<group>"; };
 		324F42DC23274717E9AF481A /* SnapKitHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapKitHelpers.swift; sourceTree = "<group>"; };
@@ -115,6 +114,7 @@
 		324F48ACA03E397682E1A4DA /* CommonComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonComponents.swift; sourceTree = "<group>"; };
 		324F49A00F47E3ADF7615BC5 /* ImageUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageUtils.swift; sourceTree = "<group>"; };
 		324F49F5A3C371A8FC5ACE9E /* CurrentStockDataFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentStockDataFetcher.swift; sourceTree = "<group>"; };
+		324F4AC9867C9CCCAE66B97B /* StoreTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreTests.swift; sourceTree = "<group>"; };
 		324F4B29B99A33CE392659A7 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		324F4B2C8F36E27EC9C08723 /* LocaleUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocaleUtils.swift; sourceTree = "<group>"; };
 		324F4B33EC6686550492B886 /* StockCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockCache.swift; sourceTree = "<group>"; };
@@ -227,6 +227,14 @@
 			path = util;
 			sourceTree = "<group>";
 		};
+		324F4BA9BB58C9EB2209D2CC /* store */ = {
+			isa = PBXGroup;
+			children = (
+				324F4AC9867C9CCCAE66B97B /* StoreTests.swift */,
+			);
+			path = store;
+			sourceTree = "<group>";
+		};
 		324F4EAB58E7C4784C0407A5 /* frontend */ = {
 			isa = PBXGroup;
 			children = (
@@ -291,7 +299,7 @@
 				729445551C8B049F00764DD0 /* Info.plist */,
 				324F404D07FC6F4613358CD9 /* rest */,
 				324F42922EF86BBAA9DA9DAA /* portfolio */,
-				324F40DAB79B25FF032666D4 /* StoreTests.swift */,
+				324F4BA9BB58C9EB2209D2CC /* store */,
 			);
 			path = PortfolioTests;
 			sourceTree = "<group>";
@@ -581,10 +589,10 @@
 				324F4F2789773B7135D7820F /* StockCache.swift in Sources */,
 				324F4361FE347D49C16A507F /* DateValue.swift in Sources */,
 				324F43509C671CC7D3FAE92F /* CacheEntry.swift in Sources */,
-				324F4CB76FA1989DEA30104D /* StoreTests.swift in Sources */,
 				324F4585CAEF4E05C04665D1 /* StockView.swift in Sources */,
 				324F4CCA54D5AED18F74D0F3 /* PortfolioView.swift in Sources */,
 				324F475DFF8D017B5EC2D80D /* MyTabBarController.swift in Sources */,
+				324F443F6D45D3F39F1FF8E2 /* StoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

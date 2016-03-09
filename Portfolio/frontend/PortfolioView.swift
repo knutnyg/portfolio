@@ -7,47 +7,25 @@ class PortfolioView : UIViewController{
 
     var chart: LineChartView!
     var weeks: [String]!
+    var store:Store!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         //get the reference to the shared model
         let tbvc = tabBarController as! MyTabBarController
-        let store = tbvc.store
+        store = tbvc.store
 
         view.backgroundColor = UIColor.whiteColor()
-
-        let nasStock = Stock(ticker: "NAS.OL")
-        let nodStock = Stock(ticker: "NOD.OL")
-
-        let seq = [HistoricalDataFetcher.getHistoricalData(store, stock: nasStock), HistoricalDataFetcher.getHistoricalData(store, stock: nodStock)]
 
         chart = LineChartView()
         view.addSubview(chart)
         chart.rightAxis.enabled = false
         chart.noDataText = "You must give me the datas!"
 
-        seq.sequence().onSuccess{
-            histories in
-            nasStock.history = histories[0]
-            nodStock.history = histories[1]
 
-            let trades = [
-                    Trade(date: NSDate(dateString: "2003-02-22"),
-                            price: 49.30,
-                            stock: nasStock,
-                            count: 60,
-                            action: Action.BUY
-                    ),
-                    Trade(date: NSDate(dateString: "2016-02-25"),
-                            price: 43.30,
-                            stock: nodStock,
-                            count: 40,
-                            action: Action.BUY
-                    )]
+//            self.updateChart(store.trades)
 
-            self.updateChart(trades)
-        }
 
         let button = createButton("to trades")
         button.addTarget(self, action: "toTrades:", forControlEvents: .TouchUpInside)
@@ -70,7 +48,7 @@ class PortfolioView : UIViewController{
         var portfolioData:[DateValue] = []
 
         while dateInc.earlierDate(today) == dateInc {
-            if let value = Portfolio.valueAtDay(trades, date: dateInc) {
+            if let value = Portfolio.valueAtDay(store, date: dateInc) {
                 portfolioData.append(DateValue(date: dateInc, value: value))
             }
             dateInc = NSDate(timeInterval: 86400, sinceDate: dateInc)

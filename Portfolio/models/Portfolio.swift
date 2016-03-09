@@ -3,11 +3,11 @@ import BrightFutures
 
 class Portfolio {
 
-    static func stocksAtDay(trades: [Trade], date: NSDate) throws -> [Stock:Double] {
+    static func stocksAtDay(store:Store, date: NSDate) throws -> [Stock:Double] {
 
-        var assets: [Stock:Double] = [:]
+        var assets: [String:Double] = [:]
 
-        let sortedTrades = trades
+        let sortedTrades = store.trades
         .filter({ $0.date.earlierDate(date) == $0.date })
         .sort({ $0.date.compare($1.date) == NSComparisonResult.OrderedAscending })
 
@@ -15,17 +15,17 @@ class Portfolio {
             let action: Action = trade.action
             switch action {
             case Action.BUY:
-                if let currentAmount = assets[trade.stock] {
-                    assets[trade.stock] = trade.count + currentAmount
+                if let currentAmount = assets[trade.ticker] {
+                    assets[trade.ticker] = trade.count + currentAmount
                 } else {
-                    assets[trade.stock] = trade.count
+                    assets[trade.ticker] = trade.count
                 }; break
             case Action.SELL:
-                if let currentAmount = assets[trade.stock] {
+                if let currentAmount = assets[trade.ticker] {
                     let newValue = currentAmount - trade.count
 
                     if newValue >= 0 {
-                        assets[trade.stock] = currentAmount - trade.count
+                        assets[trade.ticker] = currentAmount - trade.count
                     } else {
                         print("Error: Sold more than owned of a stock!")
                         throw Errors.IllegalTrade
@@ -36,13 +36,24 @@ class Portfolio {
                 }; break
             }
         }
-
-        return assets
+        var ret:[Stock:Double] = [:]
+        for (k,v) in assets {
+            if let stock = store.stocks[k] {
+                ret[stock] = v
+            }
+        }
+        return ret
     }
 
-    static func valueAtDay(trades:[Trade], date: NSDate) -> Double?{
+//    static func allStocks(trades: [Trade]) -> [Stock] {
+//        return Array(Set(
+//        trades
+//        .map{$0.stock}))
+//    }
+
+    static func valueAtDay(store:Store, date: NSDate) -> Double?{
         do {
-            let assets:[Stock:Double] = try stocksAtDay(trades, date: date)
+            let assets:[Stock:Double] = try stocksAtDay(store, date: date)
 
             var value = 0.0
 

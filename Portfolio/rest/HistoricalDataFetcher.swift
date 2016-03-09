@@ -5,25 +5,26 @@ import CSwiftV
 
 class HistoricalDataFetcher {
 
-    static func getHistoricalData(store:Store, stock: Stock) -> Future<StockHistory, NSError> {
+    static func getHistoricalData(store: Store, ticker: String) -> Future<StockHistory, NSError> {
 
         let promise = Promise<StockHistory, NSError>()
 
-        let url = "https://ichart.finance.yahoo.com/table.csv?s=\(stock.ticker)&c=1962&ignore=.csv"
+        let url = "https://ichart.finance.yahoo.com/table.csv?s=\(ticker)&c=1962&ignore=.csv"
 
         do {
-            if let entry:CacheEntry = store.historicalDataCache.entrys.valueForKey(stock.ticker) as? CacheEntry {
-                print("HistoricalDataFetcher: Returning cached datas")
-                return Future(value: entry.stockHistory)
+            if let entry: CacheEntry = store.historicalDataCache.entrys.valueForKey(ticker) as? CacheEntry {
+                if entry.date.laterDate(NSDate(timeIntervalSinceNow: -3600 * 24)) == entry.date {
+                    print("HistoricalDataFetcher: Returning cached datas")
+                    return Future(value: entry.stockHistory)
+                }
             }
-
 
             let request = try HTTP.GET(url)
 
             request.start {
                 response in
                 if let err = response.error {
-                    print("CurrentStockDataFetcher: Response contains error: \(err)")
+                    print("HistoricalDataFetcher: Response contains error: \(err)")
                     promise.failure(err)
                     return
                 }
@@ -32,7 +33,7 @@ class HistoricalDataFetcher {
                 let csv = CSwiftV(String: resstr)
 
                 let stockHistory = StockHistory(history: self.t(csv.keyedRows!))
-                store.updateStore(CacheEntry(stockHistory: stockHistory, date: NSDate()), stock: stock)
+                store.updateStore(CacheEntry(stockHistory: stockHistory, date: NSDate()), ticker: ticker)
 
                 promise.success(stockHistory)
             }
@@ -40,6 +41,24 @@ class HistoricalDataFetcher {
             print("LoginHandler: got error in logInWithDefault")
         }
 
+        return promise.future
+    }
+
+    static func updateStockData(store: Store, tickers: [String]) -> Future<Store, NSError> {
+
+        let promise = Promise<Store, NSError>()
+
+        let seq = tickers.map({ HistoricalDataFetcher.getHistoricalData(store, ticker: $0) })
+
+        seq.sequence().onSuccess {
+            stockHistories in
+            var counter = 0
+            for history in stockHistories {
+                let ticker = tickers[counter]
+                store.stocks[ticker] = Stock(ticker: ticker, history: history)
+            }
+            promise.success(store)
+        }
         return promise.future
     }
 

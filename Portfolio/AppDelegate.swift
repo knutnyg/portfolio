@@ -10,7 +10,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
 
+        let store = Store()
+
         let tabBarController = MyTabBarController()
+        tabBarController.store = store
+
         let portfolio = PortfolioView()
         let trades = TradesView()
 

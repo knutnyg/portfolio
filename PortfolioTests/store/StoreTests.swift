@@ -6,7 +6,7 @@
 import Foundation
 import XCTest
 
-class StoreTests : XCTestCase {
+class StoreTests: XCTestCase {
 
     func testStoreAndLoadCache() {
 
@@ -22,13 +22,15 @@ class StoreTests : XCTestCase {
         ]
         )
 
-        cache.entrys.setObject(CacheEntry(stockHistory: stockHistory, date: NSDate()),forKey: stock.ticker)
+        cache.entrys.setObject(CacheEntry(stockHistory: stockHistory, date: NSDate()), forKey: stock.ticker)
 
-        store.updateStore(CacheEntry(stockHistory: stockHistory, date: NSDate()), stock: stock)
+        store.updateStore(CacheEntry(stockHistory: stockHistory, date: NSDate()), ticker: stock.ticker)
         let s = store.loadStore()!
 
         let entry = s.historicalDataCache.entrys.valueForKey(stock.ticker) as! CacheEntry
 
         XCTAssertEqual(entry.stockHistory.history.count, 3)
     }
+
+
 }

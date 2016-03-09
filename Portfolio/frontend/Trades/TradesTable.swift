@@ -22,7 +22,7 @@ class TradesTable : UITableViewController {
         let sortedTrades = trades
         .sort({ $0.date.compare($1.date) == NSComparisonResult.OrderedAscending })
 
-        cell.textLabel?.text = sortedTrades[indexPath.item].stock.ticker
+        cell.textLabel?.text = sortedTrades[indexPath.item].ticker
 
         return cell
 

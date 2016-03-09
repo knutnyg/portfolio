@@ -5,6 +5,7 @@ import Foundation
 class Stock : NSObject{
 
     var ticker:String!
+    var currentValue:Double?
     var history:StockHistory?
 
     init(ticker:String){

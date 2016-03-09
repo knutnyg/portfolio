@@ -5,14 +5,14 @@ class Trade : NSObject{
 
     var date:NSDate!
     var price:Double!
-    var stock:Stock!
+    var ticker:String!
     var count:Double!
     var action:Action!
 
-    init(date: NSDate, price:Double, stock:Stock, count:Double, action:Action){
+    init(date: NSDate, price:Double, ticker:String, count:Double, action:Action){
         self.date = date
         self.price = price
-        self.stock = stock
+        self.ticker = ticker
         self.count = count
         self.action = action
     }
@@ -22,7 +22,7 @@ class Trade : NSObject{
         self.init(
         date: decoder.decodeObjectForKey("date") as! NSDate,
         price: decoder.decodeObjectForKey("price") as! Double,
-        stock: decoder.decodeObjectForKey("stock") as! Stock,
+        ticker: decoder.decodeObjectForKey("ticker") as! String,
         count: decoder.decodeObjectForKey("count") as! Double,
         action: Action(rawValue: decoder.decodeObjectForKey("action") as! Int)!
         )
@@ -31,7 +31,7 @@ class Trade : NSObject{
     func encodeWithCoder(coder: NSCoder) {
         coder.encodeObject(self.date, forKey: "date")
         coder.encodeObject(self.price, forKey: "price")
-        coder.encodeObject(self.stock, forKey: "stock")
+        coder.encodeObject(self.ticker, forKey: "ticker")
         coder.encodeObject(self.count, forKey: "count")
         coder.encodeObject(self.action.rawValue, forKey: "action")
     }

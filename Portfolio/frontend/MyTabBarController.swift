@@ -7,5 +7,5 @@ import Foundation
 import UIKit
 
 class MyTabBarController : UITabBarController {
-    var store = Store(dataFile: "store.dat")
+    var store:Store!
 }
