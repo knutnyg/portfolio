@@ -11,7 +11,7 @@ class TradesView: UIViewController {
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        tradesTable.trades = controller.store.trades
+        tradesTable.store = controller.store
         tradesTable.tableView.reloadData()
     }
 
@@ -24,7 +24,7 @@ class TradesView: UIViewController {
         addTrade.addTarget(self, action: "addTrade:", forControlEvents: .TouchUpInside)
 
         tradesTable = TradesTable()
-        tradesTable.trades = controller.store.trades
+        tradesTable.store = controller.store
 
         view.addSubview(addTrade)
         view.addSubview(tradesTable.view)

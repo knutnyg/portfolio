@@ -7,28 +7,24 @@ class PortfolioView : UIViewController{
 
     var chart: LineChartView!
     var weeks: [String]!
-    var store:Store!
+//    var store:Store!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         //get the reference to the shared model
         let tbvc = tabBarController as! MyTabBarController
-        store = tbvc.store
-
         view.backgroundColor = UIColor.whiteColor()
+
+        HistoricalDataFetcher.updateStockData(tbvc.store).onSuccess{
+            store in
+            self.updateChart(store)
+        }
 
         chart = LineChartView()
         view.addSubview(chart)
         chart.rightAxis.enabled = false
         chart.noDataText = "You must give me the datas!"
-
-
-//            self.updateChart(store.trades)
-
-
-        let button = createButton("to trades")
-        button.addTarget(self, action: "toTrades:", forControlEvents: .TouchUpInside)
 
         let comp: [ComponentWrapper] = [
                 ComponentWrapper(view: chart, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(10).snapBottom().height(400))]
@@ -40,9 +36,13 @@ class PortfolioView : UIViewController{
 
     }
 
-    func updateChart(trades:[Trade]){
+    func updateChart(store:Store){
 
-        let earliestDate = trades[0].date
+        if store.trades.count == 0 {
+            return
+        }
+
+        let earliestDate = store.trades[0].date
         var dateInc = earliestDate
         let today = NSDate()
         var portfolioData:[DateValue] = []

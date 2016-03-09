@@ -3,17 +3,17 @@ import Foundation
 class StockHistory : NSObject {
 
     var history: [StockPriceInstance]!
-    var dateValCache: [NSDate:Double] = [:]
+    var dateValCache: [String:Double] = [:]
 
     init(history: [StockPriceInstance]) {
         self.history = history
         for h in history {
-            dateValCache[h.date] = h.price
+            dateValCache[h.date.mediumPrintable()] = h.price
         }
     }
 
     func stockValueAtDay(date: NSDate) -> Double? {
-        return dateValCache[date]
+        return dateValCache[date.mediumPrintable()]
     }
 
     // MARK: NSCoding

@@ -8,21 +8,28 @@ import UIKit
 
 class TradesTable : UITableViewController {
 
-    var trades:[Trade]!
+    var store:Store!
 
     override func viewDidLoad() {
         super.viewDidLoad()
     }
 
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.Delete {
+            store.removeTradeAtIndex(indexPath.item)
+            tableView.reloadData()
+        }
+    }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
         let cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
 
-        let sortedTrades = trades
-        .sort({ $0.date.compare($1.date) == NSComparisonResult.OrderedAscending })
-
-        cell.textLabel?.text = sortedTrades[indexPath.item].ticker
+        cell.textLabel?.text = store.trades[indexPath.item].ticker
 
         return cell
 
@@ -33,7 +40,7 @@ class TradesTable : UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return trades.count
+        return store.trades.count
     }
 
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {

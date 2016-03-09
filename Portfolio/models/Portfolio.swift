@@ -57,11 +57,11 @@ class Portfolio {
 
             var value = 0.0
 
-            for stockDict in assets{
+            for stockWorth in assets{
 
-                if let stockHistory = stockDict.0.history {
-                    if let stockValue = stockHistory.stockValueAtDay(date) {
-                        value += stockValue * stockDict.1
+                if let stockHistory = stockWorth.0.history {
+                    if let v = stockHistory.stockValueAtDay(date) {
+                        value += v * stockWorth.1
                     } else {
                         return nil
                     }
@@ -71,5 +71,9 @@ class Portfolio {
         } catch {
             return nil
         }
+    }
+
+    static func tickersFromTrades(trades:[Trade]) -> [String]{
+        return Array(Set(trades.map{$0.ticker}))
     }
 }

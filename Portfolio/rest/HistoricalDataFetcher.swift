@@ -44,11 +44,13 @@ class HistoricalDataFetcher {
         return promise.future
     }
 
-    static func updateStockData(store: Store, tickers: [String]) -> Future<Store, NSError> {
+    static func updateStockData(store: Store) -> Future<Store, NSError> {
 
         let promise = Promise<Store, NSError>()
 
-        let seq = tickers.map({ HistoricalDataFetcher.getHistoricalData(store, ticker: $0) })
+        let tickers = Array(store.stocks.keys)
+
+        let seq = tickers.map({ getHistoricalData(store, ticker: $0) })
 
         seq.sequence().onSuccess {
             stockHistories in
