@@ -5,7 +5,7 @@ class Store: NSObject, NSKeyedUnarchiverDelegate {
     var stocks: [String:Stock] = [:]
     var trades: [Trade] = []
     var historicalDataCache: StockCache!
-    var storedFileName: String!
+    var storedFileName: String?
 
     override init(){
         super.init()
@@ -39,18 +39,23 @@ class Store: NSObject, NSKeyedUnarchiverDelegate {
     }
 
     func loadStore() -> Store? {
-        if let filePath = getFileURL(storedFileName) {
-            if let path = filePath.path {
-                if let store = NSKeyedUnarchiver.unarchiveObjectWithFile(path) {
-                    print("Loading store...")
-                    return store as? Store
+        if let fileURL = storedFileName {
+            if let filePath = getFileURL(fileURL) {
+                if let path = filePath.path {
+                    if let store = NSKeyedUnarchiver.unarchiveObjectWithFile(path) {
+                        print("Loading store...")
+                        return store as? Store
+                    }
+                } else {
+                    return nil
                 }
-            } else {
-                return nil
-            }
 
+            }
+        } else {
+            print("Not loading store because url not set")
         }
         return nil
+
     }
 
     func removeTradeAtIndex(index:Int){
@@ -73,12 +78,17 @@ class Store: NSObject, NSKeyedUnarchiverDelegate {
     }
 
     internal func saveStore() {
-        synced(self) {
-            if let filePath = getFileURL(self.storedFileName) {
-                print("Saving store...")
-                NSKeyedArchiver.archiveRootObject(self, toFile: filePath.path!)
+        if let fileUrl = self.storedFileName {
+            synced(self) {
+                if let filePath = getFileURL(fileUrl) {
+                    print("Saving store...")
+                    NSKeyedArchiver.archiveRootObject(self, toFile: filePath.path!)
+                }
             }
+        } else {
+            print("Skipping saving store because no url!")
         }
+
     }
 
     // -----   SERIALIZATION   ----- //

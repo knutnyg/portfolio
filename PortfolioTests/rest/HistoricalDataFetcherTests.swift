@@ -55,7 +55,7 @@ class HistoricalDataFetcherTests: XCTestCase {
         stock.history = stockHistory
         cache.entrys.setObject(CacheEntry(stockHistory: stockHistory, date: NSDate()),forKey: stock.ticker)
 
-        let store = Store(dataFile: "store_test.dat")
+        let store = Store(dataFile: "store_test_v1.dat")
         store.historicalDataCache = cache
 
         HistoricalDataFetcher.getHistoricalData(store, ticker: stock.ticker).onSuccess {
@@ -85,7 +85,7 @@ class HistoricalDataFetcherTests: XCTestCase {
         stock.history = stockHistory
         cache.entrys.setObject(CacheEntry(stockHistory: stockHistory, date: NSDate(timeIntervalSinceNow: -3*3600*24)),forKey: stock.ticker)
 
-        let store = Store(dataFile: "store_test.dat")
+        let store = Store(dataFile: "store_test_v1.dat")
         store.historicalDataCache = cache
 
         HistoricalDataFetcher.getHistoricalData(store, ticker: stock.ticker)
@@ -109,15 +109,12 @@ class HistoricalDataFetcherTests: XCTestCase {
 
         let expectation = expectationWithDescription("promise")
 
-        var store = Store(dataFile: "store_test.dat")
-        let stocks = [
-                "NAS.OL",
-                "NOD.OL"
-        ]
+        var store = Store()
+        store.stocks = ["NAS.OL":Stock(ticker: "NAS.OL"),"NOD.OL":Stock(ticker:"NOD.OL")]
 
-        HistoricalDataFetcher.updateStockData(store, tickers: stocks).onSuccess{
-            store in
-            XCTAssert(store.stocks["NAS.OL"]!.history != nil)
+        HistoricalDataFetcher.updateStockData(store).onSuccess{
+            storez in
+            XCTAssert(storez.stocks["NAS.OL"]!.history != nil)
             expectation.fulfill()
         }
 
