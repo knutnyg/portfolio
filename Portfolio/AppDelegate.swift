@@ -16,7 +16,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         tabBarController.store = store
 
         let portfolio = PortfolioView()
+        portfolio.tabBarItem = UITabBarItem(title: "Portfolio", image: nil, tag: 0)
+
         let trades = TradesView()
+        trades.tabBarItem = UITabBarItem(title: "Trades", image: nil, tag: 1)
 
         let controllers = [portfolio, trades]
         tabBarController.viewControllers = controllers
