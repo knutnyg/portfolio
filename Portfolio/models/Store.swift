@@ -65,7 +65,7 @@ class Store: NSObject, NSKeyedUnarchiverDelegate {
 
     func addTrade(trade: Trade) {
         self.trades = (self.trades + [trade]).sort({$0.date.compare($1.date) == NSComparisonResult.OrderedAscending })
-        HistoricalDataFetcher.getHistoricalData(self, ticker: trade.ticker).onSuccess{
+        HistoricalDataFetcher().getHistoricalData(self, ticker: trade.ticker).onSuccess{
             history in
             self.stocks[trade.ticker] = Stock(ticker: trade.ticker, history: history)
             self.saveStore()

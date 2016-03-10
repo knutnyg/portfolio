@@ -5,7 +5,7 @@ import CSwiftV
 
 class HistoricalDataFetcher {
 
-    static func getHistoricalData(store: Store, ticker: String) -> Future<StockHistory, NSError> {
+    func getHistoricalData(store: Store, ticker: String) -> Future<StockHistory, NSError> {
 
         let promise = Promise<StockHistory, NSError>()
 
@@ -44,7 +44,7 @@ class HistoricalDataFetcher {
         return promise.future
     }
 
-    static func updateStockData(store: Store) -> Future<Store, NSError> {
+    func updateStockData(store: Store) -> Future<Store, NSError> {
 
         let promise = Promise<Store, NSError>()
 
@@ -64,7 +64,7 @@ class HistoricalDataFetcher {
         return promise.future
     }
 
-    static func t(keyedRows: [[String:String]]) -> [StockPriceInstance] {
+    func t(keyedRows: [[String:String]]) -> [StockPriceInstance] {
         return keyedRows.map({ kr in StockPriceInstance(csvRow: kr) }).reverse()
     }
 }

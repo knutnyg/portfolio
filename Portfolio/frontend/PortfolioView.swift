@@ -16,7 +16,7 @@ class PortfolioView : UIViewController{
         let tbvc = tabBarController as! MyTabBarController
         view.backgroundColor = UIColor.whiteColor()
 
-        HistoricalDataFetcher.updateStockData(tbvc.store).onSuccess{
+        HistoricalDataFetcher().updateStockData(tbvc.store).onSuccess{
             store in
             self.updateChart(store)
         }

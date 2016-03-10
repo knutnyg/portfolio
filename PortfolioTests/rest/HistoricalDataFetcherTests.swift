@@ -3,31 +3,14 @@ import XCTest
 
 class HistoricalDataFetcherTests: XCTestCase {
 
-//    func testGetHistoricalDataIntegration() {
-//
-//        let expectation = expectationWithDescription("promise")
-//
-//        let stock = Stock(ticker: "NOD.OL")
-//
-//        HistoricalDataFetcher().getHistoricalData(stock).onSuccess {
-//            stockHistory in
-//            XCTAssertTrue(stockHistory.history.count > 0)
-//            expectation.fulfill()
-//        }
-//
-//        waitForExpectationsWithTimeout(5, handler: {
-//            error in
-//            XCTAssertNil(error, "Error")
-//        })
-//    }
-
     func testGetHistoricalDataMock() {
 
         let expectation = expectationWithDescription("promise")
 
-        let stock = Stock(ticker: "NOD.OL")
+        let store = Store()
+        let ticker = "NAS.OL"
 
-        HistoricalDataFetcherMock.getHistoricalDataMock(stock).onSuccess {
+        HistoricalDataFetcherMock().getHistoricalData(store, ticker: ticker).onSuccess {
             stockHistory in
             XCTAssertTrue(stockHistory.history.count > 0)
             XCTAssertTrue(stockHistory.history[5].price > 0)
@@ -55,10 +38,10 @@ class HistoricalDataFetcherTests: XCTestCase {
         stock.history = stockHistory
         cache.entrys.setObject(CacheEntry(stockHistory: stockHistory, date: NSDate()),forKey: stock.ticker)
 
-        let store = Store(dataFile: "store_test_v1.dat")
+        let store = Store()
         store.historicalDataCache = cache
 
-        HistoricalDataFetcher.getHistoricalData(store, ticker: stock.ticker).onSuccess {
+        HistoricalDataFetcher().getHistoricalData(store, ticker: stock.ticker).onSuccess {
             history in
             XCTAssertEqual(history.history.count, 3)
             expectation.fulfill()
@@ -85,10 +68,10 @@ class HistoricalDataFetcherTests: XCTestCase {
         stock.history = stockHistory
         cache.entrys.setObject(CacheEntry(stockHistory: stockHistory, date: NSDate(timeIntervalSinceNow: -3*3600*24)),forKey: stock.ticker)
 
-        let store = Store(dataFile: "store_test_v1.dat")
+        let store = Store()
         store.historicalDataCache = cache
 
-        HistoricalDataFetcher.getHistoricalData(store, ticker: stock.ticker)
+        HistoricalDataFetcher().getHistoricalData(store, ticker: stock.ticker)
         .onSuccess {
             data in
             XCTAssert(false)
@@ -112,7 +95,7 @@ class HistoricalDataFetcherTests: XCTestCase {
         var store = Store()
         store.stocks = ["NAS.OL":Stock(ticker: "NAS.OL"),"NOD.OL":Stock(ticker:"NOD.OL")]
 
-        HistoricalDataFetcher.updateStockData(store).onSuccess{
+        HistoricalDataFetcherMock().updateStockData(store).onSuccess{
             storez in
             XCTAssert(storez.stocks["NAS.OL"]!.history != nil)
             expectation.fulfill()

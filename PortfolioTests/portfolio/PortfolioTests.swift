@@ -108,7 +108,7 @@ class PortfolioTests: XCTestCase {
     func testValueAtDay(){
         let expectation = expectationWithDescription("promise")
 
-        HistoricalDataFetcherMock.getHistoricalDataMock(Stock(ticker: "NOD.OL")).onSuccess{
+        HistoricalDataFetcherMock().getHistoricalData(Store(), ticker: "NOD.OL").onSuccess{
             nodHistory in
             let store:Store = Store()
             store.stocks = ["NOD.OL":Stock(ticker: "NOD.OL", history: nodHistory)]

@@ -31,7 +31,7 @@ class StockView: UIViewController {
         chart.rightAxis.enabled = false
 
         let stock = Stock(ticker: "NAS.OL")
-        HistoricalDataFetcher.getHistoricalData(store, ticker: stock.ticker).onSuccess {
+        HistoricalDataFetcher().getHistoricalData(store, ticker: stock.ticker).onSuccess {
             stockHistory in
             let labels = stockHistory.history.map({spi in spi.date.shortPrintable()})
             let values:[Double] = stockHistory.history.map({spi in spi.price})
