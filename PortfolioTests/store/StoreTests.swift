@@ -8,9 +8,26 @@ import XCTest
 
 class StoreTests: XCTestCase {
 
+    class StoreMock : Store {
+        override internal func saveStore() {
+            if let fileUrl = self.storedFileName {
+                synced(self) {
+                    if let filePath = getFileURL(fileUrl) {
+                        print("Saving store...")
+                        NSKeyedArchiver.archiveRootObject(self, toFile: filePath.path!)
+                    }
+                }
+            } else {
+                print("Skipping saving store because no url!")
+            }
+        }
+
+    }
+
     func testStoreAndLoadCache() {
 
-        var store = Store(dataFile: "store_test.dat")
+        var store = StoreMock()
+        store.storedFileName = "test.dat"
 
         var cache = StockCache()
         let stock = Stock(ticker: "Test")
