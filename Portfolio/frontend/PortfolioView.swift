@@ -7,7 +7,6 @@ class PortfolioView : UIViewController{
 
     var chart: LineChartView!
     var weeks: [String]!
-//    var store:Store!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,10 +31,6 @@ class PortfolioView : UIViewController{
                 ComponentWrapper(view: chart, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(10).snapBottom().height(400))]
 
         SnapKitHelpers.setConstraints(comp)
-    }
-
-    func toTrades(sender:UIButton){
-
     }
 
     func updateChart(store:Store){
@@ -71,7 +66,6 @@ class PortfolioView : UIViewController{
         let dataset = LineChartDataSet(yVals: dataEntries, label: "Value")
         dataset.lineWidth = 2.0
         dataset.drawCircleHoleEnabled = false
-        dataset.drawCubicEnabled = true
         dataset.circleRadius = 0.0
         dataset.drawValuesEnabled = false
 
