@@ -9,7 +9,7 @@ import SnapKit
 
 class NewTrade: UIViewController, UITextFieldDelegate{
 
-    var store:Store!
+    let store:Store!
 
     var tickerLabel: UILabel!
     var dateLabel: UILabel!
@@ -26,6 +26,11 @@ class NewTrade: UIViewController, UITextFieldDelegate{
     var dismissButton: UIButton!
 
     var datePicker:UIDatePicker!
+
+    init(store:Store){
+        self.store = store
+        super.init(nibName: nil, bundle: nil)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,7 +56,6 @@ class NewTrade: UIViewController, UITextFieldDelegate{
 
         priceTextField = createTextField("")
         priceTextField.keyboardType = .DecimalPad
-//        priceTextField.delegate = self
 
         countTextField = createTextField("")
         countTextField.keyboardType = .DecimalPad
@@ -64,7 +68,6 @@ class NewTrade: UIViewController, UITextFieldDelegate{
 
         dismissButton = createButton("Dismiss")
         dismissButton.addTarget(self, action: "dismiss:", forControlEvents: .TouchUpInside)
-
 
         view.addSubview(tickerLabel)
         view.addSubview(dateLabel)
@@ -126,7 +129,6 @@ class NewTrade: UIViewController, UITextFieldDelegate{
 
     func moveKeyboardUp() {
         UIView.animateWithDuration(0.25, animations: {
-            //            self.view.frame = CGRectMake(0 , 0, self.view.frame.width, self.view.frame.height - 150)
             self.view.frame.origin.y += 150
         })
     }
@@ -138,20 +140,9 @@ class NewTrade: UIViewController, UITextFieldDelegate{
         })
     }
 
-    func textFieldDidBeginEditing(textField: UITextField) {
-//        if textField == commentTextField || textField == amountTextField {
-//            moveKeyboardDown()
-//        }
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
-
-    func textFieldDidEndEditing(textField: UITextField) {
-//        if textField == commentTextField || textField == amountTextField {
-//            moveKeyboardUp()
-//        }
-    }
-
-
-
 
 
 }

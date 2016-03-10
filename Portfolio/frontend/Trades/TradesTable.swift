@@ -1,7 +1,3 @@
-//
-// Created by Knut Nygaard on 07/03/16.
-// Copyright (c) 2016 Knut Nygaard. All rights reserved.
-//
 
 import Foundation
 import UIKit
@@ -10,8 +6,10 @@ class TradesTable : UITableViewController {
 
     var store:Store!
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    init(store:Store){
+        self.store = store
+        super.init(style: .Plain)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "reload:", name:"StoreChanged", object:nil)
     }
 
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
@@ -42,7 +40,6 @@ class TradesTable : UITableViewController {
         return yearsOfTrades()[section]
     }
 
-
     override func numberOfSectionsInTableView(tableView: UITableView?) -> Int {
         return yearsOfTrades().count
     }
@@ -63,6 +60,11 @@ class TradesTable : UITableViewController {
         return store.trades.filter{$0.date.onlyYear() == year}.sort({ $0.date.compare($1.date) == NSComparisonResult.OrderedAscending })
     }
 
+    public func reload(notification:NSNotification){
+        store = notification.object as! Store
+        tableView.reloadData()
+    }
+
     private func tradesGroupedByYear() -> [String:[Trade]]{
         var map:[String:[Trade]] = [:]
         for trade in store.trades {
@@ -79,5 +81,9 @@ class TradesTable : UITableViewController {
     private func tradeAtIndexPath(indexPath:NSIndexPath) -> Trade {
         return tradesGroupedByYear()[yearsOfTrades()[indexPath.section]]!
         .sort({$0.date.compare($1.date) == NSComparisonResult.OrderedDescending})[indexPath.item]
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
