@@ -12,6 +12,8 @@ class PortfolioView : UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "redraw:", name:"StoreChanged", object:nil)
+
         //get the reference to the shared model
         let tbvc = tabBarController as! MyTabBarController
         view.backgroundColor = UIColor.whiteColor()
@@ -78,6 +80,11 @@ class PortfolioView : UIViewController{
         chart.data = datas
         chart.setVisibleXRangeMaximum(31)
         chart.moveViewToX(CGFloat(data.count - 31))
+    }
+
+    func redraw(notification:NSNotification){
+        updateChart(notification.object as! Store)
+        print("received notification of store changed.. redraw!")
     }
 
     override func didReceiveMemoryWarning() {

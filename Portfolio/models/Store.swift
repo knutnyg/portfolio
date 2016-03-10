@@ -84,6 +84,7 @@ class Store: NSObject, NSKeyedUnarchiverDelegate {
                     print("Saving store...")
                     NSKeyedArchiver.archiveRootObject(self, toFile: filePath.path!)
                 }
+                NSNotificationCenter.defaultCenter().postNotification(NSNotification(name:"StoreChanged", object: self))
             }
         } else {
             print("Skipping saving store because no url!")
