@@ -5,7 +5,7 @@
 # scan --help
 
 # Remove the # in front of the line to enable the option
-
+slack_url "https://hooks.slack.com/services/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"
 scheme "Portfolio"
 
 # open_report true
