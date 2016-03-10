@@ -58,6 +58,7 @@ class HistoricalDataFetcher {
             for history in stockHistories {
                 let ticker = tickers[counter]
                 store.stocks[ticker] = Stock(ticker: ticker, history: history)
+                counter += 1
             }
             promise.success(store)
         }
