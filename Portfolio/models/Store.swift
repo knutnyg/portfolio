@@ -58,9 +58,13 @@ class Store: NSObject, NSKeyedUnarchiverDelegate {
 
     }
 
-    func removeTradeAtIndex(index:Int){
-        self.trades.removeAtIndex(index)
-        saveStore()
+    func removeTrade(trade:Trade){
+        if let idx = trades.indexOf(trade) {
+            trades.removeAtIndex(idx)
+            saveStore()
+        } else {
+            print("Could not remove trade at index...")
+        }
     }
 
     func addTrade(trade: Trade) {

@@ -18,7 +18,14 @@ extension UIColor {
 }
 
 extension NSDate {
-    
+
+    func onlyYear()-> String{
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy"
+
+        return dateFormatter.stringFromDate(self)
+    }
+
     func shortPrintable()-> String{
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "dd.MM"
