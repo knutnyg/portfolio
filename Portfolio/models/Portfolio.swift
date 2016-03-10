@@ -45,12 +45,6 @@ class Portfolio {
         return ret
     }
 
-//    static func allStocks(trades: [Trade]) -> [Stock] {
-//        return Array(Set(
-//        trades
-//        .map{$0.stock}))
-//    }
-
     static func valueAtDay(store:Store, date: NSDate) -> Double?{
         do {
             let assets:[Stock:Double] = try stocksAtDay(store, date: date)
@@ -58,7 +52,6 @@ class Portfolio {
             var value = 0.0
 
             for stockWorth in assets{
-
                 if let stockHistory = stockWorth.0.history {
                     if let v = stockHistory.stockValueAtDay(date) {
                         value += v * stockWorth.1
