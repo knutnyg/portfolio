@@ -52,7 +52,7 @@ class Portfolio {
             var value = 0.0
 
             for stockWorth in assets{
-                if let stockHistory = stockWorth.0.history {
+                if let stockHistory:StockHistory = stockWorth.0.history {
                     if let v = stockHistory.stockValueAtDay(date) {
                         value += v * stockWorth.1
                     } else {
@@ -66,7 +66,7 @@ class Portfolio {
         }
     }
 
-    static func tickersFromTrades(trades:[Trade]) -> [String]{
-        return Array(Set(trades.map{$0.ticker}))
+    static func stocksFromTrades(trades:[Trade]) -> [Stock]{
+        return Array(Set(trades.map{Stock(ticker: $0.ticker)}))
     }
 }

@@ -17,11 +17,6 @@ class PortfolioView : UIViewController{
         let tbvc = tabBarController as! MyTabBarController
         view.backgroundColor = UIColor.whiteColor()
 
-        HistoricalDataFetcher().updateStockData(tbvc.store).onSuccess{
-            store in
-            self.updateChart(store)
-        }
-
         chart = LineChartView()
         view.addSubview(chart)
         chart.rightAxis.enabled = false

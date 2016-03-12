@@ -29,7 +29,27 @@ class OsloBorsResouceTests : XCTestCase {
         })
     }
 
-    func testReturnsCachedValue(){
+    func testGetHistories(){
+        let expectation = expectationWithDescription("promise")
 
+        let store = Store()
+        OsloBorsResource().updateStockHistories(store, stocks: [Stock(ticker: "NAS.OSE")])
+        .onSuccess {
+            stocks in
+
+            print("testing")
+            XCTAssert(stocks[0].ticker == "NAS.OSE")
+            print("testing1")
+            XCTAssert(stocks[0].history != nil)
+            print("testing2")
+            XCTAssert(stocks[0].historyTimestamp != nil)
+            print("testing3")
+            expectation.fulfill()
+        }
+
+        waitForExpectationsWithTimeout(10, handler: {
+            error in
+            XCTAssertNil(error, "Error")
+        })
     }
 }

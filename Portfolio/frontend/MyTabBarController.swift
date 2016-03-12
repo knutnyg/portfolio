@@ -8,18 +8,7 @@ class MyTabBarController : UITabBarController {
 
     init(){
         super.init(nibName: nil, bundle: nil)
-        store = Store(dataFile: "store_v6.dat")
-
-        OsloBorsResource().allStockInformation(store).onSuccess{
-            info in
-            print("Got stockInfo!")
-            self.store.allStockInfo = info
-            self.store.allStockInfo.lastUpdated = NSDate()
-            self.store.saveStore()
-        }.onFailure{
-            error in
-            print("Failure from OsloStockResource")
-        }
+        store = Store(dataFile: "store_v9.dat")
     }
 
     required convenience init?(coder decoder: NSCoder) {

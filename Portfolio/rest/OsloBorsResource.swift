@@ -9,7 +9,7 @@ class OsloBorsResource {
 
     }
 
-    func allStockInformation(store:Store) -> Future<AllStockInfo, NSError> {
+    func allStockInformation(store: Store) -> Future<AllStockInfo, NSError> {
 
         if let info = store.allStockInfo {
             if info.lastUpdated.laterDate(NSDate(timeIntervalSinceNow: -3600 * 24)) == info.lastUpdated {
@@ -18,7 +18,7 @@ class OsloBorsResource {
             }
         }
 
-        let promise = Promise<AllStockInfo,NSError>()
+        let promise = Promise<AllStockInfo, NSError>()
 
         let URL = "http://www.oslobors.no/ob/servlets/components?" +
                   "type=table&generators%5B0%5D%5Bsource%5D=feed.ob.quotes.EQUITIES%2BPCC&generators%5B1%5D%5Bsource%5D=feed.merk.quotes.EQUITIES%2BPCC&" +
@@ -56,7 +56,7 @@ class OsloBorsResource {
                     return
                 }
 
-                if let obj:AllStockInfo = Unbox(response.data) {
+                if let obj: AllStockInfo = Unbox(response.data) {
                     promise.success(obj.withLastUpdated(NSDate()))
                 } else {
                     promise.failure(NSError(domain: "Parsing", code: 500, userInfo: nil))
@@ -66,14 +66,75 @@ class OsloBorsResource {
             print("Unexpected error in OsloBorsResource")
         }
 
-    return promise.future
+        return promise.future
     }
 
-    func allStockTickers() {
+    func updateStockHistories(store: Store, stocks: [Stock]) -> Future<[Stock], NSError> {
+        let promise = Promise<[Stock], NSError>()
 
+        try! stocks.map({
+            (stock: Stock) in getHistoryForStock(store, stock: stock)
+        }).sequence().onSuccess {
+            updatedStocks in
+            promise.success(updatedStocks)
+        }
+
+        return promise.future
     }
 
-    func updateStockHistories(stocks: [Stock]) -> [Stock] {
-        return []
+    private func getHistoryForStock(store: Store, stock: Stock) -> Future<Stock, NSError> {
+        let promise = Promise<Stock, NSError>()
+
+        let url = "http://www.oslobors.no/ob/servlets/components/graphdata/(CLOSE_CA)/day/\(stock.ticker)?points=500"
+
+        do {
+            if let stock: Stock = store.stocks[stock.ticker] {
+                if let timestamp = stock.historyTimestamp {
+                    if timestamp.laterDate(NSDate(timeIntervalSinceNow: -3600 * 24)) == timestamp {
+                        print("HistoricalDataFetcher: Returning cached datas")
+                        return Future(value: stock)
+                    }
+                }
+            }
+
+            let request = try HTTP.GET(url)
+
+            request.start {
+                response in
+                if let err = response.error {
+                    print("OSLOHistory: Response contains error: \(err)")
+                    promise.failure(err)
+                    return
+                }
+
+                var histories: [StockPriceInstance] = []
+
+                let json: AnyObject = try! NSJSONSerialization.JSONObjectWithData(response.data, options: [])
+                if let resp = json as? Dictionary<String, AnyObject> {
+                    if let rows = resp["rows"]![0] as? Dictionary<String, AnyObject> {
+                        if let values = rows["values"] as? Dictionary<String, AnyObject> {
+                            if let series = values["series"] as? Dictionary<String, AnyObject> {
+                                if let c1 = series["c1"] as? Dictionary<String, AnyObject> {
+                                    if let data = c1["data"] as? Array<Array<Double>> {
+                                        for d in data {
+                                            histories.append(StockPriceInstance(date: NSDate(timeIntervalSince1970: (d[0]/1000)), price: d[1]))
+                                        }
+                                        print("not using cache")
+                                        stock.history = StockHistory(history: histories)
+                                        stock.historyTimestamp = NSDate()
+                                        promise.success(stock)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    promise.failure(NSError(domain: "Parsing", code: 500, userInfo: nil))
+                }
+            }
+        } catch {
+            print("LoginHandler: got error in logInWithDefault")
+        }
+        return promise.future
     }
 }

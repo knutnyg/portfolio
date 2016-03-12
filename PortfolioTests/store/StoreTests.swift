@@ -39,7 +39,6 @@ class StoreTests: XCTestCase {
         }
     }
 
-
     func testStoreAndLoadCache() {
 
         let store = StoreMock()

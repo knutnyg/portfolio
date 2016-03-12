@@ -29,6 +29,7 @@ class Store: NSObject {
             self.stocks = [:]
             self.allStockInfo = AllStockInfo()
         }
+        refreshStoreStockData()
     }
 
     private func addAllStocks(tickers: [String]) {
@@ -66,11 +67,7 @@ class Store: NSObject {
 
     func addTrade(trade: Trade) {
         self.trades = (self.trades + [trade]).sort({ $0.date.compare($1.date) == NSComparisonResult.OrderedAscending })
-        HistoricalDataFetcher().getHistoricalData(self, ticker: trade.ticker).onSuccess {
-            history in
-            self.stocks[trade.ticker] = Stock(ticker: trade.ticker, history: history)
-            self.saveStore()
-        }
+        refreshStoreStockData()
     }
 
     func updateStockHistory(stock: Stock) {
@@ -80,6 +77,30 @@ class Store: NSObject {
             stocks[stock.ticker] = stock
         }
         saveStore()
+    }
+
+    func refreshStoreStockData(){
+        OsloBorsResource().allStockInformation(self).onSuccess{
+            info in
+            self.allStockInfo = info
+            self.allStockInfo.lastUpdated = NSDate()
+            self.saveStore()
+        }.onFailure{
+            error in
+            print("Failure from OsloStockResource")
+        }
+
+        OsloBorsResource().updateStockHistories(self, stocks: Portfolio.stocksFromTrades(trades)).onSuccess{
+            stocks in
+            for stock in stocks {
+                self.updateStockHistory(stock)
+            }
+            self.saveStore()
+        }
+
+        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name:"StoreChanged", object: self))
+
+        //Update current value
     }
 
     internal func saveStore() {
