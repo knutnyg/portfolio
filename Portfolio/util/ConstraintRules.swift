@@ -54,13 +54,8 @@ class ConstraintRules {
         return self
     }
 
-    func snapTop(snap: ConstraintItem?) -> ConstraintRules {
-        if let s = snap {
-            i_snapTop = s
-        } else {
-            i_snapTop = parentView.snp_top
-        }
-
+    func snapTop(snap: ConstraintItem) -> ConstraintRules {
+        i_snapTop = snap
         return self
     }
 
