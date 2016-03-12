@@ -10,7 +10,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
 
-        let store = Store(dataFile: "store_v3.dat")
+        let store = Store(dataFile: "store_v6.dat")
 
         let tabBarController = MyTabBarController()
         tabBarController.store = store

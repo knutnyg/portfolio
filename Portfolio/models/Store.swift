@@ -1,17 +1,17 @@
 import Foundation
 import BrightFutures
 
-class Store: NSObject, NSKeyedUnarchiverDelegate {
+class Store: NSObject {
     var stocks: [String:Stock] = [:]
     var trades: [Trade] = []
-    var historicalDataCache: StockCache!
     var storedFileName: String?
+    var allStockInfo: AllStockInfo!
 
-    override init(){
+    override init() {
         super.init()
         self.trades = []
         self.stocks = [:]
-        self.historicalDataCache = StockCache()
+        self.allStockInfo = AllStockInfo()
     }
 
     init(dataFile: String) {
@@ -22,16 +22,16 @@ class Store: NSObject, NSKeyedUnarchiverDelegate {
         if let store: Store = self.loadStore() {
             self.trades = store.trades
             self.stocks = store.stocks
-            self.historicalDataCache = store.historicalDataCache
+            self.allStockInfo = store.allStockInfo
         } else {
             print("Failed to load store!")
             self.trades = []
             self.stocks = [:]
-            self.historicalDataCache = StockCache()
+            self.allStockInfo = AllStockInfo()
         }
     }
 
-    private func addAllStocks(tickers:[String]) {
+    private func addAllStocks(tickers: [String]) {
         for ticker in tickers {
             stocks[ticker] = Stock(ticker: ticker)
         }
@@ -49,16 +49,13 @@ class Store: NSObject, NSKeyedUnarchiverDelegate {
                 } else {
                     return nil
                 }
-
             }
-        } else {
-            print("Not loading store because url not set")
+            return nil
         }
         return nil
-
     }
 
-    func removeTrade(trade:Trade){
+    func removeTrade(trade: Trade) {
         if let idx = trades.indexOf(trade) {
             trades.removeAtIndex(idx)
             saveStore()
@@ -68,16 +65,20 @@ class Store: NSObject, NSKeyedUnarchiverDelegate {
     }
 
     func addTrade(trade: Trade) {
-        self.trades = (self.trades + [trade]).sort({$0.date.compare($1.date) == NSComparisonResult.OrderedAscending })
-        HistoricalDataFetcher().getHistoricalData(self, ticker: trade.ticker).onSuccess{
+        self.trades = (self.trades + [trade]).sort({ $0.date.compare($1.date) == NSComparisonResult.OrderedAscending })
+        HistoricalDataFetcher().getHistoricalData(self, ticker: trade.ticker).onSuccess {
             history in
             self.stocks[trade.ticker] = Stock(ticker: trade.ticker, history: history)
             self.saveStore()
         }
     }
 
-    func updateStore(entry: CacheEntry, ticker: String) {
-        historicalDataCache.entrys.setObject(entry, forKey: ticker)
+    func updateStockHistory(stock: Stock) {
+        if let maybeStock: Stock = stocks[stock.ticker] {
+            stocks[maybeStock.ticker] = maybeStock.withHistory(stock.history!)
+        } else {
+            stocks[stock.ticker] = stock
+        }
         saveStore()
     }
 
@@ -93,28 +94,28 @@ class Store: NSObject, NSKeyedUnarchiverDelegate {
         } else {
             print("Skipping saving store because no url!")
         }
-
     }
 
     // -----   SERIALIZATION   ----- //
 
-    init(trades:[Trade], historicalDataCache: StockCache, stocks:[String:Stock]){
-        self.trades = trades
-        self.historicalDataCache = historicalDataCache
-        self.stocks = stocks
+    required convenience init?(coder decoder: NSCoder) {
+        print("in real decoder(3)")
+        self.init(
+        trades: decoder.decodeObjectForKey("trades") as! [Trade],
+        allStockInfo: decoder.decodeObjectForKey("allStockInfo") as! AllStockInfo,
+        stocks: decoder.decodeObjectForKey("stocks") as! [String:Stock]
+        )
     }
 
-    required convenience init?(coder decoder: NSCoder) {
-        self.init(
-            trades: decoder.decodeObjectForKey("trades") as! [Trade],
-            historicalDataCache: decoder.decodeObjectForKey("historicalDataCache") as! StockCache,
-            stocks: decoder.decodeObjectForKey("stocks") as! [String:Stock]
-        )
+    init(trades: [Trade], allStockInfo: AllStockInfo, stocks: [String:Stock]) {
+        self.trades = trades
+        self.allStockInfo = allStockInfo
+        self.stocks = stocks
     }
 
     func encodeWithCoder(coder: NSCoder) {
         coder.encodeObject(self.trades, forKey: "trades")
-        coder.encodeObject(self.historicalDataCache, forKey: "historicalDataCache")
+        coder.encodeObject(self.allStockInfo, forKey: "allStockInfo")
         coder.encodeObject(self.stocks, forKey: "stocks")
     }
 }

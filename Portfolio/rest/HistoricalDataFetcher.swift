@@ -12,10 +12,12 @@ class HistoricalDataFetcher {
         let url = "https://ichart.finance.yahoo.com/table.csv?s=\(ticker)&c=1962&ignore=.csv"
 
         do {
-            if let entry: CacheEntry = store.historicalDataCache.entrys.valueForKey(ticker) as? CacheEntry {
-                if entry.date.laterDate(NSDate(timeIntervalSinceNow: -3600 * 24)) == entry.date {
-                    print("HistoricalDataFetcher: Returning cached datas")
-                    return Future(value: entry.stockHistory)
+            if let stock:Stock = store.stocks[ticker] {
+                if let timestamp = stock.historyTimestamp {
+                    if timestamp.laterDate(NSDate(timeIntervalSinceNow: -3600 * 24)) == timestamp {
+                        print("HistoricalDataFetcher: Returning cached datas")
+                        return Future(value: stock.history!)
+                    }
                 }
             }
 
@@ -33,7 +35,7 @@ class HistoricalDataFetcher {
                 let csv = CSwiftV(String: resstr)
 
                 let stockHistory = StockHistory(history: self.t(csv.keyedRows!))
-                store.updateStore(CacheEntry(stockHistory: stockHistory, date: NSDate()), ticker: ticker)
+                store.updateStockHistory(Stock(ticker: ticker, history: stockHistory))
 
                 promise.success(stockHistory)
             }

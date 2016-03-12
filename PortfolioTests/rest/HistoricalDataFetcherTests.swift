@@ -26,7 +26,6 @@ class HistoricalDataFetcherTests: XCTestCase {
     func testGetCachedValueWhenCacheIsFresh() {
         let expectation = expectationWithDescription("promise")
 
-        var cache = StockCache()
         let stock = Stock(ticker: "notATickerValue")
         let stockHistory = (StockHistory(history:
         [
@@ -36,10 +35,10 @@ class HistoricalDataFetcherTests: XCTestCase {
         ]
         ))
         stock.history = stockHistory
-        cache.entrys.setObject(CacheEntry(stockHistory: stockHistory, date: NSDate()),forKey: stock.ticker)
+        stock.historyTimestamp = NSDate()
 
         let store = Store()
-        store.historicalDataCache = cache
+        store.stocks[stock.ticker] = stock
 
         HistoricalDataFetcher().getHistoricalData(store, ticker: stock.ticker).onSuccess {
             history in
@@ -56,7 +55,6 @@ class HistoricalDataFetcherTests: XCTestCase {
     func testGetNewValueWhenCacheIsOld() {
         let expectation = expectationWithDescription("promise")
 
-        var cache = StockCache()
         let stock = Stock(ticker: "notATickerValue")
         let stockHistory = (StockHistory(history:
         [
@@ -66,10 +64,10 @@ class HistoricalDataFetcherTests: XCTestCase {
         ]
         ))
         stock.history = stockHistory
-        cache.entrys.setObject(CacheEntry(stockHistory: stockHistory, date: NSDate(timeIntervalSinceNow: -3*3600*24)),forKey: stock.ticker)
+        stock.historyTimestamp = NSDate(timeIntervalSinceNow: -3*3600*24)
 
         let store = Store()
-        store.historicalDataCache = cache
+        store.stocks[stock.ticker] = stock
 
         HistoricalDataFetcher().getHistoricalData(store, ticker: stock.ticker)
         .onSuccess {

@@ -8,8 +8,26 @@ import XCTest
 
 class StoreTests: XCTestCase {
 
-    class StoreMock : Store {
-        override internal func saveStore() {
+    class StoreMock: Store {
+
+        override init(){
+            print("in mock init")
+            super.init()
+        }
+
+        required init?(coder decoder: NSCoder) {
+            print("in mock decoder(3)")
+            super.init(
+
+            trades: decoder.decodeObjectForKey("trades") as! [Trade],
+                    allStockInfo: decoder.decodeObjectForKey("allStockInfo") as! AllStockInfo,
+                    stocks: decoder.decodeObjectForKey("stocks") as! [String:Stock]
+            )
+        }
+
+
+        override func saveStore() {
+
             if let fileUrl = self.storedFileName {
                 synced(self) {
                     if let filePath = getFileURL(fileUrl) {
@@ -17,19 +35,19 @@ class StoreTests: XCTestCase {
                         NSKeyedArchiver.archiveRootObject(self, toFile: filePath.path!)
                     }
                 }
+//                NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "StoreChanged", object: self))
             } else {
                 print("Skipping saving store because no url!")
             }
         }
-
     }
+
 
     func testStoreAndLoadCache() {
 
-        var store = StoreMock()
-        store.storedFileName = "test.dat"
+        let store = StoreMock()
+        store.storedFileName = "test1.dat"
 
-        var cache = StockCache()
         let stock = Stock(ticker: "Test")
         let stockHistory = StockHistory(history:
         [
@@ -38,16 +56,20 @@ class StoreTests: XCTestCase {
                 StockPriceInstance(date: NSDate(timeInterval: 2 * 86400, sinceDate: NSDate()), price: 19.0)
         ]
         )
+        stock.history = stockHistory
+        stock.historyTimestamp = NSDate()
 
-        cache.entrys.setObject(CacheEntry(stockHistory: stockHistory, date: NSDate()), forKey: stock.ticker)
+        store.updateStockHistory(stock)
 
-        store.updateStore(CacheEntry(stockHistory: stockHistory, date: NSDate()), ticker: stock.ticker)
-        let s = store.loadStore()!
-
-        let entry = s.historicalDataCache.entrys.valueForKey(stock.ticker) as! CacheEntry
-
-        XCTAssertEqual(entry.stockHistory.history.count, 3)
+        if let s = store.loadStore() {
+            if let maybeStock = s.stocks[stock.ticker] {
+                XCTAssert(maybeStock.historyTimestamp != nil)
+                XCTAssertEqual(maybeStock.history!.history.count, 3)
+            } else {
+                XCTAssert(false)
+            }
+        } else {
+            XCTAssert(false)
+        }
     }
-
-
 }
