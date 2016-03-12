@@ -7,9 +7,10 @@ class AutocompleteView : UIViewController, UITableViewDataSource, UITableViewDel
 
     var searchBar:UISearchBar!
     var tableView:UITableView!
+    var delegate:AutocompleteViewDelegate!
 
     var searchActive:Bool!
-    var tickers:[String]!
+    var data:[AutocompleteDataItem]!
 
     var tableViewContraints:ComponentWrapper!
 
@@ -23,71 +24,52 @@ class AutocompleteView : UIViewController, UITableViewDataSource, UITableViewDel
         tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.hidden = true
 
         view.addSubview(searchBar)
         view.addSubview(tableView)
 
-        tableViewContraints = ComponentWrapper(view: tableView, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(0).snapTop(searchBar.snp_bottom))
-
         let components: [ComponentWrapper] =
         [
-                ComponentWrapper(view: searchBar, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(0).snapTop().marginTop(100)),
-                tableViewContraints
+                ComponentWrapper(view: searchBar, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(0).snapTop().height(35)),
+                ComponentWrapper(view: tableView, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(0).snapTop(searchBar.snp_bottom).snapBottom())
         ]
         SnapKitHelpers.setConstraints(components)
     }
 
-
-    func filteredTickers() -> [String]{
-        return tickers.filter{(ticker:String) in ticker.containsString(searchBar.text!)}
+    func filteredTickers() -> [AutocompleteDataItem]{
+        return data.filter{ (dataItem:AutocompleteDataItem) in dataItem.text.lowercaseString.containsString(searchBar.text!.lowercaseString)}
     }
 
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
         searchActive = true;
+        self.tableView.hidden = false
     }
 
     func searchBarTextDidEndEditing(searchBar: UISearchBar) {
         searchActive = false;
     }
 
-    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        searchActive = false;
-    }
-
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        searchActive = false;
-    }
-
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        if(filteredTickers().count == 0){
-            searchActive = false;
-        } else {
-            searchActive = true;
-            tableView.hidden = false
-            updateContraints()
-        }
+        delegate.updateAutocompleteConstraints(filteredTickers().count)
+        self.tableView.hidden = false
         self.tableView.reloadData()
     }
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
-    func updateContraints(){
-        tableViewContraints = ComponentWrapper(view: tableViewContraints.view, rules: tableViewContraints.rules.height(filteredTickers().count * 30))
-        SnapKitHelpers.updateConstraints([tableViewContraints])
-    }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if searchActive == true {
-
             return filteredTickers().count
         }
         return 0;
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        dismissViewControllerAnimated(false, completion: nil)
+        self.searchBar.text = filteredTickers()[indexPath.item].text
+        self.tableView.hidden = true
+        delegate.updateAutocompleteConstraints(0)
     }
 
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -96,13 +78,13 @@ class AutocompleteView : UIViewController, UITableViewDataSource, UITableViewDel
 
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
+        let cell:UITableViewCell = UITableViewCell(style: .Value1, reuseIdentifier: "Cell")
         if searchActive == true{
-            cell.textLabel?.text = filteredTickers()[indexPath.row]
+            cell.textLabel?.text = filteredTickers()[indexPath.row].text
+            cell.detailTextLabel?.text = filteredTickers()[indexPath.row].detail
         } else {
             cell.textLabel?.text = "default";
         }
-
         return cell;
     }
 }

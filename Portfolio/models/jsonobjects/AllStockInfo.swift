@@ -20,6 +20,20 @@ class AllStockInfo: NSObject, Unboxable {
         }
     }
 
+    func getTickersForAutocomplete() -> [AutocompleteDataItem] {
+        do {
+            return try rows
+            .map {
+                (row: Rows) in row.values
+            }
+            .map {
+                (info: StockInfo) in AutocompleteDataItem(text: info.ITEM_SECTOR, detail: info.LONG_NAME)
+            }
+        } catch {
+            return []
+        }
+    }
+
     override init(){
         super.init()
     }

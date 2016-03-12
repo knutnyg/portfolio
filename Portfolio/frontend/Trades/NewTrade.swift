@@ -7,7 +7,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-class NewTrade: UIViewController, UITextFieldDelegate{
+class NewTrade: UIViewController, UITextFieldDelegate, AutocompleteViewDelegate{
 
     let store:Store!
 
@@ -16,7 +16,7 @@ class NewTrade: UIViewController, UITextFieldDelegate{
     var priceLabel: UILabel!
     var countLabel: UILabel!
 
-    var tickerTextField: UITextField!
+    var autocompleteView: AutocompleteView!
     var dateTextField: UITextField!
     var priceTextField: UITextField!
     var countTextField: UITextField!
@@ -42,7 +42,9 @@ class NewTrade: UIViewController, UITextFieldDelegate{
         priceLabel = createLabel("Price:")
         countLabel = createLabel("Count:")
 
-        tickerTextField = createTextField("")
+        autocompleteView = AutocompleteView()
+        autocompleteView.data = store.allStockInfo.getTickersForAutocomplete()
+        autocompleteView.delegate = self
 
         datePicker = UIDatePicker()
         datePicker.date = NSDate()
@@ -69,11 +71,13 @@ class NewTrade: UIViewController, UITextFieldDelegate{
         dismissButton = createButton("Dismiss")
         dismissButton.addTarget(self, action: "dismiss:", forControlEvents: .TouchUpInside)
 
+        addChildViewController(autocompleteView)
+
         view.addSubview(tickerLabel)
         view.addSubview(dateLabel)
         view.addSubview(priceLabel)
         view.addSubview(countLabel)
-        view.addSubview(tickerTextField)
+        view.addSubview(autocompleteView.view)
         view.addSubview(dateTextField)
         view.addSubview(priceTextField)
         view.addSubview(countTextField)
@@ -83,12 +87,12 @@ class NewTrade: UIViewController, UITextFieldDelegate{
 
         let components: [ComponentWrapper] =
         [
-                ComponentWrapper(view: tickerLabel, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(8).snapBottom(tickerTextField.snp_top).marginBottom(3)),
+                ComponentWrapper(view: tickerLabel, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(8).snapBottom(autocompleteView.view.snp_top).marginBottom(3)),
                 ComponentWrapper(view: dateLabel, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(8).snapBottom(dateTextField.snp_top).marginBottom(3)),
                 ComponentWrapper(view: priceLabel, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(8).snapBottom(priceTextField.snp_top).marginBottom(3)),
                 ComponentWrapper(view: countLabel, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(8).snapBottom(countTextField.snp_top).marginBottom(3)),
-                ComponentWrapper(view: tickerTextField, rules: ConstraintRules(parentView: view).snapTop().marginTop(100).horizontalFullWithMargin(8)),
-                ComponentWrapper(view: dateTextField, rules: ConstraintRules(parentView: view).snapTop(tickerTextField.snp_bottom).marginTop(40).horizontalFullWithMargin(8)),
+                ComponentWrapper(view: autocompleteView.view, rules: ConstraintRules(parentView: view).snapTop().marginTop(100).horizontalFullWithMargin(8).height(35)),
+                ComponentWrapper(view: dateTextField, rules: ConstraintRules(parentView: view).snapTop(autocompleteView.view.snp_bottom).marginTop(40).horizontalFullWithMargin(8)),
                 ComponentWrapper(view: priceTextField, rules: ConstraintRules(parentView: view).snapTop(dateTextField.snp_bottom).marginTop(40).horizontalFullWithMargin(8)),
                 ComponentWrapper(view: countTextField, rules: ConstraintRules(parentView: view).snapTop(priceTextField.snp_bottom).marginTop(40).horizontalFullWithMargin(8)),
                 ComponentWrapper(view: actionSegmentedControl, rules: ConstraintRules(parentView: view).centerX().snapTop(countTextField.snp_bottom).marginTop(30)),
@@ -99,12 +103,19 @@ class NewTrade: UIViewController, UITextFieldDelegate{
         SnapKitHelpers.setConstraints(components)
     }
 
+    func updateAutocompleteConstraints(rows:Int){
+        let tableHeight = min(rows, 6)
+        SnapKitHelpers.updateConstraints([
+                ComponentWrapper(view: autocompleteView.view, rules: ConstraintRules(parentView: view).snapTop().marginTop(100).horizontalFullWithMargin(8).height(35 + 30*tableHeight))
+        ])
+    }
+
     func saveTrade(sender:UIButton){
         let action = actionSegmentedControl.selectedSegmentIndex == 0 ? Action.BUY : Action.SELL
         store.addTrade(
             Trade(  date: datePicker.date,
                     price: Double(priceTextField.text!)!,
-                    ticker: tickerTextField.text!,
+                    ticker: autocompleteView.searchBar.text!,
                     count: Double(countTextField.text!)!,
                     action: action))
         self.dismissViewControllerAnimated(false, completion: nil)
@@ -143,6 +154,4 @@ class NewTrade: UIViewController, UITextFieldDelegate{
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-
 }
