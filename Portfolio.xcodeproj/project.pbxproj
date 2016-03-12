@@ -49,6 +49,7 @@
 		324F4972C6546A0BA384F2F9 /* HistoricalDataFetcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4E688E79A49B2EB6E4DD /* HistoricalDataFetcherTests.swift */; };
 		324F498316AA3B57855CF81F /* HistoricalDataFetcherMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F471B08718717E2DDD169 /* HistoricalDataFetcherMock.swift */; };
 		324F49B12B5D57A1E591FDEA /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F43401E9B18470233BD3E /* Action.swift */; };
+		324F49D2B1142B00A69A2228 /* AutocompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4574890AC6E8F75B6987 /* AutocompleteView.swift */; };
 		324F49DA286C6DD21E2972D9 /* StockHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4715E502A84BEA39780C /* StockHistory.swift */; };
 		324F4A617F2B20E8B83F93F8 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4B29B99A33CE392659A7 /* Extensions.swift */; };
 		324F4A8BBB0BDD0853D25DBA /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F43401E9B18470233BD3E /* Action.swift */; };
@@ -60,6 +61,7 @@
 		324F4BAA5D4CEE82117D4402 /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F436202DDD844B2DE6237 /* StringUtils.swift */; };
 		324F4C0DE7BA290CF092646B /* OsloBorsResourceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F40F0BFB9144F0B1F6D33 /* OsloBorsResourceMock.swift */; };
 		324F4C1FACEBB3EBCB32643A /* AutocompleteServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4DD80C3BF8CAFA4A7977 /* AutocompleteServiceTests.swift */; };
+		324F4C26945E65A49A109F0C /* AutocompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4574890AC6E8F75B6987 /* AutocompleteView.swift */; };
 		324F4C982F00930BE8AE8E71 /* AllStockInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4286C1C65DDA50CC888F /* AllStockInfo.swift */; };
 		324F4CB3542233079153DD3A /* FAHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4B4BAC996EBC1C14D6B4 /* FAHelpers.swift */; };
 		324F4CCA54D5AED18F74D0F3 /* PortfolioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4543E037F86F23822FF2 /* PortfolioView.swift */; };
@@ -115,6 +117,7 @@
 		324F44552945E81E5746DAA0 /* Stock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stock.swift; sourceTree = "<group>"; };
 		324F44B0695D580D520E0414 /* MyTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTabBarController.swift; sourceTree = "<group>"; };
 		324F4543E037F86F23822FF2 /* PortfolioView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortfolioView.swift; sourceTree = "<group>"; };
+		324F4574890AC6E8F75B6987 /* AutocompleteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutocompleteView.swift; sourceTree = "<group>"; };
 		324F457F7978E0DE7E537B72 /* Trade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trade.swift; sourceTree = "<group>"; };
 		324F46FFE4D8F71BCE6372ED /* DateValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateValue.swift; sourceTree = "<group>"; };
 		324F4715E502A84BEA39780C /* StockHistory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockHistory.swift; sourceTree = "<group>"; };
@@ -277,6 +280,7 @@
 				324F4543E037F86F23822FF2 /* PortfolioView.swift */,
 				324F438BEAB1A9AE1BC6F7E9 /* Trades */,
 				324F44B0695D580D520E0414 /* MyTabBarController.swift */,
+				324F4574890AC6E8F75B6987 /* AutocompleteView.swift */,
 			);
 			path = frontend;
 			sourceTree = "<group>";
@@ -595,6 +599,7 @@
 				324F481153F8163ED706A74F /* StockPriceInstance.swift in Sources */,
 				324F4F1D24C09F02AA546E13 /* DateValue.swift in Sources */,
 				324F4B86FBCEE154BE6BF1BB /* AutocompleteService.swift in Sources */,
+				324F4C26945E65A49A109F0C /* AutocompleteView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -639,6 +644,7 @@
 				324F40C3A3BFCA0651010D84 /* AutocompleteService.swift in Sources */,
 				324F4C1FACEBB3EBCB32643A /* AutocompleteServiceTests.swift in Sources */,
 				324F4772D08AB91AFDBFB22C /* AllStockInfoTests.swift in Sources */,
+				324F49D2B1142B00A69A2228 /* AutocompleteView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
