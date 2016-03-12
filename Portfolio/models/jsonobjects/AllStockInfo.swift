@@ -6,6 +6,20 @@ class AllStockInfo: NSObject, Unboxable {
     var rows: [Rows]!
     var lastUpdated: NSDate!
 
+    func getAllTickers() -> [String]{
+        do {
+            return try rows
+            .map {
+                (row: Rows) in row.values
+            }
+            .map {
+                (info: StockInfo) in info.ITEM_SECTOR
+            }
+        } catch {
+            return []
+        }
+    }
+
     override init(){
         super.init()
     }
