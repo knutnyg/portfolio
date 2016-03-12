@@ -1,20 +1,20 @@
 import Foundation
 import Unbox
 
-class StockInfo: Unboxable {
-    var BID: Int!
+class StockInfo: NSObject, Unboxable {
+    var BID: Int?
     var TIME: Double!
-    var GICS_CODE_LEVEL_1: Int!
-    var MIC: String!
+    var GICS_CODE_LEVEL_1: Int?
+    var MIC: String?
     var VOLUME_TOTAL: Double?
     var ITEM: String!
     var LASTNZ_DIV: Double!
     var CHANGE_PCT_SLACK: Double?
     var HAS_LIQUIDITY_PROVIDER: Int!
-    var PERIOD: String!
+    var PERIOD: String?
     var TURNOVER_TOTAL: Double?
     var ITEM_SECTOR: String!
-    var ASK: Double!
+    var ASK: Double?
     var INSTRUMENT_TYPE: String!
     var TRADE_TIME: Double?
     var LONG_NAME: String!
@@ -23,17 +23,19 @@ class StockInfo: Unboxable {
     var TRADES_COUNT_TOTAL: Double?
     var MARKET_CAP: Double!
 
-    init(BID: Int, TIME: Double, GICS_CODE_LEVEL_1: Int,
-         MIC: String,
+    init(BID: Int?,
+         TIME: Double,
+         GICS_CODE_LEVEL_1: Int?,
+         MIC: String?,
          VOLUME_TOTAL: Double?,
          ITEM: String,
          LASTNZ_DIV: Double,
          CHANGE_PCT_SLACK: Double?,
          HAS_LIQUIDITY_PROVIDER: Int,
-         PERIOD: String,
+         PERIOD: String?,
          TURNOVER_TOTAL: Double?,
          ITEM_SECTOR: String,
-         ASK: Double,
+         ASK: Double?,
          INSTRUMENT_TYPE: String,
          TRADE_TIME: Double?,
          LONG_NAME: String,
@@ -88,19 +90,19 @@ class StockInfo: Unboxable {
 
     required convenience init?(coder decoder: NSCoder) {
         self.init(
-        BID: decoder.decodeObjectForKey("BID") as! Int,
+        BID: decoder.decodeObjectForKey("BID") as? Int,
                 TIME: decoder.decodeObjectForKey("TIME") as! Double,
-                GICS_CODE_LEVEL_1: decoder.decodeObjectForKey("GICS_CODE_LEVEL_1") as! Int,
-                MIC: decoder.decodeObjectForKey("MIC") as! String,
+                GICS_CODE_LEVEL_1: decoder.decodeObjectForKey("GICS_CODE_LEVEL_1") as? Int,
+                MIC: decoder.decodeObjectForKey("MIC") as? String,
                 VOLUME_TOTAL: decoder.decodeObjectForKey("VOLUME_TOTAL") as? Double,
                 ITEM: decoder.decodeObjectForKey("ITEM") as! String,
                 LASTNZ_DIV: decoder.decodeObjectForKey("LASTNZ_DIV") as! Double,
                 CHANGE_PCT_SLACK: decoder.decodeObjectForKey("CHANGE_PCT_SLACK") as? Double,
                 HAS_LIQUIDITY_PROVIDER: decoder.decodeObjectForKey("HAS_LIQUIDITY_PROVIDER") as! Int,
-                PERIOD: decoder.decodeObjectForKey("PERIOD") as! String,
+                PERIOD: decoder.decodeObjectForKey("PERIOD") as? String,
                 TURNOVER_TOTAL: decoder.decodeObjectForKey("TURNOVER_TOTAL") as? Double,
                 ITEM_SECTOR: decoder.decodeObjectForKey("ITEM_SECTOR") as! String,
-                ASK: decoder.decodeObjectForKey("ASK") as! Double,
+                ASK: decoder.decodeObjectForKey("ASK") as? Double,
                 INSTRUMENT_TYPE: decoder.decodeObjectForKey("INSTRUMENT_TYPE") as! String,
                 TRADE_TIME: decoder.decodeObjectForKey("TRADE_TIME") as? Double,
                 LONG_NAME: decoder.decodeObjectForKey("LONG_NAME") as! String,

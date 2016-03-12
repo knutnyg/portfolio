@@ -14,6 +14,8 @@ class MyTabBarController : UITabBarController {
             info in
             print("Got stockInfo!")
             self.store.allStockInfo = info
+            self.store.allStockInfo.lastUpdated = NSDate()
+            self.store.saveStore()
         }.onFailure{
             error in
             print("Failure from OsloStockResource")
