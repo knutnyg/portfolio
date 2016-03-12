@@ -16,14 +16,12 @@ class StockHistory : NSObject {
         return dateValCache[date.mediumPrintable()]
     }
 
-    // MARK: NSCoding
-
     required convenience init?(coder decoder: NSCoder) {
         guard
         let history = decoder.decodeObjectForKey("history") as? [StockPriceInstance]
         else { return nil }
 
-        self.init(
+         self.init(
             history: history
         )
     }

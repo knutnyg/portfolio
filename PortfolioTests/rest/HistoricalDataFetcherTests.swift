@@ -103,8 +103,5 @@ class HistoricalDataFetcherTests: XCTestCase {
             error in
             XCTAssertNil(error, "Error")
         })
-
-
-
     }
 }

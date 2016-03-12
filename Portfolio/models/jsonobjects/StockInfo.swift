@@ -23,9 +23,7 @@ class StockInfo: Unboxable {
     var TRADES_COUNT_TOTAL: Double?
     var MARKET_CAP: Double!
 
-
-    init(BID: Int, TIME: Double,
-         GICS_CODE_LEVEL_1: Int,
+    init(BID: Int, TIME: Double, GICS_CODE_LEVEL_1: Int,
          MIC: String,
          VOLUME_TOTAL: Double?,
          ITEM: String,
@@ -64,7 +62,6 @@ class StockInfo: Unboxable {
         self.TRADES_COUNT_TOTAL = TRADES_COUNT_TOTAL
         self.MARKET_CAP = MARKET_CAP
     }
-
 
     required init(unboxer: Unboxer) {
         self.BID = unboxer.unbox("BID")
