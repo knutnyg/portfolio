@@ -30,7 +30,6 @@ class HistoricalDataFetcher {
                     promise.failure(err)
                     return
                 }
-                print(response.description)
                 let resstr: String = NSString(data: response.data, encoding: NSUTF8StringEncoding)! as String
                 let csv = CSwiftV(String: resstr)
 

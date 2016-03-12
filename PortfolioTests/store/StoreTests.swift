@@ -11,12 +11,10 @@ class StoreTests: XCTestCase {
     class StoreMock: Store {
 
         override init(){
-            print("in mock init")
             super.init()
         }
 
         required init?(coder decoder: NSCoder) {
-            print("in mock decoder(3)")
             super.init(
 
             trades: decoder.decodeObjectForKey("trades") as! [Trade],
@@ -35,7 +33,6 @@ class StoreTests: XCTestCase {
                         NSKeyedArchiver.archiveRootObject(self, toFile: filePath.path!)
                     }
                 }
-//                NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "StoreChanged", object: self))
             } else {
                 print("Skipping saving store because no url!")
             }

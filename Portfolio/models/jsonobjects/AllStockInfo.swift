@@ -36,6 +36,7 @@ class AllStockInfo: NSObject, Unboxable {
 
     override init(){
         super.init()
+        lastUpdated = NSDate(timeIntervalSince1970: 0)
     }
 
     required init(unboxer: Unboxer) {
