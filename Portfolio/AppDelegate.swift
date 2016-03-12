@@ -10,10 +10,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
 
-        let store = Store(dataFile: "store_v6.dat")
-
         let tabBarController = MyTabBarController()
-        tabBarController.store = store
 
         let portfolio = PortfolioView()
         portfolio.tabBarItem = UITabBarItem(title: "Portfolio", image: nil, tag: 0)
