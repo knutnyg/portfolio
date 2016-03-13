@@ -85,7 +85,6 @@
 		324F4F09031949DCF9A29DB9 /* StockInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F404DD447D5AA2C752318 /* StockInfo.swift */; };
 		324F4F1D24C09F02AA546E13 /* DateValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F46FFE4D8F71BCE6372ED /* DateValue.swift */; };
 		324F4F2BA3A242B7691DB04B /* PortfolioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4B6F1780ED2A6C8E7DD0 /* PortfolioTests.swift */; };
-		324F4F9D1A26FCEC0191A5A4 /* TradesTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4B6335B577DA20F91A20 /* TradesTable.swift */; };
 		324F4F9FE3FE2EAAD619A30C /* PortfolioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4543E037F86F23822FF2 /* PortfolioView.swift */; };
 		324F4FA79B104D2535546B7D /* StockPriceInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4D0B6EF25623F6671F23 /* StockPriceInstance.swift */; };
 		324F4FB7A4B39BA6FAD10D61 /* OsloBorsResourceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F40F0BFB9144F0B1F6D33 /* OsloBorsResourceMock.swift */; };
@@ -143,7 +142,6 @@
 		324F4B2C8F36E27EC9C08723 /* LocaleUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocaleUtils.swift; sourceTree = "<group>"; };
 		324F4B4BAC996EBC1C14D6B4 /* FAHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAHelpers.swift; sourceTree = "<group>"; };
 		324F4B5686A7B3AF4F88E0E7 /* AutocompleteViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutocompleteViewDelegate.swift; sourceTree = "<group>"; };
-		324F4B6335B577DA20F91A20 /* TradesTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradesTable.swift; sourceTree = "<group>"; };
 		324F4B6F1780ED2A6C8E7DD0 /* PortfolioTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortfolioTests.swift; sourceTree = "<group>"; };
 		324F4C0AA42CA7BF71162F97 /* Rows.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rows.swift; sourceTree = "<group>"; };
 		324F4C3C1006401B9F76C214 /* ComponentWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentWrapper.swift; sourceTree = "<group>"; };
@@ -225,7 +223,6 @@
 			isa = PBXGroup;
 			children = (
 				324F41257CFE52E9421CFEAA /* TradesView.swift */,
-				324F4B6335B577DA20F91A20 /* TradesTable.swift */,
 				324F4F147B8C0AF94883D620 /* NewTrade.swift */,
 			);
 			path = Trades;
@@ -619,7 +616,6 @@
 				324F4E5E97433981E4420CAD /* StockView.swift in Sources */,
 				324F4F9FE3FE2EAAD619A30C /* PortfolioView.swift in Sources */,
 				324F46C49A6E0A114D934200 /* TradesView.swift in Sources */,
-				324F4F9D1A26FCEC0191A5A4 /* TradesTable.swift in Sources */,
 				324F45DF75726A3F616377AE /* NewTrade.swift in Sources */,
 				324F44CE19B6CEC02C734B1B /* MyTabBarController.swift in Sources */,
 				324F462345CC95836F27A646 /* OsloBorsResource.swift in Sources */,
