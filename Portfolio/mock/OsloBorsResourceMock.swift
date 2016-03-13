@@ -8,10 +8,23 @@ class OsloBorsResourceMock : OsloBorsResource {
         return Future(value: AllStockInfo())
     }
 
-    override func getCurrentValueForStock(store: Store, stock: Stock) -> Future<Stock, NSError> {
+    override func updateIntradayHistoryForStock(stock: Stock) -> Future<Stock, NSError> {
         let s:Stock = Stock(ticker: stock.ticker)
-        s.currentValueTimestamp = NSDate()
-        s.currentValue = Double(arc4random_uniform(300))
+
+        let instances = [
+                StockPriceInstance(date: NSDate(), price: Double(arc4random_uniform(300) + 1)),
+                StockPriceInstance(date: NSDate(timeInterval: -60 * 1, sinceDate: NSDate()), price: Double(arc4random_uniform(300) + 1)),
+                StockPriceInstance(date: NSDate(timeInterval: -60 * 2, sinceDate: NSDate()), price: Double(arc4random_uniform(300) + 1)),
+                StockPriceInstance(date: NSDate(timeInterval: -60 * 3, sinceDate: NSDate()), price: Double(arc4random_uniform(300) + 1)),
+                StockPriceInstance(date: NSDate(timeInterval: -60 * 4, sinceDate: NSDate()), price: Double(arc4random_uniform(300) + 1)),
+                StockPriceInstance(date: NSDate(timeInterval: -60 * 5, sinceDate: NSDate()), price: Double(arc4random_uniform(300) + 1)),
+                StockPriceInstance(date: NSDate(timeInterval: -60 * 6, sinceDate: NSDate()), price: Double(arc4random_uniform(300) + 1)),
+                StockPriceInstance(date: NSDate(timeInterval: -60 * 7, sinceDate: NSDate()), price: Double(arc4random_uniform(300) + 1)),
+                StockPriceInstance(date: NSDate(timeInterval: -60 * 8, sinceDate: NSDate()), price: Double(arc4random_uniform(300) + 1)),
+                StockPriceInstance(date: NSDate(timeInterval: -60 * 9, sinceDate: NSDate()), price: Double(arc4random_uniform(300) + 1)),
+                StockPriceInstance(date: NSDate(timeInterval: -60 * 10, sinceDate: NSDate()), price: Double(arc4random_uniform(300) + 1))
+        ]
+        s.intraDayHistory = StockIntradayHistory(history: instances)
 
         return Future(value: s)
     }

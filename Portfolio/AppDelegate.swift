@@ -18,7 +18,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let trades = TradesView()
         trades.tabBarItem = UITabBarItem(title: "Trades", image: nil, tag: 1)
 
-        let controllers = [portfolio, trades]
+        let watch = WatchView()
+        watch.tabBarItem = UITabBarItem(title: "Watch", image: nil, tag: 2)
+
+        let controllers = [portfolio, trades, watch]
         tabBarController.viewControllers = controllers
 
         window!.rootViewController = tabBarController

@@ -1,4 +1,3 @@
-
 import Foundation
 import XCTest
 
@@ -39,7 +38,7 @@ class PortfolioTests: XCTestCase {
         let stock = Stock(ticker: "NOD.OL")
 
         do {
-            var assets:[Stock:Double] = try Portfolio.stocksAtDay(store, date: NSDate(dateString: "2015-06-15"))
+            var assets: [Stock:Double] = try Portfolio.stocksAtDay(store, date: NSDate(dateString: "2015-06-15"))
             XCTAssertEqual(assets.count, 1)
             XCTAssertEqual(assets[stock], 60)
 
@@ -105,44 +104,42 @@ class PortfolioTests: XCTestCase {
         }
     }
 
-    func testValueAtDay(){
-        let expectation = expectationWithDescription("promise")
+    func testValueAtDay() {
 
-        HistoricalDataFetcherMock().getHistoricalData(Store(), ticker: "NOD.OL").onSuccess{
-            nodHistory in
-            let store:Store = Store()
-            store.stocks = ["NOD.OL":Stock(ticker: "NOD.OL", history: nodHistory)]
-            store.trades = [
-                    Trade(date: NSDate(dateString: "2016-02-22"),
-                            price: 49.30,
-                            ticker: "NOD.OL",
-                            count: 60,
-                            action: Action.BUY
-                    ),
-                    Trade(date: NSDate(dateString: "2016-02-25"),
-                            price: 43.30,
-                            ticker: "NOD.OL",
-                            count: 40,
-                            action: Action.BUY
-                    )]
+        let store: Store = Store()
+        let history = StockHistory(history: [
+                StockPriceInstance(date: NSDate(dateString: "2016-02-23"), price: 43.70),
+                StockPriceInstance(date: NSDate(dateString: "2016-02-24"), price: 41.22),
+                StockPriceInstance(date: NSDate(dateString: "2016-02-26"), price: 43.02),
+        ])
 
-            var value = Portfolio.valueAtDay(store, date: NSDate(dateString: "2016-02-20"))
-            XCTAssertEqual(value, 0)
+        store.stocks = ["NOD.OL": Stock(ticker: "NOD.OL", history: history)]
+        store.trades = [
+                Trade(date: NSDate(dateString: "2016-02-22"),
+                        price: 49.30,
+                        ticker: "NOD.OL",
+                        count: 60,
+                        action: Action.BUY
+                ),
+                Trade(date: NSDate(dateString: "2016-02-25"),
+                        price: 43.30,
+                        ticker: "NOD.OL",
+                        count: 40,
+                        action: Action.BUY
+                )]
 
-            value = Portfolio.valueAtDay(store, date: NSDate(dateString: "2016-02-23"))
-            XCTAssertEqual(value, 2622)
+        var value = Portfolio.valueAtDay(store, date: NSDate(dateString: "2016-02-20"))
+        XCTAssertEqual(value, 0)
 
-            value = Portfolio.valueAtDay(store, date: NSDate(dateString: "2016-02-24"))
-            XCTAssertEqual(value, 2473.2)
+        value = Portfolio.valueAtDay(store, date: NSDate(dateString: "2016-02-23"))
+        XCTAssertEqual(value, 2622)
 
-            value = Portfolio.valueAtDay(store, date: NSDate(dateString: "2016-02-26"))
-            XCTAssertEqual(value, 4302)
-            expectation.fulfill()
+        value = Portfolio.valueAtDay(store, date: NSDate(dateString: "2016-02-24"))
+        XCTAssertEqual(value, 2473.2)
 
-        }
+        value = Portfolio.valueAtDay(store, date: NSDate(dateString: "2016-02-26"))
+        XCTAssertEqual(value, 4302)
 
-        waitForExpectationsWithTimeout(5, handler: {error in
-            XCTAssertNil(error, "Error")
-        })
     }
+
 }

@@ -78,16 +78,14 @@ class OsloBorsResouceTests : XCTestCase {
         let expectation = expectationWithDescription("promise")
 
         let store = Store()
-        OsloBorsResourceMock().updateStocksCurrentValue(store, stocks: [Stock(ticker: "NAS.OSE"), Stock(ticker: "NOD.OSE")])
+        OsloBorsResourceMock().updateIntradayHistoryForStocks([Stock(ticker: "NAS.OSE"), Stock(ticker: "NOD.OSE")])
         .onSuccess {
             (stocks:[Stock]) in
             XCTAssert(stocks[0].ticker == "NAS.OSE")
-            XCTAssert(stocks[0].currentValue > 0 && stocks[0].currentValue < 301)
-            XCTAssert(stocks[0].currentValueTimestamp!.isInSameDayAs(date: NSDate()))
+            XCTAssertEqual(stocks[0].intraDayHistory!.history.count, 11)
 
             XCTAssert(stocks[1].ticker == "NOD.OSE")
-            XCTAssert(stocks[1].currentValue > 0 && stocks[0].currentValue < 301)
-            XCTAssert(stocks[1].currentValueTimestamp!.isInSameDayAs(date: NSDate()))
+            XCTAssertEqual(stocks[1].intraDayHistory!.history.count, 11)
             expectation.fulfill()
         }
 

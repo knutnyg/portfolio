@@ -66,11 +66,11 @@ class OsloBorsResource {
         return promise.future
     }
 
-    func updateStocksCurrentValue(store: Store, stocks: [Stock]) -> Future<[Stock], NSError> {
+    func updateIntradayHistoryForStocks(stocks: [Stock]) -> Future<[Stock], NSError> {
         let promise = Promise<[Stock], NSError>()
 
         try! stocks.map({
-            (stock: Stock) in getCurrentValueForStock(store, stock: stock)
+            (stock: Stock) in updateIntradayHistoryForStock(stock)
         }).sequence().onSuccess {
             updatedStocks in
             promise.success(updatedStocks)
@@ -79,7 +79,7 @@ class OsloBorsResource {
         return promise.future
     }
 
-    func getCurrentValueForStock(store: Store, stock: Stock) -> Future<Stock, NSError> {
+    func updateIntradayHistoryForStock(stock: Stock) -> Future<Stock, NSError> {
         let promise = Promise<Stock, NSError>()
 
         let url = "http://www.oslobors.no/ob/servlets/components/graphdata/s1/tick/\(stock.ticker)?points=500"
@@ -99,10 +99,10 @@ class OsloBorsResource {
 
                 let json: AnyObject = try! NSJSONSerialization.JSONObjectWithData(response.data, options: [])
                 if let data = JSON.findNodeInJSON("data", node: json) as? Array<Array<Double>> {
-                    if let pair = data.last {
-                        stock.currentValue = pair[1]
-                        stock.currentValueTimestamp = NSDate(timeIntervalSince1970: (pair[0] / 1000))
+                    for datePricePair in data {
+                        histories.append(StockPriceInstance(date: NSDate(timeIntervalSince1970: (datePricePair[0] / 1000)), price: datePricePair[1]))
                     }
+                    stock.intraDayHistory = StockIntradayHistory(history: histories)
                     promise.success(stock)
                 } else {
                     promise.failure(NSError(domain: "Parsing", code: 500, userInfo: nil))
@@ -153,6 +153,7 @@ class OsloBorsResource {
                 }
 
                 var histories: [StockPriceInstance] = []
+
 
                 let json: AnyObject = try! NSJSONSerialization.JSONObjectWithData(response.data, options: [])
                 if let data = JSON.findNodeInJSON("data", node: json) as? Array<Array<Double>> {

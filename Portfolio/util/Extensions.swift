@@ -38,6 +38,20 @@ extension NSDate {
         
         return dateFormatter.stringFromDate(self)
     }
+
+    func timeOfDayPrintable() -> String {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "HH:mm:ss"
+
+        return dateFormatter.stringFromDate(self)
+    }
+
+    func timeOfDayShortPrintable() -> String {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "HH:mm"
+
+        return dateFormatter.stringFromDate(self)
+    }
     
     func utcFormat() -> String {
         let dateFormatter = NSDateFormatter()

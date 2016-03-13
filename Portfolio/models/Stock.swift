@@ -5,8 +5,8 @@ import Foundation
 class Stock : NSObject{
 
     var ticker:String!
-    var currentValue:Double?
-    var currentValueTimestamp:NSDate?
+    var intraDayHistory:StockIntradayHistory?
+    var recentHistory:StockHistory?
     var history:StockHistory?
     var historyTimestamp:NSDate?
 
@@ -19,10 +19,9 @@ class Stock : NSObject{
         self.history = history
     }
 
-    init(ticker:String, currentValue:Double?, currentValueTimestamp: NSDate?, history:StockHistory?, historyTimestamp:NSDate?){
+    init(ticker:String, intraDayHistory:StockIntradayHistory?, history:StockHistory?, historyTimestamp:NSDate?){
         self.ticker = ticker
-        self.currentValue = currentValue
-        self.currentValueTimestamp = currentValueTimestamp
+        self.intraDayHistory = intraDayHistory
         self.history = history
         self.historyTimestamp = historyTimestamp
     }
@@ -41,9 +40,8 @@ class Stock : NSObject{
         return self
     }
 
-    func withCurrentValue(stock:Stock) -> Stock {
-        self.currentValue = stock.currentValue
-        self.currentValueTimestamp = stock.currentValueTimestamp
+    func withIntradayHistory(stock:Stock) -> Stock {
+        self.intraDayHistory = stock.intraDayHistory
         return self
     }
 
@@ -51,8 +49,7 @@ class Stock : NSObject{
 
     func encodeWithCoder(coder: NSCoder) {
         coder.encodeObject(self.ticker, forKey: "ticker")
-        coder.encodeObject(self.currentValue, forKey: "currentValue")
-        coder.encodeObject(self.currentValueTimestamp, forKey: "currentValueTimestamp")
+        coder.encodeObject(self.intraDayHistory, forKey: "intraDayHistory")
         coder.encodeObject(self.history, forKey: "history")
         coder.encodeObject(self.historyTimestamp, forKey: "historyTimestamp")
     }
@@ -60,8 +57,7 @@ class Stock : NSObject{
     required convenience init?(coder decoder: NSCoder) {
         self.init(
         ticker: decoder.decodeObjectForKey("ticker") as! String,
-                currentValue: decoder.decodeObjectForKey("currentValue") as? Double,
-                currentValueTimestamp: decoder.decodeObjectForKey("currentValueTimestamp") as? NSDate,
+                intraDayHistory: decoder.decodeObjectForKey("intraDayHistory") as? StockIntradayHistory,
                 history: decoder.decodeObjectForKey("history") as? StockHistory,
                 historyTimestamp: decoder.decodeObjectForKey("historyTimestamp") as? NSDate
         )

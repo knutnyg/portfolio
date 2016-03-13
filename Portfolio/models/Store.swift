@@ -78,9 +78,9 @@ class Store: NSObject {
         }
     }
 
-    func updateStockCurrentValue(stock:Stock){
+    func updateStockIntradayHistory(stock: Stock) {
         if let maybeStock: Stock = stocks[stock.ticker] {
-            stocks[maybeStock.ticker] = maybeStock.withCurrentValue(stock)
+            stocks[maybeStock.ticker] = maybeStock.withIntradayHistory(stock)
         } else {
             stocks[stock.ticker] = stock
         }
@@ -105,11 +105,11 @@ class Store: NSObject {
             self.saveStore()
         }
 
-        OsloBorsResource().updateStocksCurrentValue(self, stocks: Portfolio.stocksFromTrades(trades))
+        OsloBorsResource().updateIntradayHistoryForStocks(Portfolio.stocksFromTrades(trades))
         .onSuccess{
             stocks in
             for stock in stocks {
-                self.updateStockCurrentValue(stock)
+                self.updateStockIntradayHistory(stock)
             }
             self.saveStore()
         }

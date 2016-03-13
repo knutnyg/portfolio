@@ -1,6 +1,6 @@
 import Foundation
 
-class StockHistory : NSObject {
+class StockIntradayHistory : NSObject {
 
     var history: [StockPriceInstance]!
     var dateValCache: [String:Double] = [:]
@@ -8,12 +8,12 @@ class StockHistory : NSObject {
     init(history: [StockPriceInstance]) {
         self.history = history
         for h in history {
-            dateValCache[h.date.mediumPrintable()] = h.price
+            dateValCache[h.date.timeOfDayPrintable()] = h.price
         }
     }
 
     func stockValueAtDay(date: NSDate) -> Double? {
-        return dateValCache[date.mediumPrintable()]
+        return dateValCache[date.timeOfDayPrintable()]
     }
 
     required convenience init?(coder decoder: NSCoder) {
@@ -32,6 +32,10 @@ class StockHistory : NSObject {
 
     func earliestDate() -> NSDate{
         return history.sort({(i:StockPriceInstance, i1:StockPriceInstance) in i.date.compare(i1.date) == NSComparisonResult.OrderedDescending}).first!.date
+    }
+
+    func currentValue() -> Double {
+        return history.sort({(i:StockPriceInstance, i1:StockPriceInstance) in i.date.compare(i1.date) == NSComparisonResult.OrderedDescending}).last!.price
     }
 }
 
