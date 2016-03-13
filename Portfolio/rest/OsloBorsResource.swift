@@ -110,24 +110,14 @@ class OsloBorsResource {
                 var histories: [StockPriceInstance] = []
 
                 let json: AnyObject = try! NSJSONSerialization.JSONObjectWithData(response.data, options: [])
-                if let resp = json as? Dictionary<String, AnyObject> {
-                    if let rows = resp["rows"]![0] as? Dictionary<String, AnyObject> {
-                        if let values = rows["values"] as? Dictionary<String, AnyObject> {
-                            if let series = values["series"] as? Dictionary<String, AnyObject> {
-                                if let c1 = series["c1"] as? Dictionary<String, AnyObject> {
-                                    if let data = c1["data"] as? Array<Array<Double>> {
-                                        for d in data {
-                                            histories.append(StockPriceInstance(date: NSDate(timeIntervalSince1970: (d[0]/1000)), price: d[1]))
-                                        }
-                                        print("not using cache")
-                                        stock.history = StockHistory(history: histories)
-                                        stock.historyTimestamp = NSDate()
-                                        promise.success(stock)
-                                    }
-                                }
-                            }
-                        }
+                if let data = JSON.findNodeInJSON("data", node: json) as? Array<Array<Double>> {
+                    for datePricePair in data {
+                        histories.append(StockPriceInstance(date: NSDate(timeIntervalSince1970: (datePricePair[0]/1000)), price: datePricePair[1]))
                     }
+                    print("not using cache")
+                    stock.history = StockHistory(history: histories)
+                    stock.historyTimestamp = NSDate()
+                    promise.success(stock)
                 } else {
                     promise.failure(NSError(domain: "Parsing", code: 500, userInfo: nil))
                 }
