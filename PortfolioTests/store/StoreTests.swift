@@ -55,7 +55,7 @@ class StoreTests: XCTestCase {
         stock.history = stockHistory
         stock.historyTimestamp = NSDate()
 
-        store.updateStockHitory(stock)
+        store.updateStockHistory(stock)
 
         if let s = store.loadStore() {
             if let maybeStock = s.stocks[stock.ticker] {
