@@ -59,6 +59,13 @@ extension NSDate {
         }
     }
 
+    struct Calendar {
+        static let gregorian = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
+    }
+    func isInSameDayAs(date date: NSDate) -> Bool {
+        return Calendar.gregorian.isDate(self, inSameDayAsDate: date)
+    }
+
     convenience
     init(dateString:String) {
         let dateStringFormatter = NSDateFormatter()
