@@ -79,7 +79,7 @@ class Store: NSObject {
     }
 
     func updateStockIntradayHistory(stock: Stock) {
-        if let maybeStock: Stock = stocks[stock.ticker] {
+        if let maybeStocks: Stock = stocks[stock.ticker] {
             stocks[maybeStock.ticker] = maybeStock.withIntradayHistory(stock)
         } else {
             stocks[stock.ticker] = stock

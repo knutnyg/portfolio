@@ -55,16 +55,18 @@ class StoreTests: XCTestCase {
         stock.history = stockHistory
         stock.historyTimestamp = NSDate()
 
-        store.updateStockHistory(stock)
+        store.updateStockHitory(stock)
 
         if let s = store.loadStore() {
             if let maybeStock = s.stocks[stock.ticker] {
                 XCTAssert(maybeStock.historyTimestamp != nil)
                 XCTAssertEqual(maybeStock.history!.history.count, 3)
             } else {
+                print("no stock found")
                 XCTAssert(false)
             }
         } else {
+            print("no store found")
             XCTAssert(false)
         }
     }
