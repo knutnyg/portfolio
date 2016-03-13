@@ -42,7 +42,7 @@ class StoreTests: XCTestCase {
     func testStoreAndLoadCache() {
 
         let store = StoreMock()
-        store.storedFileName = "test1.dat"
+        store.storedFileName = "test-\(NSDate().mediumPrintable()).dat"
 
         let stock = Stock(ticker: "Test")
         let stockHistory = StockHistory(history:
@@ -56,6 +56,7 @@ class StoreTests: XCTestCase {
         stock.historyTimestamp = NSDate()
 
         store.updateStockHistory(stock)
+        store.saveStore()
 
         if let s = store.loadStore() {
             if let maybeStock = s.stocks[stock.ticker] {
