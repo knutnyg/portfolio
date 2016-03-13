@@ -1,7 +1,6 @@
 
 import Foundation
 import UIKit
-import JSONJoy
 
 extension UIColor {
     convenience init(red: Int, green: Int, blue: Int) {

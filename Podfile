@@ -2,13 +2,7 @@ pod 'BrightFutures', '3.3.0'
 link_with 'Portfolio', 'PortfolioTests'
 use_frameworks!
 
-pod 'SwiftyJSON', '2.3.2'
-link_with 'Portfolio', 'PortfolioTests'
-
 pod 'SwiftHTTP', '1.0.4'
-link_with 'Portfolio', 'PortfolioTests'
-
-pod 'JSONJoy-Swift', '2.0.0'
 link_with 'Portfolio', 'PortfolioTests'
 
 pod 'SnapKit', '0.19.1'
@@ -17,7 +11,8 @@ link_with 'Portfolio', 'PortfolioTests'
 pod 'Charts', '2.2.3'
 link_with 'Portfolio', 'PortfolioTests'
 
-pod 'CSwiftV', '0.0.3'
+
+pod 'Unbox', '1.3.1'
 link_with 'Portfolio', 'PortfolioTests'
 
 post_install do |installer|
