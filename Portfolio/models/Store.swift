@@ -76,7 +76,14 @@ class Store: NSObject {
         } else {
             stocks[stock.ticker] = stock
         }
-        saveStore()
+    }
+
+    func updateStockCurrentValue(stock:Stock){
+        if let maybeStock: Stock = stocks[stock.ticker] {
+            stocks[maybeStock.ticker] = maybeStock.withCurrentValue(stock)
+        } else {
+            stocks[stock.ticker] = stock
+        }
     }
 
     func refreshStoreStockData(){
@@ -98,9 +105,14 @@ class Store: NSObject {
             self.saveStore()
         }
 
-        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name:"StoreChanged", object: self))
-
-        //Update current value
+        OsloBorsResource().updateStocksCurrentValue(self, stocks: Portfolio.stocksFromTrades(trades))
+        .onSuccess{
+            stocks in
+            for stock in stocks {
+                self.updateStockCurrentValue(stock)
+            }
+            self.saveStore()
+        }
     }
 
     internal func saveStore() {

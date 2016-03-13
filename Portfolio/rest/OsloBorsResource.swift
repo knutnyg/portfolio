@@ -5,9 +5,6 @@ import SwiftHTTP
 
 class OsloBorsResource {
 
-    func currentValueOfStock() {
-
-    }
 
     func allStockInformation(store: Store) -> Future<AllStockInfo, NSError> {
 
@@ -69,6 +66,54 @@ class OsloBorsResource {
         return promise.future
     }
 
+    func updateStocksCurrentValue(store: Store, stocks: [Stock]) -> Future<[Stock], NSError> {
+        let promise = Promise<[Stock], NSError>()
+
+        try! stocks.map({
+            (stock: Stock) in getCurrentValueForStock(store, stock: stock)
+        }).sequence().onSuccess {
+            updatedStocks in
+            promise.success(updatedStocks)
+        }
+
+        return promise.future
+    }
+
+    func getCurrentValueForStock(store: Store, stock: Stock) -> Future<Stock, NSError> {
+        let promise = Promise<Stock, NSError>()
+
+        let url = "http://www.oslobors.no/ob/servlets/components/graphdata/s1/tick/\(stock.ticker)?points=500"
+
+        do {
+            let request = try HTTP.GET(url)
+            print("not using cache")
+            request.start {
+                response in
+                if let err = response.error {
+                    print("OSLOHistory: Response contains error: \(err)")
+                    promise.failure(err)
+                    return
+                }
+
+                var histories: [StockPriceInstance] = []
+
+                let json: AnyObject = try! NSJSONSerialization.JSONObjectWithData(response.data, options: [])
+                if let data = JSON.findNodeInJSON("data", node: json) as? Array<Array<Double>> {
+                    if let pair = data.last {
+                        stock.currentValue = pair[1]
+                        stock.currentValueTimestamp = NSDate(timeIntervalSince1970: (pair[0] / 1000))
+                    }
+                    promise.success(stock)
+                } else {
+                    promise.failure(NSError(domain: "Parsing", code: 500, userInfo: nil))
+                }
+            }
+        } catch {
+            print("OsloBorsResource: got error")
+        }
+        return promise.future
+    }
+
     func updateStockHistories(store: Store, stocks: [Stock]) -> Future<[Stock], NSError> {
         let promise = Promise<[Stock], NSError>()
 
@@ -82,7 +127,7 @@ class OsloBorsResource {
         return promise.future
     }
 
-    private func getHistoryForStock(store: Store, stock: Stock) -> Future<Stock, NSError> {
+    func getHistoryForStock(store: Store, stock: Stock) -> Future<Stock, NSError> {
         let promise = Promise<Stock, NSError>()
 
         let url = "http://www.oslobors.no/ob/servlets/components/graphdata/(CLOSE_CA)/day/\(stock.ticker)?points=500"
@@ -112,7 +157,7 @@ class OsloBorsResource {
                 let json: AnyObject = try! NSJSONSerialization.JSONObjectWithData(response.data, options: [])
                 if let data = JSON.findNodeInJSON("data", node: json) as? Array<Array<Double>> {
                     for datePricePair in data {
-                        histories.append(StockPriceInstance(date: NSDate(timeIntervalSince1970: (datePricePair[0]/1000)), price: datePricePair[1]))
+                        histories.append(StockPriceInstance(date: NSDate(timeIntervalSince1970: (datePricePair[0] / 1000)), price: datePricePair[1]))
                     }
                     print("not using cache")
                     stock.history = StockHistory(history: histories)

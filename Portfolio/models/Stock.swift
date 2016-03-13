@@ -41,6 +41,12 @@ class Stock : NSObject{
         return self
     }
 
+    func withCurrentValue(stock:Stock) -> Stock {
+        self.currentValue = stock.currentValue
+        self.currentValueTimestamp = stock.currentValueTimestamp
+        return self
+    }
+
     ////     Serialization     ////
 
     func encodeWithCoder(coder: NSCoder) {
