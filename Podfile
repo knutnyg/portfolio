@@ -20,9 +20,6 @@ link_with 'Portfolio', 'PortfolioTests'
 pod 'CSwiftV', '0.0.3'
 link_with 'Portfolio', 'PortfolioTests'
 
-pod 'Unbox', '1.3.1'
-link_with 'Portfolio', 'PortfolioTests'
-
 post_install do |installer|
   plist_buddy = "/usr/libexec/PlistBuddy"
 

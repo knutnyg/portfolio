@@ -1,18 +1,18 @@
-
 import Foundation
 import UIKit
 import SnapKit
 
-class AutocompleteView : UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate{
+class AutocompleteView: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
 
-    var searchBar:UISearchBar!
-    var tableView:UITableView!
-    var delegate:AutocompleteViewDelegate!
+    var searchBar: UISearchBar!
+    var tableView: UITableView!
+    var delegate: AutocompleteViewDelegate!
 
-    var searchActive:Bool!
-    var data:[AutocompleteDataItem]!
+    var searchActive: Bool!
+    var data: [AutocompleteDataItem]!
+    var visibleData: [AutocompleteDataItem]!
 
-    var tableViewContraints:ComponentWrapper!
+    var tableViewContraints: ComponentWrapper!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +28,9 @@ class AutocompleteView : UIViewController, UITableViewDataSource, UITableViewDel
         view.addSubview(searchBar)
         view.addSubview(tableView)
 
+        visibleData = limit(filter(data), count: 6)
+
+
         let components: [ComponentWrapper] =
         [
                 ComponentWrapper(view: searchBar, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(0).snapTop().height(35)),
@@ -36,8 +39,22 @@ class AutocompleteView : UIViewController, UITableViewDataSource, UITableViewDel
         SnapKitHelpers.setConstraints(components)
     }
 
-    func filteredTickers() -> [AutocompleteDataItem]{
-        return data.filter{ (dataItem:AutocompleteDataItem) in dataItem.text.lowercaseString.containsString(searchBar.text!.lowercaseString)}
+    func filter(data:[AutocompleteDataItem]) -> [AutocompleteDataItem] {
+        return data
+        .filter {
+            (dataItem: AutocompleteDataItem) in "\(dataItem.text.lowercaseString) \(dataItem.detail.lowercaseString)".containsString(searchBar.text!.lowercaseString)
+        }
+    }
+
+    func limit(input:[AutocompleteDataItem], count:Int) -> [AutocompleteDataItem] {
+        var limited:[AutocompleteDataItem] = []
+
+        for var i = 0; i < input.count; i++ {
+            if i < count {
+                limited.append(input[i])
+            }
+        }
+        return limited
     }
 
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
@@ -50,7 +67,8 @@ class AutocompleteView : UIViewController, UITableViewDataSource, UITableViewDel
     }
 
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        delegate.updateAutocompleteConstraints(filteredTickers().count)
+        visibleData = limit(filter(data), count: 6)
+        delegate.updateAutocompleteConstraints(visibleData.count)
         self.tableView.hidden = false
         self.tableView.reloadData()
     }
@@ -61,13 +79,13 @@ class AutocompleteView : UIViewController, UITableViewDataSource, UITableViewDel
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if searchActive == true {
-            return filteredTickers().count
+            return visibleData.count
         }
         return 0;
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        self.searchBar.text = filteredTickers()[indexPath.item].text
+        self.searchBar.text = visibleData[indexPath.item].text
         self.tableView.hidden = true
         delegate.updateAutocompleteConstraints(0)
     }
@@ -78,10 +96,10 @@ class AutocompleteView : UIViewController, UITableViewDataSource, UITableViewDel
 
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell:UITableViewCell = UITableViewCell(style: .Value1, reuseIdentifier: "Cell")
-        if searchActive == true{
-            cell.textLabel?.text = filteredTickers()[indexPath.row].text
-            cell.detailTextLabel?.text = filteredTickers()[indexPath.row].detail
+        let cell: UITableViewCell = UITableViewCell(style: .Value1, reuseIdentifier: "Cell")
+        if searchActive == true {
+            cell.textLabel?.text = visibleData[indexPath.row].text
+            cell.detailTextLabel?.text = visibleData[indexPath.row].detail
         } else {
             cell.textLabel?.text = "default";
         }
