@@ -6,6 +6,7 @@ import BrightFutures
 
 class StockView: UIViewController {
 
+    var titleLabel: UILabel!
     var lastLabel: UILabel!
     var lastValue: UILabel!
     var buyLabel: UILabel!
@@ -39,6 +40,7 @@ class StockView: UIViewController {
 
         view.backgroundColor = UIColor.whiteColor()
 
+        titleLabel = createLabel(stock.ticker)
         lastLabel = createLabel("Siste")
         buyLabel = createLabel("Kjøper")
         sellLabel = createLabel("Selger")
@@ -54,7 +56,8 @@ class StockView: UIViewController {
         highValue = createLabel("214")
         lowValue = createLabel("204")
 
-        newsButton = createButton("nyheter")
+        newsButton = createButton("nyheter (dismiss)")
+        newsButton.addTarget(self, action: "dismiss:", forControlEvents: .TouchUpInside)
         timeresolutionSelector = UISegmentedControl(items: ["i dag", "1 mnd", "6 mnd", "1 år", "alt"])
         timeresolutionSelector.addTarget(self, action: "selectorChanged:", forControlEvents: UIControlEvents.ValueChanged)
         timeresolutionSelector.selectedSegmentIndex = 0
@@ -64,6 +67,7 @@ class StockView: UIViewController {
         chart.noDataText = "You must give me the datas!"
 
         view.addSubview(lastLabel)
+        view.addSubview(titleLabel)
         view.addSubview(lastValue)
         view.addSubview(buyLabel)
         view.addSubview(buyValue)
@@ -82,7 +86,8 @@ class StockView: UIViewController {
         view.addSubview(chart)
 
         let comp: [ComponentWrapper] = [
-                ComponentWrapper(view: lastLabel, rules: ConstraintRules(parentView: view).snapTop().marginTop(60).snapLeft().marginLeft(8).width(100)),
+                ComponentWrapper(view: titleLabel, rules: ConstraintRules(parentView: view).snapTop().marginTop(20).centerX()),
+                ComponentWrapper(view: lastLabel, rules: ConstraintRules(parentView: view).snapTop(titleLabel.snp_bottom).marginTop(10).snapLeft().marginLeft(8).width(100)),
                 ComponentWrapper(view: buyLabel, rules: ConstraintRules(parentView: view).snapTop(lastLabel.snp_bottom).marginTop(8).snapLeft().marginLeft(8).width(100)),
                 ComponentWrapper(view: sellLabel, rules: ConstraintRules(parentView: view).snapTop(buyLabel.snp_bottom).marginTop(8).snapLeft().marginLeft(8).width(100)),
                 ComponentWrapper(view: incLabel, rules: ConstraintRules(parentView: view).snapTop(sellLabel.snp_bottom).marginTop(8).snapLeft().marginLeft(8).width(100)),
@@ -112,6 +117,10 @@ class StockView: UIViewController {
             .withHistory(stocks[1].history!)
             self.updateChart(.DAY)
         }
+    }
+
+    func dismiss(sender:UIButton){
+        dismissViewControllerAnimated(false, completion: nil)
     }
 
     func selectorChanged(sender: UISegmentedControl){

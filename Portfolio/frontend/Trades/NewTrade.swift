@@ -110,6 +110,10 @@ class NewTrade: UIViewController, UITextFieldDelegate, AutocompleteViewDelegate{
         ])
     }
 
+    func userSelectedItem(item:String){
+        //NOOP
+    }
+
     func saveTrade(sender:UIButton){
         let action = actionSegmentedControl.selectedSegmentIndex == 0 ? Action.BUY : Action.SELL
         store.addTrade(

@@ -6,12 +6,14 @@ class Store: NSObject {
     var trades: [Trade] = []
     var storedFileName: String?
     var allStockInfo: AllStockInfo!
+    var watchedTickers: [String]!
 
     override init() {
         super.init()
         self.trades = []
         self.stocks = [:]
         self.allStockInfo = AllStockInfo()
+        self.watchedTickers = []
     }
 
     init(dataFile: String) {
@@ -23,11 +25,13 @@ class Store: NSObject {
             self.trades = store.trades
             self.stocks = store.stocks
             self.allStockInfo = store.allStockInfo
+            self.watchedTickers = store.watchedTickers
         } else {
             print("Failed to load store!")
             self.trades = []
             self.stocks = [:]
             self.allStockInfo = AllStockInfo()
+            self.watchedTickers = []
         }
         refreshStoreStockData()
     }
@@ -65,9 +69,24 @@ class Store: NSObject {
         }
     }
 
+    func removeWatch(ticker:String){
+        if let idx = watchedTickers.indexOf(ticker) {
+            watchedTickers.removeAtIndex(idx)
+            saveStore()
+        }
+    }
+
     func addTrade(trade: Trade) {
         self.trades = (self.trades + [trade]).sort({ $0.date.compare($1.date) == NSComparisonResult.OrderedAscending })
         refreshStoreStockData()
+    }
+
+    func addWatch(ticker: String) {
+        if !watchedTickers.contains(ticker) {
+            watchedTickers.append(ticker)
+            refreshStoreStockData()
+        }
+
     }
 
     func updateStockHistory(stock: Stock) {
@@ -105,7 +124,10 @@ class Store: NSObject {
             self.saveStore()
         }
 
-        OsloBorsResource().updateIntradayHistoryForStocks(Portfolio.stocksFromTrades(trades))
+        let one = Portfolio.stocksFromTrades(trades)
+        let two:[Stock] = watchedTickers.map({Stock(ticker: $0)})
+
+        OsloBorsResource().updateIntradayHistoryForStocks(Array(Set(one + two)))
         .onSuccess{
             stocks in
             for stock in stocks {
@@ -136,19 +158,22 @@ class Store: NSObject {
         self.init(
         trades: decoder.decodeObjectForKey("trades") as! [Trade],
         allStockInfo: decoder.decodeObjectForKey("allStockInfo") as! AllStockInfo,
-        stocks: decoder.decodeObjectForKey("stocks") as! [String:Stock]
+        stocks: decoder.decodeObjectForKey("stocks") as! [String:Stock],
+        watchedTickers: decoder.decodeObjectForKey("watchedTickers") as! [String]
         )
     }
 
-    init(trades: [Trade], allStockInfo: AllStockInfo, stocks: [String:Stock]) {
+    init(trades: [Trade], allStockInfo: AllStockInfo, stocks: [String:Stock], watchedTickers: [String]) {
         self.trades = trades
         self.allStockInfo = allStockInfo
         self.stocks = stocks
+        self.watchedTickers = watchedTickers
     }
 
     func encodeWithCoder(coder: NSCoder) {
         coder.encodeObject(self.trades, forKey: "trades")
         coder.encodeObject(self.allStockInfo, forKey: "allStockInfo")
         coder.encodeObject(self.stocks, forKey: "stocks")
+        coder.encodeObject(self.watchedTickers, forKey: "watchedTickers")
     }
 }

@@ -87,6 +87,7 @@ class AutocompleteView: UIViewController, UITableViewDataSource, UITableViewDele
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         self.searchBar.text = visibleData[indexPath.item].text
         self.tableView.hidden = true
+        delegate.userSelectedItem(visibleData[indexPath.item].text)
         delegate.updateAutocompleteConstraints(0)
     }
 

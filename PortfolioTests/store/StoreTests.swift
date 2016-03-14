@@ -19,7 +19,8 @@ class StoreTests: XCTestCase {
 
             trades: decoder.decodeObjectForKey("trades") as! [Trade],
                     allStockInfo: decoder.decodeObjectForKey("allStockInfo") as! AllStockInfo,
-                    stocks: decoder.decodeObjectForKey("stocks") as! [String:Stock]
+                    stocks: decoder.decodeObjectForKey("stocks") as! [String:Stock],
+            watchedTickers: decoder.decodeObjectForKey("watchedTickers") as! [String]
             )
         }
 
