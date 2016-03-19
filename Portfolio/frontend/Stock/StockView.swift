@@ -45,7 +45,7 @@ class StockView: UIViewController {
         buyLabel = createLabel("Kjøper")
         sellLabel = createLabel("Selger")
         incLabel = createLabel("Avk. i dag")
-        turnoverLabel = createLabel("Omsatt")
+        turnoverLabel = createLabel("Omsatt (MNOK)")
         highLabel = createLabel("Høy")
         lowLabel = createLabel("Lav")
         sellValue = createLabel("207")
@@ -87,13 +87,13 @@ class StockView: UIViewController {
 
         let comp: [ComponentWrapper] = [
                 ComponentWrapper(view: titleLabel, rules: ConstraintRules(parentView: view).snapTop().marginTop(20).centerX()),
-                ComponentWrapper(view: lastLabel, rules: ConstraintRules(parentView: view).snapTop(titleLabel.snp_bottom).marginTop(10).snapLeft().marginLeft(8).width(100)),
-                ComponentWrapper(view: buyLabel, rules: ConstraintRules(parentView: view).snapTop(lastLabel.snp_bottom).marginTop(8).snapLeft().marginLeft(8).width(100)),
-                ComponentWrapper(view: sellLabel, rules: ConstraintRules(parentView: view).snapTop(buyLabel.snp_bottom).marginTop(8).snapLeft().marginLeft(8).width(100)),
-                ComponentWrapper(view: incLabel, rules: ConstraintRules(parentView: view).snapTop(sellLabel.snp_bottom).marginTop(8).snapLeft().marginLeft(8).width(100)),
-                ComponentWrapper(view: turnoverLabel, rules: ConstraintRules(parentView: view).snapTop(incLabel.snp_bottom).marginTop(8).snapLeft().marginLeft(8).width(100)),
-                ComponentWrapper(view: lowLabel, rules: ConstraintRules(parentView: view).snapTop(turnoverLabel.snp_bottom).marginTop(8).snapLeft().marginLeft(8).width(100)),
-                ComponentWrapper(view: highLabel, rules: ConstraintRules(parentView: view).snapTop(lowLabel.snp_bottom).marginTop(8).snapLeft().marginLeft(8).width(100)),
+                ComponentWrapper(view: lastLabel, rules: ConstraintRules(parentView: view).snapTop(titleLabel.snp_bottom).marginTop(10).snapLeft().marginLeft(8).width(150)),
+                ComponentWrapper(view: buyLabel, rules: ConstraintRules(parentView: view).snapTop(lastLabel.snp_bottom).marginTop(8).snapLeft().marginLeft(8).width(150)),
+                ComponentWrapper(view: sellLabel, rules: ConstraintRules(parentView: view).snapTop(buyLabel.snp_bottom).marginTop(8).snapLeft().marginLeft(8).width(150)),
+                ComponentWrapper(view: incLabel, rules: ConstraintRules(parentView: view).snapTop(sellLabel.snp_bottom).marginTop(8).snapLeft().marginLeft(8).width(150)),
+                ComponentWrapper(view: turnoverLabel, rules: ConstraintRules(parentView: view).snapTop(incLabel.snp_bottom).marginTop(8).snapLeft().marginLeft(8).width(150)),
+                ComponentWrapper(view: lowLabel, rules: ConstraintRules(parentView: view).snapTop(turnoverLabel.snp_bottom).marginTop(8).snapLeft().marginLeft(8).width(150)),
+                ComponentWrapper(view: highLabel, rules: ConstraintRules(parentView: view).snapTop(lowLabel.snp_bottom).marginTop(8).snapLeft().marginLeft(8).width(150)),
                 ComponentWrapper(view: lastValue, rules: ConstraintRules(parentView: view).snapLeft(lastLabel.snp_right).marginLeft(20).snapTop(lastLabel.snp_top)),
                 ComponentWrapper(view: buyValue, rules: ConstraintRules(parentView: view).snapLeft(buyLabel.snp_right).marginLeft(20).snapTop(buyLabel.snp_top)),
                 ComponentWrapper(view: sellValue, rules: ConstraintRules(parentView: view).snapLeft(sellLabel.snp_right).marginLeft(20).snapTop(sellLabel.snp_top)),
@@ -107,15 +107,21 @@ class StockView: UIViewController {
         ]
 
         SnapKitHelpers.setConstraints(comp)
+        let osbResource = OsloBorsResource()
 
-        [OsloBorsResource().updateIntradayHistoryForStock(stock),
-         OsloBorsResource().getHistoryForStock(store, stock: stock)
+        [osbResource.updateIntradayHistoryForStock(stock),
+         osbResource.getHistoryForStock(store, stock: stock),
+         osbResource.stockMetaInformation(stock)
         ].sequence().onSuccess{
             (stocks:[Stock]) in
             self.stock = self.stock
             .withIntradayHistory(stocks[0])
             .withHistory(stocks[1].history!)
-            self.updateChart(.DAY)
+            .withMeta(stocks[2].meta!)
+            self.refreshData(.DAY)
+        }.onFailure{
+            err in
+            print(err)
         }
     }
 
@@ -134,10 +140,20 @@ class StockView: UIViewController {
             default: mode = .DAY; break;
         }
         print("updating")
-        updateChart(mode)
+        refreshData(mode)
     }
 
-    func updateChart(timespan:TimeSpan) {
+    func refreshData(timespan:TimeSpan) {
+
+        if let meta = stock.meta {
+            buyValue.text = String(meta.ASK ?? -1)
+            sellValue.text = String(meta.BID ?? -1)
+            incValue.text = String(format: "%.2f", meta.CHANGE_PCT_SLACK ?? -1) + "%"
+            turnoverValue.text = String(format: "%.2f", (meta.TURNOVER_TOTAL ?? -1) / 1000000)
+            highValue.text = String(meta.HIGH ?? -1)
+            lowValue.text = String(meta.LOW ?? -1)
+            lastValue.text = String(meta.LASTNZ_DIV ?? -1)
+        }
 
         var data: [DateValue] = []
 
