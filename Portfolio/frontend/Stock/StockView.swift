@@ -140,39 +140,15 @@ class StockView: UIViewController {
     func updateChart(timespan:TimeSpan) {
 
         var data: [DateValue] = []
-        switch (timespan) {
-        case .DAY:
+
+        if timespan == TimeSpan.DAY {
             if let history = stock.intraDayHistory {
-                data = try! history.history.map({ (instance: StockPriceInstance) in DateValue(date: instance.date, value: instance.price)})
+                data = try! history.history.map({ (instance: StockPriceInstance) in DateValue(date: instance.date, value: instance.price) })
             }
-        case .MONTH:
+        } else {
             if let history = stock.history {
-                data = try! history.history
-                .map({ (instance: StockPriceInstance) in DateValue(date: instance.date, value: instance.price)})
-                .filter({(dateValue:DateValue) in dateValue.date.laterDate(NSDate(timeIntervalSinceNow: -86400*31)) == dateValue.date})
-            }
-        case .HALF_YEAR:
-            if let history = stock.history {
-                data = try! history.history
-                .map({ (instance: StockPriceInstance) in DateValue(date: instance.date, value: instance.price)})
-                .filter({(dateValue:DateValue) in dateValue.date.laterDate(NSDate(timeIntervalSinceNow: -86400*182)) == dateValue.date})
-            }
-        case .YEAR:
-            if let history = stock.history {
-                data = try! history.history
-                .map({ (instance: StockPriceInstance) in DateValue(date: instance.date, value: instance.price)})
-                .filter({(dateValue:DateValue) in dateValue.date.laterDate(NSDate(timeIntervalSinceNow: -86400*365)) == dateValue.date})
-            }
-        case .ALL:
-            if let history = stock.history {
-                data = try! history.history
-                .map({ (instance: StockPriceInstance) in DateValue(date: instance.date, value: instance.price)})
-            }
-        default:
-            if let history = stock.history {
-                data = try! history.history
-                .map({ (instance: StockPriceInstance) in DateValue(date: instance.date, value: instance.price)})
-                .filter({(dateValue:DateValue) in dateValue.date.laterDate(NSDate(timeIntervalSinceNow: -86400*31)) == dateValue.date})
+                data = filter(try! history.history
+                .map({ (instance: StockPriceInstance) in DateValue(date: instance.date, value: instance.price) }), mode: timespan)
             }
         }
 
@@ -210,8 +186,12 @@ class StockView: UIViewController {
         }
     }
 
-    enum TimeSpan {
-        case DAY, MONTH, HALF_YEAR, YEAR, ALL
+    func filter(data:[DateValue], mode:TimeSpan) -> [DateValue]{
+        return data.filter({(dateValue:DateValue) in dateValue.date.laterDate(NSDate(timeIntervalSinceNow: -86400*mode.rawValue)) == dateValue.date})
+    }
+
+    enum TimeSpan: Double {
+        case DAY = 1.0, MONTH = 31.0, HALF_YEAR = 182.0, YEAR = 365.0, ALL = 100000.0
     }
 
     required init(coder aDecoder: NSCoder) {
