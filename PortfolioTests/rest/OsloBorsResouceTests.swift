@@ -94,4 +94,24 @@ class OsloBorsResouceTests : XCTestCase {
             XCTAssertNil(error, "Error")
         })
     }
+
+    func testGetMeta() {
+
+        if skipIntegration {
+            return
+        }
+
+        let expectation = expectationWithDescription("promise")
+
+        OsloBorsResource().stockMetaInformation(Stock(ticker: "NAS.OSE")).onSuccess{
+            (stock:Stock) in
+            XCTAssert(stock.meta != nil)
+            expectation.fulfill()
+        }
+
+        waitForExpectationsWithTimeout(5, handler: {
+            error in
+            XCTAssertNil(error, "Error")
+        })
+    }
 }

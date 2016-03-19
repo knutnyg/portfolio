@@ -9,6 +9,7 @@ class Stock : NSObject{
     var recentHistory:StockHistory?
     var history:StockHistory?
     var historyTimestamp:NSDate?
+    var meta:StockMeta?
 
     init(ticker:String){
         self.ticker = ticker
@@ -42,6 +43,11 @@ class Stock : NSObject{
 
     func withIntradayHistory(stock:Stock) -> Stock {
         self.intraDayHistory = stock.intraDayHistory
+        return self
+    }
+
+    func withMeta(meta:StockMeta) -> Stock {
+        self.meta = meta
         return self
     }
 

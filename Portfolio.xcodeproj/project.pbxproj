@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		324F41013827B198202DEE5E /* DateValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F46FFE4D8F71BCE6372ED /* DateValue.swift */; };
 		324F412464C6BD3A34BD822D /* StockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4658B323261850F80940 /* StockView.swift */; };
+		324F41815E0F8DC455938FCD /* StockMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4AF8B33584826AD494E9 /* StockMeta.swift */; };
 		324F41FE8E452E52C03C5F69 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 324F4E1FF0A96963207D9F75 /* Podfile */; };
 		324F420288BCE996A2C5BB38 /* LocaleUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4B2C8F36E27EC9C08723 /* LocaleUtils.swift */; };
 		324F42493CCA26E948AB07E8 /* AutocompleteDataItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4D5F7A16BA24EBC64BE1 /* AutocompleteDataItem.swift */; };
@@ -67,6 +68,7 @@
 		324F4C0DE7BA290CF092646B /* OsloBorsResourceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F40F0BFB9144F0B1F6D33 /* OsloBorsResourceMock.swift */; };
 		324F4C17211537B552814774 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F434FA8F2CB0CDCC7BE97 /* JSON.swift */; };
 		324F4CB3542233079153DD3A /* FAHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4B4BAC996EBC1C14D6B4 /* FAHelpers.swift */; };
+		324F4CC24C13C1AD5A6A26CE /* StockMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4AF8B33584826AD494E9 /* StockMeta.swift */; };
 		324F4CCA54D5AED18F74D0F3 /* PortfolioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4543E037F86F23822FF2 /* PortfolioView.swift */; };
 		324F4CCAA76DAAEF69FDE23D /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4030AC695B64F945EC1F /* DateUtils.swift */; };
 		324F4CF00C4ECC1E63B44B0F /* ConstraintRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4758553072204141BBC4 /* ConstraintRules.swift */; };
@@ -131,6 +133,7 @@
 		324F4AC508F0B77ED02750E4 /* JSONTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONTests.swift; sourceTree = "<group>"; };
 		324F4AC9867C9CCCAE66B97B /* StoreTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreTests.swift; sourceTree = "<group>"; };
 		324F4ACB488080841C0000E3 /* WatchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchView.swift; sourceTree = "<group>"; };
+		324F4AF8B33584826AD494E9 /* StockMeta.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockMeta.swift; sourceTree = "<group>"; };
 		324F4B29B99A33CE392659A7 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		324F4B2C8F36E27EC9C08723 /* LocaleUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocaleUtils.swift; sourceTree = "<group>"; };
 		324F4B4BAC996EBC1C14D6B4 /* FAHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAHelpers.swift; sourceTree = "<group>"; };
@@ -289,6 +292,7 @@
 			isa = PBXGroup;
 			children = (
 				324F4BA8A227C8E0CCF7B61F /* allstocks */,
+				324F4AF8B33584826AD494E9 /* StockMeta.swift */,
 			);
 			path = jsonobjects;
 			sourceTree = "<group>";
@@ -647,6 +651,7 @@
 				324F46B233FC8BC1E163871B /* StockView.swift in Sources */,
 				324F4702737B8AF85A5791BF /* WatchView.swift in Sources */,
 				324F44C242191932C12EB2DD /* StockIntradayHistory.swift in Sources */,
+				324F4CC24C13C1AD5A6A26CE /* StockMeta.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -693,6 +698,7 @@
 				324F412464C6BD3A34BD822D /* StockView.swift in Sources */,
 				324F4482045596B6715C74D8 /* WatchView.swift in Sources */,
 				324F4BA15B081746799ABBDF /* StockIntradayHistory.swift in Sources */,
+				324F41815E0F8DC455938FCD /* StockMeta.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
