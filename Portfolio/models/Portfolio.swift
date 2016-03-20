@@ -66,7 +66,6 @@ class Portfolio {
                         if let v = stockHistory.stockValueAtDay(date) {
                             value += v * stockWorth.1
                         } else {
-                            //Find last value
                             return nil
                         }
                     }
