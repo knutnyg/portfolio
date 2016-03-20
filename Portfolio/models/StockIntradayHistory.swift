@@ -35,7 +35,7 @@ class StockIntradayHistory : NSObject {
     }
 
     func currentValue() -> Double {
-        return history.sort({(i:StockPriceInstance, i1:StockPriceInstance) in i.date.compare(i1.date) == NSComparisonResult.OrderedDescending}).last!.price
+        return history.sort({(i:StockPriceInstance, i1:StockPriceInstance) in i.date.compare(i1.date) == NSComparisonResult.OrderedAscending}).last!.price
     }
 }
 
