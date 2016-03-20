@@ -6,7 +6,6 @@ class Stock : NSObject{
 
     var ticker:String!
     var intraDayHistory:StockIntradayHistory?
-    var recentHistory:StockHistory?
     var history:StockHistory?
     var historyTimestamp:NSDate?
     var meta:StockMeta?
