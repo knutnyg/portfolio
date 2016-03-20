@@ -7,6 +7,11 @@ class PortfolioView : UIViewController{
 
     var chart: LineChartView!
     var weeks: [String]!
+    var titleLabel: UILabel!
+    var valueLabel: UILabel!
+    var valueTextLabel: UILabel!
+    var incLabel: UILabel!
+    var incValue: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,11 +23,30 @@ class PortfolioView : UIViewController{
         view.backgroundColor = UIColor.whiteColor()
 
         chart = LineChartView()
-        view.addSubview(chart)
         chart.rightAxis.enabled = false
         chart.noDataText = "You must give me the datas!"
 
+        titleLabel = createLabel("Din portefølje")
+        valueLabel = createLabel("Nåværende verdi: ")
+        incLabel = createLabel("Dagens endring: ")
+        valueTextLabel = createLabel("22")
+        incValue = createLabel("3 %")
+
+
+        view.addSubview(chart)
+        view.addSubview(titleLabel)
+        view.addSubview(valueLabel)
+        view.addSubview(incLabel)
+        view.addSubview(incValue)
+        view.addSubview(valueTextLabel)
+
+
         let comp: [ComponentWrapper] = [
+                ComponentWrapper(view: titleLabel, rules: ConstraintRules(parentView: view).centerX().snapTop().marginTop(40)),
+                ComponentWrapper(view: valueLabel, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(20).width(150).snapTop(titleLabel.snp_bottom).marginTop(50)),
+                ComponentWrapper(view: incLabel, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(20).width(150).snapTop(valueLabel.snp_bottom).marginTop(10)),
+                ComponentWrapper(view: valueTextLabel, rules: ConstraintRules(parentView: view).snapLeft(valueLabel.snp_right).snapTop(valueLabel.snp_top)),
+                ComponentWrapper(view: incValue, rules: ConstraintRules(parentView: view).snapLeft(valueLabel.snp_right).snapTop(valueLabel.snp_top)),
                 ComponentWrapper(view: chart, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(10).snapBottom().height(400))]
 
         SnapKitHelpers.setConstraints(comp)

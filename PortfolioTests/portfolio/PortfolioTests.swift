@@ -112,8 +112,11 @@ class PortfolioTests: XCTestCase {
                 StockPriceInstance(date: NSDate(dateString: "2016-02-24"), price: 41.22),
                 StockPriceInstance(date: NSDate(dateString: "2016-02-26"), price: 43.02),
         ])
+        let nodStock = Stock(ticker: "NOD.OL", history: history)
+        nodStock.intraDayHistory = StockIntradayHistory(history: [StockPriceInstance(date: NSDate(), price: 60)])
 
-        store.stocks = ["NOD.OL": Stock(ticker: "NOD.OL", history: history)]
+        store.stocks = ["NOD.OL": nodStock]
+
         store.trades = [
                 Trade(date: NSDate(dateString: "2016-02-22"),
                         price: 49.30,
@@ -139,6 +142,9 @@ class PortfolioTests: XCTestCase {
 
         value = Portfolio.valueAtDay(store, date: NSDate(dateString: "2016-02-26"))
         XCTAssertEqual(value, 4302)
+
+        value = Portfolio.valueAtDay(store, date: NSDate())
+        XCTAssertEqual(value, 6000)
 
     }
 

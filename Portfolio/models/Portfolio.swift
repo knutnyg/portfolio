@@ -3,7 +3,7 @@ import BrightFutures
 
 class Portfolio {
 
-    static func stocksAtDay(store:Store, date: NSDate) throws -> [Stock:Double] {
+    static func stocksAtDay(store: Store, date: NSDate) throws -> [Stock:Double] {
 
         var assets: [String:Double] = [:]
 
@@ -36,8 +36,8 @@ class Portfolio {
                 }; break
             }
         }
-        var ret:[Stock:Double] = [:]
-        for (k,v) in assets {
+        var ret: [Stock:Double] = [:]
+        for (k, v) in assets {
             if let stock = store.stocks[k] {
                 ret[stock] = v
             }
@@ -45,18 +45,30 @@ class Portfolio {
         return ret
     }
 
-    static func valueAtDay(store:Store, date: NSDate) -> Double?{
+    static func valueAtDay(store: Store, date: NSDate) -> Double? {
+
         do {
-            let assets:[Stock:Double] = try stocksAtDay(store, date: date)
+
+            let now = NSDate()
+            let assets: [Stock:Double] = try stocksAtDay(store, date: date)
 
             var value = 0.0
 
-            for stockWorth in assets{
-                if let stockHistory:StockHistory = stockWorth.0.history {
-                    if let v = stockHistory.stockValueAtDay(date) {
-                        value += v * stockWorth.1
-                    } else {
-                        return nil
+            for stockWorth in assets {
+
+                if date.isInSameDayAs(date: now) {
+                    //Bruk dagens data:
+                    if let historyDay = stockWorth.0.intraDayHistory {
+                        value += historyDay.currentValue() * stockWorth.1
+                    }
+                } else {
+                    if let stockHistory: StockHistory = stockWorth.0.history {
+                        if let v = stockHistory.stockValueAtDay(date) {
+                            value += v * stockWorth.1
+                        } else {
+                            //Find last value
+                            return nil
+                        }
                     }
                 }
             }
@@ -66,7 +78,9 @@ class Portfolio {
         }
     }
 
-    static func stocksFromTrades(trades:[Trade]) -> [Stock]{
-        return Array(Set(trades.map{Stock(ticker: $0.ticker)}))
+    static func stocksFromTrades(trades: [Trade]) -> [Stock] {
+        return Array(Set(trades.map {
+            Stock(ticker: $0.ticker)
+        }))
     }
 }
