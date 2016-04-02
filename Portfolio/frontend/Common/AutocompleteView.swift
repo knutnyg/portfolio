@@ -99,7 +99,7 @@ class AutocompleteView: UIViewController, UITableViewDataSource, UITableViewDele
         self.searchBar.text = visibleData[indexPath.item].text
         self.tableView.hidden = true
         delegate.userSelectedItem(visibleData[indexPath.item].text)
-        store.addWatch(visibleData[indexPath.item].text)
+        store.addWatch(Stock(ticker: visibleData[indexPath.item].text))
         dismissViewControllerAnimated(true, completion: nil)
     }
 

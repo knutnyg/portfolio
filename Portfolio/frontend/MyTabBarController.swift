@@ -8,7 +8,7 @@ class MyTabBarController : UITabBarController {
 
     init(){
         super.init(nibName: nil, bundle: nil)
-        store = Store(dataFile: "store_v10.dat")
+        store = Store(dataFile: "store_v11.dat")
     }
 
     required convenience init?(coder decoder: NSCoder) {
