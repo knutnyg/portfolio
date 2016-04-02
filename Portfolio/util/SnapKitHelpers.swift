@@ -13,6 +13,8 @@ class SnapKitHelpers {
                 var marginBottom = 0
                 var marginLeft = 0
                 var marginRight = 0
+                var offsetX = 0
+                var offsetY = 0
 
                 let constraints = components[i].rules
 
@@ -31,8 +33,12 @@ class SnapKitHelpers {
                 }
 
                 //CenterY
+                if let offset_y = constraints.i_offsetY {
+                    offsetY = offset_y
+                }
+
                 if let _ = constraints.i_centerY {
-                    comp.centerY.equalTo(view)
+                    comp.centerY.equalTo(view).offset(offsetY)
                 }
 
                 //Snap bottom
@@ -67,9 +73,12 @@ class SnapKitHelpers {
                     comp.width.equalTo(width)
                 }
 
-                //CenterY
+                if let offset_x = constraints.i_offsetX {
+                    offsetX = offset_x
+                }
+                //CenterX
                 if let _ = constraints.i_centerX {
-                    comp.centerX.equalTo(view.snp_centerX)
+                    comp.centerX.equalTo(view.snp_centerX).offset(offsetX)
                 }
             }
         }
