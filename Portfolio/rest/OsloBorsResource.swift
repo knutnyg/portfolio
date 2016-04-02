@@ -5,7 +5,6 @@ import SwiftHTTP
 
 class OsloBorsResource {
 
-
     func allStockInformation(store: Store) -> Future<AllStockInfo, NSError> {
 
         if let info = store.allStockInfo {
@@ -176,6 +175,13 @@ class OsloBorsResource {
 
     func stockMetaInformation(stock: Stock) -> Future<Stock, NSError> {
 
+        if let meta = stock.meta {
+            if meta.timestamp.laterDate(NSDate(timeIntervalSinceNow: -60)) == meta.timestamp {
+                print("OsloBorsResource:stockMetaInformation - Returning cached value for stock")
+                return Future(value: stock)
+            }
+        }
+
         let promise = Promise<Stock, NSError>()
 
         let URL = "http://www.oslobors.no/ob/servlets/components?type=quote&source=feed.ob.quotes.INSTRUMENTS&leftjoin=&tradesSource=feed.ob.trades.INSTRUMENTS&columns=ITEM%2C+ITEM_SECTOR%2C+SECTOR%2C+BID%2C+ASK%2C+LASTNZ_DIV%2C+TIME%2C+TRADE_TIME%2C+CLOSE_LAST_TRADED%2C+HIGH%2C+LOW%2C+CHANGE_PCT_SLACK%2C+MARKET_CAP%2C+PERIOD%2C+TURNOVER_TOTAL&filter=ITEM_SECTOR%3D%3Ds\(stock.ticker)&channel=c523c4254e2f31f5afa64c04cbb6da73"
@@ -194,9 +200,7 @@ class OsloBorsResource {
                 let json: AnyObject = try! NSJSONSerialization.JSONObjectWithData(response.data, options: [])
                 if let data = JSON.findNodeInJSON("values", node: json) as? [String:AnyObject] {
                     promise.success(Stock(ticker: stock.ticker).withMeta(StockMeta(data: data)))
-                }
-
-                else {
+                } else {
                     promise.failure(NSError(domain: "meta", code: 500, userInfo: nil))
                 }
             }
