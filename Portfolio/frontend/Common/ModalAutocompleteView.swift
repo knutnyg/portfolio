@@ -1,12 +1,8 @@
-//
-// Created by Knut Nygaard on 02/04/16.
-// Copyright (c) 2016 Knut Nygaard. All rights reserved.
-//
 
 import Foundation
 import UIKit
 
-class ModalAutocompleteView : UIViewController {
+class ModalAutocompleteView : UIViewController, AutocompleteViewDelegate {
 
     let titleString:String!
     let store:Store!
@@ -22,6 +18,7 @@ class ModalAutocompleteView : UIViewController {
 
         let titleLabel = createLabel(titleString)
         let autoCompleteView = AutocompleteView(store: store)
+        autoCompleteView.delegate = self
 
         view.backgroundColor = UIColor.greenColor()
 
@@ -36,6 +33,10 @@ class ModalAutocompleteView : UIViewController {
         ]
 
         SnapKitHelpers.setConstraints(comp)
+    }
+
+    func userSelectedItem(item:String) {
+        //NOOP
     }
 
     required init(coder aDecoder: NSCoder) {
