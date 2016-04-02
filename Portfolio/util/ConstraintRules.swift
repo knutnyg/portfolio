@@ -14,11 +14,13 @@ class ConstraintRules {
     var i_marginTop: Int?
     var i_marginBottom: Int?
     var i_centerY: Bool?
+    var i_offsetY: Int?
     var i_snapTop: ConstraintItem?
     var i_snapBottom: ConstraintItem?
 
     var i_width: Int?
     var i_centerX: Bool?
+    var i_offsetX: Int?
     var i_marginLeft: Int?
     var i_marginRight: Int?
     var i_snapLeft: ConstraintItem?
@@ -49,6 +51,12 @@ class ConstraintRules {
         return self
     }
 
+    func centerY(offset:Int) -> ConstraintRules {
+        i_centerY = true
+        i_offsetY = offset
+        return self
+    }
+
     func snapTop() -> ConstraintRules {
         i_snapTop = parentView.snp_top
         return self
@@ -76,6 +84,12 @@ class ConstraintRules {
 
     func centerX() -> ConstraintRules {
         i_centerX = true
+        return self
+    }
+
+    func centerX(offset:Int) -> ConstraintRules {
+        i_centerX = true
+        i_offsetX = offset
         return self
     }
 
