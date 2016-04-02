@@ -11,10 +11,13 @@ class AutocompleteView: UIViewController, UITableViewDataSource, UITableViewDele
     var searchActive: Bool!
     var data: [AutocompleteDataItem]!
     var visibleData: [AutocompleteDataItem]!
+    var store:Store
 
-    var blackFiller = false
-
-    var tableViewContraints: ComponentWrapper!
+    init(store:Store){
+        self.store = store
+        self.data = store.allStockInfo.getTickersForAutocomplete()
+        super.init(nibName: nil, bundle: nil)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,11 +35,10 @@ class AutocompleteView: UIViewController, UITableViewDataSource, UITableViewDele
 
         visibleData = limit(filter(data), count: 6)
 
-
         let components: [ComponentWrapper] =
         [
                 ComponentWrapper(view: searchBar, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(0).snapTop().height(35)),
-                ComponentWrapper(view: tableView, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(0).snapTop(searchBar.snp_bottom).snapBottom())
+                ComponentWrapper(view: tableView, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(0).snapTop(searchBar.snp_bottom))
         ]
         SnapKitHelpers.setConstraints(components)
     }
@@ -70,9 +72,16 @@ class AutocompleteView: UIViewController, UITableViewDataSource, UITableViewDele
 
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         visibleData = limit(filter(data), count: 6)
-        delegate.updateAutocompleteConstraints(visibleData.count)
+        updateTableHeight()
         self.tableView.hidden = false
         self.tableView.reloadData()
+    }
+
+    func updateTableHeight(){
+        let tableHeight = min(visibleData.count, 6)
+        SnapKitHelpers.updateConstraints([
+                ComponentWrapper(view: tableView, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(8).snapTop(searchBar.snp_bottom).height(30*tableHeight))
+        ])
     }
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -90,7 +99,8 @@ class AutocompleteView: UIViewController, UITableViewDataSource, UITableViewDele
         self.searchBar.text = visibleData[indexPath.item].text
         self.tableView.hidden = true
         delegate.userSelectedItem(visibleData[indexPath.item].text)
-        delegate.updateAutocompleteConstraints(0)
+        store.addWatch(visibleData[indexPath.item].text)
+        dismissViewControllerAnimated(true, completion: nil)
     }
 
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -107,5 +117,9 @@ class AutocompleteView: UIViewController, UITableViewDataSource, UITableViewDele
             cell.textLabel?.text = "default";
         }
         return cell;
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

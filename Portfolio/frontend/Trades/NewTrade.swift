@@ -42,8 +42,8 @@ class NewTrade: UIViewController, UITextFieldDelegate, AutocompleteViewDelegate{
         priceLabel = createLabel("Price:")
         countLabel = createLabel("Count:")
 
-        autocompleteView = AutocompleteView()
-        autocompleteView.data = store.allStockInfo.getTickersForAutocomplete()
+        autocompleteView = AutocompleteView(store: store)
+        autocompleteView.view.layer.zPosition = 100;
         autocompleteView.delegate = self
 
         datePicker = UIDatePicker()
@@ -103,15 +103,8 @@ class NewTrade: UIViewController, UITextFieldDelegate, AutocompleteViewDelegate{
         SnapKitHelpers.setConstraints(components)
     }
 
-    func updateAutocompleteConstraints(rows:Int){
-        let tableHeight = min(rows, 6)
-        SnapKitHelpers.updateConstraints([
-                ComponentWrapper(view: autocompleteView.view, rules: ConstraintRules(parentView: view).snapTop().marginTop(100).horizontalFullWithMargin(8).height(35 + 30*tableHeight))
-        ])
-    }
+    func userSelectedItem(item:String) {
 
-    func userSelectedItem(item:String){
-        //NOOP
     }
 
     func saveTrade(sender:UIButton){

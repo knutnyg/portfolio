@@ -4,62 +4,46 @@ import UIKit
 import SnapKit
 import MaterialKit
 
-class WatchView : UIViewController, AutocompleteViewDelegate, UITableViewDataSource, UITableViewDelegate {
+class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     var controller:MyTabBarController!
     var watchList:UITableView!
-    var autocompleteView:AutocompleteView!
     var newWatchButton:MKButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "reload:", name:"StoreChanged", object:nil)
+        view.backgroundColor = DARK_GREY
 
         controller = tabBarController as! MyTabBarController
 
-        autocompleteView = AutocompleteView()
-        autocompleteView.delegate = self
-        autocompleteView.data = controller.store.allStockInfo.getTickersForAutocomplete()
         watchList = UITableView()
         watchList.dataSource = self
         watchList.delegate = self
 
         newWatchButton = MKButton()
-        newWatchButton.backgroundColor = UIColor.greenColor()
+        newWatchButton.backgroundColor = UIColor(hex: 0xFFC107)
         newWatchButton.cornerRadius = 30.0
         newWatchButton.elevation = 4.0
         newWatchButton.shadowOffset = CGSize(width: 0, height: 0)
         newWatchButton.setTitle("+", forState: .Normal)
         newWatchButton.addTarget(self, action: "toNewStock:", forControlEvents: .TouchUpInside)
 
-        view.addSubview(autocompleteView.view)
         view.addSubview(watchList)
         view.addSubview(newWatchButton)
 
 
         let comp = [
-            ComponentWrapper(view: autocompleteView.view, rules: ConstraintRules(parentView: view).snapTop().marginTop(100).horizontalFullWithMargin(8).height(35)),
-            ComponentWrapper(view: watchList, rules: ConstraintRules(parentView: view).marginTop(20).snapBottom().horizontalFullWithMargin(0).snapTop(autocompleteView.view.snp_bottom)),
+            ComponentWrapper(view: watchList, rules: ConstraintRules(parentView: view).marginTop(60).snapBottom().horizontalFullWithMargin(0).snapTop()),
             ComponentWrapper(view: newWatchButton, rules: ConstraintRules(parentView: view).width(60).height(60).snapBottom().snapRight().marginBottom(60).marginRight(20))
         ]
 
         SnapKitHelpers.setConstraints(comp)
     }
 
-    func userSelectedItem(item:String){
-        controller.store.addWatch(item)
-    }
-
     public func reload(notification:NSNotification){
         watchList.reloadData()
-    }
-
-    func updateAutocompleteConstraints(rows:Int){
-        let tableHeight = min(rows, 6)
-        SnapKitHelpers.updateConstraints([
-                ComponentWrapper(view: autocompleteView.view, rules: ConstraintRules(parentView: view).snapTop().marginTop(100).horizontalFullWithMargin(8).height(35 + 30*tableHeight))
-        ])
     }
 
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
@@ -99,9 +83,9 @@ class WatchView : UIViewController, AutocompleteViewDelegate, UITableViewDataSou
     }
 
     func toNewStock(sender:UIButton){
-        let vc = AutocompleteViewFull()
-        vc.delegate = self
-        vc.data = controller.store.allStockInfo.getTickersForAutocomplete()
+        let autoCompleteView = ModalAutocompleteView(title: "Legg til aksje", store: controller.store)
+
+        let vc = Modal(vc: autoCompleteView)
         vc.modalPresentationStyle = .OverCurrentContext
         presentViewController(vc, animated: false, completion: nil)
     }
