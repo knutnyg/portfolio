@@ -2,17 +2,19 @@ pod 'BrightFutures', '3.3.0'
 link_with 'Portfolio', 'PortfolioTests'
 use_frameworks!
 
-pod 'SwiftHTTP', '1.0.4'
+pod 'SwiftHTTP', '1.0.5'
 link_with 'Portfolio', 'PortfolioTests'
 
-pod 'SnapKit', '0.19.1'
+pod 'SnapKit', '0.20.0'
 link_with 'Portfolio', 'PortfolioTests'
 
-pod 'Charts', '2.2.3'
+pod 'Charts', '2.2.4'
 link_with 'Portfolio', 'PortfolioTests'
 
+pod 'Unbox', '1.4'
+link_with 'Portfolio', 'PortfolioTests'
 
-pod 'Unbox', '1.3.1'
+pod 'MaterialKit', '0.4'
 link_with 'Portfolio', 'PortfolioTests'
 
 post_install do |installer|

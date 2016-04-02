@@ -32,7 +32,6 @@ class PortfolioView: UIViewController {
         valueTextLabel = createLabel("22")
         incValue = createLabel("3 %")
 
-
         view.addSubview(chart)
         view.addSubview(titleLabel)
         view.addSubview(valueLabel)

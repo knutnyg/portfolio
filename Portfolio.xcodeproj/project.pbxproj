@@ -89,6 +89,8 @@
 		7294453F1C8B049F00764DD0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7294453E1C8B049F00764DD0 /* AppDelegate.swift */; };
 		729445461C8B049F00764DD0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 729445451C8B049F00764DD0 /* Assets.xcassets */; };
 		729445491C8B049F00764DD0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 729445471C8B049F00764DD0 /* LaunchScreen.storyboard */; };
+		917E620B86442505B8D6F3F9 /* AutocompleteViewFull.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E6A017E857232B56BBEBF /* AutocompleteViewFull.swift */; };
+		917E65B8BF87A06772DB51C3 /* AutocompleteViewFull.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E6A017E857232B56BBEBF /* AutocompleteViewFull.swift */; };
 		ED2F945F8C65F6E3E6B30FF3 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BB9D1EBD57848ADFD8E7E2B /* Pods.framework */; };
 		FA3B143C6EE65D1C7714580E /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BB9D1EBD57848ADFD8E7E2B /* Pods.framework */; };
 /* End PBXBuildFile section */
@@ -158,6 +160,7 @@
 		7294454A1C8B049F00764DD0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7294454F1C8B049F00764DD0 /* PortfolioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PortfolioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		729445551C8B049F00764DD0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		917E6A017E857232B56BBEBF /* AutocompleteViewFull.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutocompleteViewFull.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -217,6 +220,7 @@
 			children = (
 				324F46D71A967097BEDAAD58 /* AutocompleteView.swift */,
 				324F4D5F7A16BA24EBC64BE1 /* AutocompleteDataItem.swift */,
+				917E6A017E857232B56BBEBF /* AutocompleteViewFull.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -655,6 +659,7 @@
 				324F4702737B8AF85A5791BF /* WatchView.swift in Sources */,
 				324F44C242191932C12EB2DD /* StockIntradayHistory.swift in Sources */,
 				324F4CC24C13C1AD5A6A26CE /* StockMeta.swift in Sources */,
+				917E620B86442505B8D6F3F9 /* AutocompleteViewFull.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -703,6 +708,7 @@
 				324F4BA15B081746799ABBDF /* StockIntradayHistory.swift in Sources */,
 				324F41815E0F8DC455938FCD /* StockMeta.swift in Sources */,
 				324F477651E3491A975BEFD4 /* StockIntraDayHistoryTests.swift in Sources */,
+				917E65B8BF87A06772DB51C3 /* AutocompleteViewFull.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

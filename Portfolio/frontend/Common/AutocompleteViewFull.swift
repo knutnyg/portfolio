@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-class AutocompleteView: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
+class AutocompleteViewFull: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate {
 
     var searchBar: UISearchBar!
     var tableView: UITableView!
@@ -12,12 +12,12 @@ class AutocompleteView: UIViewController, UITableViewDataSource, UITableViewDele
     var data: [AutocompleteDataItem]!
     var visibleData: [AutocompleteDataItem]!
 
-    var blackFiller = false
-
     var tableViewContraints: ComponentWrapper!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        view.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.5)
 
         searchBar = UISearchBar()
         searchBar.delegate = self
@@ -27,6 +27,10 @@ class AutocompleteView: UIViewController, UITableViewDataSource, UITableViewDele
         tableView.delegate = self
         tableView.dataSource = self
 
+        let touch = UITapGestureRecognizer(target:self, action:"dismiss:")
+        view.addGestureRecognizer(touch)
+        touch.delegate = self
+
         view.addSubview(searchBar)
         view.addSubview(tableView)
 
@@ -35,8 +39,8 @@ class AutocompleteView: UIViewController, UITableViewDataSource, UITableViewDele
 
         let components: [ComponentWrapper] =
         [
-                ComponentWrapper(view: searchBar, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(0).snapTop().height(35)),
-                ComponentWrapper(view: tableView, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(0).snapTop(searchBar.snp_bottom).snapBottom())
+                ComponentWrapper(view: searchBar, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(0).snapTop().marginTop(200).height(50)),
+                ComponentWrapper(view: tableView, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(0).snapTop(searchBar.snp_bottom).height(0)),
         ]
         SnapKitHelpers.setConstraints(components)
     }
@@ -46,6 +50,18 @@ class AutocompleteView: UIViewController, UITableViewDataSource, UITableViewDele
         .filter {
             (dataItem: AutocompleteDataItem) in "\(dataItem.text.lowercaseString) \(dataItem.detail.lowercaseString)".containsString(searchBar.text!.lowercaseString)
         }
+    }
+
+    public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+        if(touch.view == view) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    func dismiss(sender: UITapGestureRecognizer){
+            self.dismissViewControllerAnimated(false, completion: nil)
     }
 
     func limit(input:[AutocompleteDataItem], count:Int) -> [AutocompleteDataItem] {
@@ -70,9 +86,16 @@ class AutocompleteView: UIViewController, UITableViewDataSource, UITableViewDele
 
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         visibleData = limit(filter(data), count: 6)
-        delegate.updateAutocompleteConstraints(visibleData.count)
+        updateTableHeight()
         self.tableView.hidden = false
         self.tableView.reloadData()
+    }
+
+    func updateTableHeight(){
+        let tableHeight = min(visibleData.count, 6)
+        SnapKitHelpers.updateConstraints([
+                ComponentWrapper(view: tableView, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(8).snapTop(searchBar.snp_bottom).height(35*tableHeight))
+        ])
     }
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -90,11 +113,12 @@ class AutocompleteView: UIViewController, UITableViewDataSource, UITableViewDele
         self.searchBar.text = visibleData[indexPath.item].text
         self.tableView.hidden = true
         delegate.userSelectedItem(visibleData[indexPath.item].text)
-        delegate.updateAutocompleteConstraints(0)
+        dismissViewControllerAnimated(false, completion: nil)
+
     }
 
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 30
+        return 35
     }
 
 

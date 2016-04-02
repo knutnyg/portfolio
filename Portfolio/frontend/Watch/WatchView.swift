@@ -2,12 +2,14 @@
 import Foundation
 import UIKit
 import SnapKit
+import MaterialKit
 
 class WatchView : UIViewController, AutocompleteViewDelegate, UITableViewDataSource, UITableViewDelegate {
 
     var controller:MyTabBarController!
     var watchList:UITableView!
     var autocompleteView:AutocompleteView!
+    var newWatchButton:MKButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,15 +25,23 @@ class WatchView : UIViewController, AutocompleteViewDelegate, UITableViewDataSou
         watchList.dataSource = self
         watchList.delegate = self
 
-//        button = createButton("To stock")
-//        button.addTarget(self, action: "toStock:", forControlEvents: UIControlEvents.TouchUpInside)
+        newWatchButton = MKButton()
+        newWatchButton.backgroundColor = UIColor.greenColor()
+        newWatchButton.cornerRadius = 30.0
+        newWatchButton.elevation = 4.0
+        newWatchButton.shadowOffset = CGSize(width: 0, height: 0)
+        newWatchButton.setTitle("+", forState: .Normal)
+        newWatchButton.addTarget(self, action: "toNewStock:", forControlEvents: .TouchUpInside)
 
         view.addSubview(autocompleteView.view)
         view.addSubview(watchList)
+        view.addSubview(newWatchButton)
+
 
         let comp = [
             ComponentWrapper(view: autocompleteView.view, rules: ConstraintRules(parentView: view).snapTop().marginTop(100).horizontalFullWithMargin(8).height(35)),
-            ComponentWrapper(view: watchList, rules: ConstraintRules(parentView: view).marginTop(20).snapBottom().horizontalFullWithMargin(0).snapTop(autocompleteView.view.snp_bottom))
+            ComponentWrapper(view: watchList, rules: ConstraintRules(parentView: view).marginTop(20).snapBottom().horizontalFullWithMargin(0).snapTop(autocompleteView.view.snp_bottom)),
+            ComponentWrapper(view: newWatchButton, rules: ConstraintRules(parentView: view).width(60).height(60).snapBottom().snapRight().marginBottom(60).marginRight(20))
         ]
 
         SnapKitHelpers.setConstraints(comp)
@@ -85,6 +95,14 @@ class WatchView : UIViewController, AutocompleteViewDelegate, UITableViewDataSou
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let vc = StockView(store: controller.store, stock: controller.store.stocks[controller.store.watchedTickers[indexPath.item]]!)
+        presentViewController(vc, animated: false, completion: nil)
+    }
+
+    func toNewStock(sender:UIButton){
+        let vc = AutocompleteViewFull()
+        vc.delegate = self
+        vc.data = controller.store.allStockInfo.getTickersForAutocomplete()
+        vc.modalPresentationStyle = .OverCurrentContext
         presentViewController(vc, animated: false, completion: nil)
     }
 
