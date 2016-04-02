@@ -5,9 +5,11 @@ import UIKit
 class Modal : UIViewController, UIGestureRecognizerDelegate {
 
     let vc:UIViewController
+    var callback:(() -> Void)?
 
-    init(vc:UIViewController){
+    init(vc:UIViewController, callback:(() -> Void)?) {
         self.vc = vc
+        self.callback = callback
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -40,7 +42,7 @@ class Modal : UIViewController, UIGestureRecognizerDelegate {
     }
 
     func dismiss(sender: UITapGestureRecognizer){
-        self.dismissViewControllerAnimated(false, completion: nil)
+        self.dismissViewControllerAnimated(false, completion: callback)
     }
 
 
