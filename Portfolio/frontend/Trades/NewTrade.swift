@@ -42,7 +42,7 @@ class NewTrade: UIViewController, UITextFieldDelegate, AutocompleteViewDelegate{
         priceLabel = createLabel("Price:")
         countLabel = createLabel("Count:")
 
-        autocompleteView = AutocompleteView(store: store)
+        autocompleteView = AutocompleteView(store: store, callback: nil)
         autocompleteView.view.layer.zPosition = 100;
         autocompleteView.delegate = self
 

@@ -63,8 +63,9 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
         .onSuccess{
             (stocks:[Stock]) in
             store.watchedStocks = stocks
+            self.watchList.reloadData()
         }
-        watchList.reloadData()
+
     }
 
     public func reload(notification:NSNotification){
@@ -116,7 +117,7 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
 
     func toNewStock(sender:UIButton){
-        let autoCompleteView = ModalAutocompleteView(title: "Legg til aksje", store: controller.store)
+        let autoCompleteView = ModalAutocompleteView(title: "Legg til aksje", store: controller.store, callback: callback)
 
         let vc = Modal(vc: autoCompleteView, callback: callback)
         vc.modalPresentationStyle = .OverCurrentContext

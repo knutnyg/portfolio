@@ -12,10 +12,12 @@ class AutocompleteView: UIViewController, UITableViewDataSource, UITableViewDele
     var data: [AutocompleteDataItem]!
     var visibleData: [AutocompleteDataItem]!
     var store:Store
+    var callback:(()->Void)?
 
-    init(store:Store){
+    init(store:Store, callback:(()->Void)?){
         self.store = store
         self.data = store.allStockInfo.getTickersForAutocomplete()
+        self.callback = callback
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -100,7 +102,7 @@ class AutocompleteView: UIViewController, UITableViewDataSource, UITableViewDele
         self.tableView.hidden = true
         delegate.userSelectedItem(visibleData[indexPath.item].text)
         store.addWatch(Stock(ticker: visibleData[indexPath.item].text))
-        dismissViewControllerAnimated(true, completion: nil)
+        dismissViewControllerAnimated(true, completion: callback)
     }
 
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {

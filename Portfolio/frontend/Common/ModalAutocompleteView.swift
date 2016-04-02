@@ -6,10 +6,12 @@ class ModalAutocompleteView : UIViewController, AutocompleteViewDelegate {
 
     let titleString:String!
     let store:Store!
+    var callback:(() -> Void)?
 
-    init(title:String, store:Store){
+    init(title:String, store:Store, callback:(()->Void)?){
         self.titleString = title
         self.store = store
+        self.callback = callback
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -17,7 +19,7 @@ class ModalAutocompleteView : UIViewController, AutocompleteViewDelegate {
         super.viewDidLoad()
 
         let titleLabel = createLabel(titleString)
-        let autoCompleteView = AutocompleteView(store: store)
+        let autoCompleteView = AutocompleteView(store: store, callback:callback)
         autoCompleteView.delegate = self
 
         view.backgroundColor = UIColor.greenColor()
