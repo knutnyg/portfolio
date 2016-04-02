@@ -10,7 +10,7 @@ class StoreTests: XCTestCase {
 
     class StoreMock: Store {
 
-        override init(){
+        override init() {
             super.init()
         }
 
@@ -20,7 +20,7 @@ class StoreTests: XCTestCase {
             trades: decoder.decodeObjectForKey("trades") as! [Trade],
                     allStockInfo: decoder.decodeObjectForKey("allStockInfo") as! AllStockInfo,
                     stocks: decoder.decodeObjectForKey("stocks") as! [String:Stock],
-            watchedTickers: decoder.decodeObjectForKey("watchedTickers") as! [String]
+                    watchedStocks: decoder.decodeObjectForKey("watchedStocks") as! [Stock]
             )
         }
 
