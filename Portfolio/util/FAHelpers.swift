@@ -10,7 +10,7 @@ func createfontAwesomeButton(unicode:String) -> UIButton{
     button.setTitle(unicode, forState: .Normal)
     button.titleLabel!.font = font
     button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-    button.setTitleColor(UIColor(netHex: 0x19B5FE), forState: .Highlighted)
+    button.setTitleColor(UIColor(hex: 0x19B5FE), forState: .Highlighted)
     
     return button
 }
