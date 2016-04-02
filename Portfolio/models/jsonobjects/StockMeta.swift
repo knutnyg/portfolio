@@ -17,7 +17,7 @@ class StockMeta {
     var TIME: Double?
     var TRADE_TIME: Double?
     var TURNOVER_TOTAL: Double?
-    var timestamp:NSDate?
+    var timestamp:NSDate!
 
     init(data: [String:AnyObject]) {
         ASK = data["ASK"] as? Double
