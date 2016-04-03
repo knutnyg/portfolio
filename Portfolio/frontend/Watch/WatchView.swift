@@ -70,14 +70,19 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
         watchList.reloadData()
     }
 
+
+
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
 
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == UITableViewCellEditingStyle.Delete {
+
+            tableView.beginUpdates()
             controller.store.removeWatch(controller.store.watchedStocks[indexPath.item])
-            tableView.reloadData()
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.None)
+            tableView.endUpdates()
         }
     }
 

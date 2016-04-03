@@ -30,8 +30,8 @@ class ModalAutocompleteView : UIViewController, AutocompleteViewDelegate {
         view.addSubview(autoCompleteView.view)
 
         let comp = [
-                ComponentWrapper(view: titleLabel, rules: ConstraintRules(parentView: view).centerX().snapTop()),
-                ComponentWrapper(view: autoCompleteView.view, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(8).snapTop(titleLabel.snp_bottom)),
+                ComponentWrapper(view: titleLabel, rules: ConstraintRules(parentView: view).centerX().snapTop().marginTop(8)),
+                ComponentWrapper(view: autoCompleteView.view, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(8).snapTop(titleLabel.snp_bottom).marginTop(8)),
         ]
 
         SnapKitHelpers.setConstraints(comp)

@@ -25,6 +25,7 @@ class AutocompleteView: UIViewController, UITableViewDataSource, UITableViewDele
         super.viewDidLoad()
 
         searchBar = UISearchBar()
+        searchBar.searchBarStyle = UISearchBarStyle.Minimal
         searchBar.delegate = self
         searchActive = false
 
