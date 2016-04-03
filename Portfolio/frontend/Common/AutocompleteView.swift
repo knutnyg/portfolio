@@ -40,7 +40,7 @@ class AutocompleteView: UIViewController, UITableViewDataSource, UITableViewDele
         let components: [ComponentWrapper] =
         [
                 ComponentWrapper(view: searchBar, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(0).snapTop().height(35)),
-                ComponentWrapper(view: tableView, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(0).snapTop(searchBar.snp_bottom))
+                ComponentWrapper(view: tableView, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(0).snapTop(searchBar.snp_bottom).snapBottom())
         ]
         SnapKitHelpers.setConstraints(components)
     }
@@ -102,7 +102,6 @@ class AutocompleteView: UIViewController, UITableViewDataSource, UITableViewDele
         self.tableView.hidden = true
         delegate.userSelectedItem(visibleData[indexPath.item].text)
         store.addWatch(Stock(ticker: visibleData[indexPath.item].text))
-        dismissViewControllerAnimated(true, completion: callback)
     }
 
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {

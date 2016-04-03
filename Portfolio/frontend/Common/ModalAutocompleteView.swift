@@ -31,14 +31,14 @@ class ModalAutocompleteView : UIViewController, AutocompleteViewDelegate {
 
         let comp = [
                 ComponentWrapper(view: titleLabel, rules: ConstraintRules(parentView: view).centerX().snapTop()),
-                ComponentWrapper(view: autoCompleteView.view, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(8).snapTop(titleLabel.snp_bottom).snapBottom()),
+                ComponentWrapper(view: autoCompleteView.view, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(8).snapTop(titleLabel.snp_bottom)),
         ]
 
         SnapKitHelpers.setConstraints(comp)
     }
 
     func userSelectedItem(item:String) {
-        //NOOP
+        dismissViewControllerAnimated(false, completion: callback)
     }
 
     required init(coder aDecoder: NSCoder) {

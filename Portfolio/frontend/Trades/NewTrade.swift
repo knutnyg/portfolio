@@ -91,7 +91,7 @@ class NewTrade: UIViewController, UITextFieldDelegate, AutocompleteViewDelegate{
                 ComponentWrapper(view: dateLabel, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(8).snapBottom(dateTextField.snp_top).marginBottom(3)),
                 ComponentWrapper(view: priceLabel, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(8).snapBottom(priceTextField.snp_top).marginBottom(3)),
                 ComponentWrapper(view: countLabel, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(8).snapBottom(countTextField.snp_top).marginBottom(3)),
-                ComponentWrapper(view: autocompleteView.view, rules: ConstraintRules(parentView: view).snapTop().marginTop(100).horizontalFullWithMargin(8).height(35)),
+                ComponentWrapper(view: autocompleteView.view, rules: ConstraintRules(parentView: view).snapTop().marginTop(100).horizontalFullWithMargin(8)),
                 ComponentWrapper(view: dateTextField, rules: ConstraintRules(parentView: view).snapTop(autocompleteView.view.snp_bottom).marginTop(40).horizontalFullWithMargin(8)),
                 ComponentWrapper(view: priceTextField, rules: ConstraintRules(parentView: view).snapTop(dateTextField.snp_bottom).marginTop(40).horizontalFullWithMargin(8)),
                 ComponentWrapper(view: countTextField, rules: ConstraintRules(parentView: view).snapTop(priceTextField.snp_bottom).marginTop(40).horizontalFullWithMargin(8)),
