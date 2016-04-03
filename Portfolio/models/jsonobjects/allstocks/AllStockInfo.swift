@@ -28,6 +28,8 @@ class AllStockInfo: NSObject, Unboxable {
             }
             .map {
                 (info: StockInfo) in AutocompleteDataItem(text: info.ITEM_SECTOR, detail: info.LONG_NAME)
+            }.filter {
+                (di: AutocompleteDataItem) in di.text.lowercaseString.containsString("ose")
             }
         } catch {
             return []
