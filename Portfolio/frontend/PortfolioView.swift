@@ -26,24 +26,27 @@ class PortfolioView: UIViewController {
         chart.visibleXRange = 31
         chart.refreshData()
 
-        titleLabel = createLabel("Din portefølje")
+        let header = Header()
+        .withTitle("Din protefølje")
+        .withRightButton("+", action: testAction)
         valueLabel = createLabel("Nåværende verdi: ")
         incLabel = createLabel("Dagens endring: ")
         valueTextLabel = createLabel("22")
         incValue = createLabel("3 %")
 
         addChildViewController(chart)
+        addChildViewController(header)
 
         view.addSubview(chart.view)
-        view.addSubview(titleLabel)
+        view.addSubview(header.view)
         view.addSubview(valueLabel)
         view.addSubview(incLabel)
         view.addSubview(incValue)
         view.addSubview(valueTextLabel)
 
         let comp: [ComponentWrapper] = [
-                ComponentWrapper(view: titleLabel, rules: ConstraintRules(parentView: view).centerX().snapTop().marginTop(40)),
-                ComponentWrapper(view: valueLabel, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(20).width(150).snapTop(titleLabel.snp_bottom).marginTop(50)),
+                ComponentWrapper(view: header.view, rules: ConstraintRules(parentView: view).snapTop().horizontalFullWithMargin(0).height(60)),
+                ComponentWrapper(view: valueLabel, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(20).width(150).snapTop(header.view.snp_bottom).marginTop(50)),
                 ComponentWrapper(view: incLabel, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(20).width(150).snapTop(valueLabel.snp_bottom).marginTop(10)),
                 ComponentWrapper(view: valueTextLabel, rules: ConstraintRules(parentView: view).snapLeft(valueLabel.snp_right).snapTop(valueLabel.snp_top)),
                 ComponentWrapper(view: incValue, rules: ConstraintRules(parentView: view).snapLeft(incLabel.snp_right).snapTop(incLabel.snp_top)),
@@ -83,6 +86,9 @@ class PortfolioView: UIViewController {
         return nil
     }
 
+    func testAction(){
+        print("test")
+    }
 
     func redraw(notification: NSNotification) {
         chart.data = gatherChartData(notification.object as! Store)

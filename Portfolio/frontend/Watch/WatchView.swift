@@ -16,30 +16,25 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
         super.viewDidLoad()
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "reload:", name:"StoreChanged", object:nil)
-        view.backgroundColor = DARK_GREY
 
         controller = tabBarController as! MyTabBarController
         borsResource = OsloBorsResource()
+
+        let header = Header().withTitle("Watches").withRightButton("+", action: toNewStock)
 
         watchList = UITableView()
         watchList.dataSource = self
         watchList.delegate = self
 
-        newWatchButton = MKButton()
-        newWatchButton.backgroundColor = UIColor(hex: 0xFFC107)
-        newWatchButton.cornerRadius = 30.0
-        newWatchButton.elevation = 4.0
-        newWatchButton.shadowOffset = CGSize(width: 0, height: 0)
-        newWatchButton.setTitle("+", forState: .Normal)
-        newWatchButton.addTarget(self, action: "toNewStock:", forControlEvents: .TouchUpInside)
+        addChildViewController(header)
 
+        view.addSubview(header.view)
         view.addSubview(watchList)
-        view.addSubview(newWatchButton)
 
 
         let comp = [
-            ComponentWrapper(view: watchList, rules: ConstraintRules(parentView: view).marginTop(60).snapBottom().horizontalFullWithMargin(0).snapTop()),
-            ComponentWrapper(view: newWatchButton, rules: ConstraintRules(parentView: view).width(60).height(60).snapBottom().snapRight().marginBottom(60).marginRight(20))
+            ComponentWrapper(view: header.view, rules: ConstraintRules(parentView: view).snapTop().horizontalFullWithMargin(0).height(60)),
+            ComponentWrapper(view: watchList, rules: ConstraintRules(parentView: view).snapBottom().horizontalFullWithMargin(0).snapTop(header.view.snp_bottom))
         ]
 
         SnapKitHelpers.setConstraints(comp)
@@ -116,7 +111,7 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
         presentViewController(vc, animated: false, completion: nil)
     }
 
-    func toNewStock(sender:UIButton){
+    func toNewStock(){
         let autoCompleteView = ModalAutocompleteView(title: "Legg til aksje", store: controller.store, callback: callback)
 
         let vc = Modal(vc: autoCompleteView, callback: callback)

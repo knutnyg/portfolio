@@ -4,7 +4,6 @@ import SnapKit
 
 class TradesView: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-    var addTrade:UIButton!
     var tradesTable:UITableView!
 
     var controller:MyTabBarController!
@@ -20,25 +19,30 @@ class TradesView: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
         controller = tabBarController as! MyTabBarController
 
-        addTrade = createButton("Add Trade")
-        addTrade.addTarget(self, action: "addTrade:", forControlEvents: .TouchUpInside)
+        let header = Header().withTitle("Trades").withRightButton("+", action:addTrade)
+//
+//        addTrade = createButton("Add Trade")
+//        addTrade.addTarget(self, action: "addTrade:", forControlEvents: .TouchUpInside)
 
         tradesTable = UITableView()
         tradesTable.dataSource = self
         tradesTable.delegate = self
 
-        view.addSubview(addTrade)
+        addChildViewController(header)
+
+        view.addSubview(header.view)
+//        view.addSubview(addTrade)
         view.addSubview(tradesTable)
 
         let components:[ComponentWrapper] = [
-            ComponentWrapper(view: addTrade, rules: ConstraintRules(parentView: view).centerX().marginTop(150).snapTop()),
-            ComponentWrapper(view: tradesTable, rules: ConstraintRules(parentView: view).snapBottom().snapTop().marginTop(200).snapLeft().snapRight())
+            ComponentWrapper(view: header.view, rules: ConstraintRules(parentView: view).snapTop().horizontalFullWithMargin(0).height(60)),
+            ComponentWrapper(view: tradesTable, rules: ConstraintRules(parentView: view).snapBottom().snapTop(header.view.snp_bottom).horizontalFullWithMargin(0))
         ]
 
         SnapKitHelpers.setConstraints(components)
     }
 
-    func addTrade(sender:UIButton){
+    func addTrade(){
         let vc = NewTrade(store: controller.store)
         presentViewController(vc, animated: false, completion: nil)
     }
