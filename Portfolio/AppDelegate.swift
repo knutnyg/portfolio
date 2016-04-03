@@ -1,5 +1,6 @@
 
 import UIKit
+import Font_Awesome_Swift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -14,12 +15,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let portfolio = PortfolioView()
         portfolio.tabBarItem = UITabBarItem(title: "Portfolio", image: nil, tag: 0)
+        portfolio.tabBarItem.setFAIcon(FAType.FAAreaChart)
 
         let trades = TradesView()
         trades.tabBarItem = UITabBarItem(title: "Trades", image: nil, tag: 1)
+        trades.tabBarItem.setFAIcon(FAType.FAExchange)
 
         let watch = WatchView()
         watch.tabBarItem = UITabBarItem(title: "Watch", image: nil, tag: 2)
+        watch.tabBarItem.setFAIcon(FAType.FAEye)
 
         let controllers = [portfolio, trades, watch]
         tabBarController.viewControllers = controllers
@@ -29,8 +33,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         return true
     }
-
-
 
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
