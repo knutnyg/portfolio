@@ -15,10 +15,16 @@ class Modal : UIViewController, UIGestureRecognizerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.5)
+        view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.7)
 
         addChildViewController(vc)
         view.addSubview(vc.view)
+
+        vc.view.layer.cornerRadius = 10.0
+        vc.view.layer.shadowColor = UIColor.blackColor().CGColor
+        vc.view.layer.shadowOffset = CGSizeZero
+        vc.view.layer.shadowOpacity = 0.5
+        vc.view.layer.shadowRadius = 5
 
         let touch = UITapGestureRecognizer(target:self, action:"dismiss:")
         view.addGestureRecognizer(touch)
@@ -27,11 +33,20 @@ class Modal : UIViewController, UIGestureRecognizerDelegate {
         vc.view.backgroundColor = BLUE_GREY
 
         let comp = [
-                ComponentWrapper(view: vc.view, rules: ConstraintRules(parentView: view).centerY(-100).horizontalFullWithMargin(0).height(300))
+                ComponentWrapper(view: vc.view, rules: ConstraintRules(parentView: view).snapBottom().marginBottom(-300).horizontalFullWithMargin(0).height(300))
         ]
 
         SnapKitHelpers.setConstraints(comp)
     }
+
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
+        SnapKitHelpers.updateConstraints([ComponentWrapper(view: vc.view, rules: ConstraintRules(parentView: view).snapBottom().marginBottom(190).horizontalFullWithMargin(12).height(300))])
+        UIView.animateWithDuration(0.30, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: view.layoutIfNeeded, completion: nil)
+
+    }
+
 
     public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
         if(touch.view == view) {
@@ -42,9 +57,16 @@ class Modal : UIViewController, UIGestureRecognizerDelegate {
     }
 
     func dismiss(sender: UITapGestureRecognizer){
-        self.dismissViewControllerAnimated(false, completion: callback)
+        UIView.animateWithDuration(0.3, animations: {
+            self.view.alpha = 0.0
+
+        }, completion: d)
+
     }
 
+    func d(bool:Bool) {
+        self.dismissViewControllerAnimated(false, completion: callback)
+    }
 
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

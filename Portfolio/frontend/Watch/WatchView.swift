@@ -83,18 +83,9 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let stock:Stock = controller.store.watchedStocks[indexPath.item]
-//        let cell:UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
         let cell = WatchTableViewCell(stock: stock)
 
         return cell;
-
-
-//
-//        if let meta = stock.meta {
-//            cell.textLabel?.text = "\(stock.ticker) " + String(format: "%.2f", meta.ASK!) + "   " + String(format: "%.2f", meta.CHANGE_PCT_SLACK ?? -1) + "%"
-//        } else {
-//            cell.textLabel?.text = stock.ticker
-//        }
     }
 
     func numberOfSectionsInTableView(tableView: UITableView?) -> Int {

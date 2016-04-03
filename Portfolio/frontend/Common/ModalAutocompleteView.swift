@@ -38,7 +38,14 @@ class ModalAutocompleteView : UIViewController, AutocompleteViewDelegate {
     }
 
     func userSelectedItem(item:String) {
-        dismissViewControllerAnimated(false, completion: callback)
+        UIView.animateWithDuration(0.3, animations: {
+            self.view.alpha = 0.0
+
+        }, completion: d)
+    }
+
+    func d(bool:Bool) {
+        self.dismissViewControllerAnimated(false, completion: callback)
     }
 
     required init(coder aDecoder: NSCoder) {
