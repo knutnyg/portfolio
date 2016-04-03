@@ -20,7 +20,9 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
         controller = tabBarController as! MyTabBarController
         borsResource = OsloBorsResource()
 
-        let header = Header().withTitle("Watches").withRightButton("+", action: toNewStock)
+        let header = Header()
+        .withTitle("Watches", color: UIColor.whiteColor(), font: nil)
+        .withRightButtonText("+", action: toNewStock)
 
         watchList = UITableView()
         watchList.dataSource = self
@@ -80,18 +82,19 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-
-        let cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
-
         let stock:Stock = controller.store.watchedStocks[indexPath.item]
+//        let cell:UITableViewCell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
+        let cell = WatchTableViewCell(stock: stock)
 
-        if let meta = stock.meta {
-            cell.textLabel?.text = "\(stock.ticker) " + String(format: "%.2f", meta.ASK!) + "   " + String(format: "%.2f", meta.CHANGE_PCT_SLACK ?? -1) + "%"
-        } else {
-            cell.textLabel?.text = stock.ticker
-        }
+        return cell;
 
-        return cell
+
+//
+//        if let meta = stock.meta {
+//            cell.textLabel?.text = "\(stock.ticker) " + String(format: "%.2f", meta.ASK!) + "   " + String(format: "%.2f", meta.CHANGE_PCT_SLACK ?? -1) + "%"
+//        } else {
+//            cell.textLabel?.text = stock.ticker
+//        }
     }
 
     func numberOfSectionsInTableView(tableView: UITableView?) -> Int {
@@ -103,7 +106,7 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 40
+        return 50
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

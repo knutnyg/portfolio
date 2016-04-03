@@ -10,6 +10,7 @@
 		324F41013827B198202DEE5E /* DateValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F46FFE4D8F71BCE6372ED /* DateValue.swift */; };
 		324F412464C6BD3A34BD822D /* StockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4658B323261850F80940 /* StockView.swift */; };
 		324F41815E0F8DC455938FCD /* StockMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4AF8B33584826AD494E9 /* StockMeta.swift */; };
+		324F41881656651BDDC0EAFC /* CellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4D98B4A5A1D032423238 /* CellViewController.swift */; };
 		324F41FE8E452E52C03C5F69 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 324F4E1FF0A96963207D9F75 /* Podfile */; };
 		324F420288BCE996A2C5BB38 /* LocaleUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4B2C8F36E27EC9C08723 /* LocaleUtils.swift */; };
 		324F423DB5BBBCFA378CEE65 /* ModalAutocompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F442200A47E00DA05EEDB /* ModalAutocompleteView.swift */; };
@@ -31,6 +32,7 @@
 		324F44CE19B6CEC02C734B1B /* MyTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F44B0695D580D520E0414 /* MyTabBarController.swift */; };
 		324F44DACB703A3C2C30033F /* LocaleUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4B2C8F36E27EC9C08723 /* LocaleUtils.swift */; };
 		324F44DB171EAABF93160BC0 /* ComponentWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4C3C1006401B9F76C214 /* ComponentWrapper.swift */; };
+		324F44EE9459EB55E5FD0C64 /* WatchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4B52A13E632957A7D390 /* WatchTableViewCell.swift */; };
 		324F44F74A9587450D93B718 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4B29B99A33CE392659A7 /* Extensions.swift */; };
 		324F454D7FA1B58D5F1F0C0B /* AllStockInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F48EAB8496DE0A58C0238 /* AllStockInfo.swift */; };
 		324F45DF75726A3F616377AE /* NewTrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4F147B8C0AF94883D620 /* NewTrade.swift */; };
@@ -65,6 +67,7 @@
 		324F4970C0271BCC2EF47788 /* ConstraintRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4758553072204141BBC4 /* ConstraintRules.swift */; };
 		324F49B12B5D57A1E591FDEA /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F43401E9B18470233BD3E /* Action.swift */; };
 		324F49DA286C6DD21E2972D9 /* StockHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4715E502A84BEA39780C /* StockHistory.swift */; };
+		324F4A42726A2B9D6075E13C /* WatchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4B52A13E632957A7D390 /* WatchTableViewCell.swift */; };
 		324F4A617F2B20E8B83F93F8 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4B29B99A33CE392659A7 /* Extensions.swift */; };
 		324F4A8BBB0BDD0853D25DBA /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F43401E9B18470233BD3E /* Action.swift */; };
 		324F4AC320DFCD00F6847DC2 /* Portfolio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4E5BF0A257E1C62B06BE /* Portfolio.swift */; };
@@ -92,6 +95,7 @@
 		324F4F09031949DCF9A29DB9 /* StockInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F404DD447D5AA2C752318 /* StockInfo.swift */; };
 		324F4F1D24C09F02AA546E13 /* DateValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F46FFE4D8F71BCE6372ED /* DateValue.swift */; };
 		324F4F2BA3A242B7691DB04B /* PortfolioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4B6F1780ED2A6C8E7DD0 /* PortfolioTests.swift */; };
+		324F4F3D9FFC574F76C85894 /* CellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4D98B4A5A1D032423238 /* CellViewController.swift */; };
 		324F4F9FE3FE2EAAD619A30C /* PortfolioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4543E037F86F23822FF2 /* PortfolioView.swift */; };
 		324F4FA79B104D2535546B7D /* StockPriceInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4D0B6EF25623F6671F23 /* StockPriceInstance.swift */; };
 		324F4FB7A4B39BA6FAD10D61 /* OsloBorsResourceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F40F0BFB9144F0B1F6D33 /* OsloBorsResourceMock.swift */; };
@@ -152,6 +156,7 @@
 		324F4B29B99A33CE392659A7 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		324F4B2C8F36E27EC9C08723 /* LocaleUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocaleUtils.swift; sourceTree = "<group>"; };
 		324F4B4BAC996EBC1C14D6B4 /* FAHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAHelpers.swift; sourceTree = "<group>"; };
+		324F4B52A13E632957A7D390 /* WatchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchTableViewCell.swift; sourceTree = "<group>"; };
 		324F4B5686A7B3AF4F88E0E7 /* AutocompleteViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutocompleteViewDelegate.swift; sourceTree = "<group>"; };
 		324F4B6F1780ED2A6C8E7DD0 /* PortfolioTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortfolioTests.swift; sourceTree = "<group>"; };
 		324F4C0AA42CA7BF71162F97 /* Rows.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rows.swift; sourceTree = "<group>"; };
@@ -159,6 +164,7 @@
 		324F4CB31B879D624A99A082 /* Modal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
 		324F4D0B6EF25623F6671F23 /* StockPriceInstance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockPriceInstance.swift; sourceTree = "<group>"; };
 		324F4D5F7A16BA24EBC64BE1 /* AutocompleteDataItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutocompleteDataItem.swift; sourceTree = "<group>"; };
+		324F4D98B4A5A1D032423238 /* CellViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellViewController.swift; sourceTree = "<group>"; };
 		324F4DA1466E39D8C3B4D3C4 /* OsloBorsResource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OsloBorsResource.swift; sourceTree = "<group>"; };
 		324F4E1FF0A96963207D9F75 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 		324F4E5BF0A257E1C62B06BE /* Portfolio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Portfolio.swift; sourceTree = "<group>"; };
@@ -262,6 +268,8 @@
 			isa = PBXGroup;
 			children = (
 				324F4ACB488080841C0000E3 /* WatchView.swift */,
+				324F4B52A13E632957A7D390 /* WatchTableViewCell.swift */,
+				324F4D98B4A5A1D032423238 /* CellViewController.swift */,
 			);
 			path = Watch;
 			sourceTree = "<group>";
@@ -680,6 +688,8 @@
 				324F4FE6B5BB5E8BE9D80B64 /* ModalAutocompleteView.swift in Sources */,
 				324F430DB899FE73D1BA86EB /* LineChartKomponent.swift in Sources */,
 				324F425C3CD40CC49CF9415E /* Header.swift in Sources */,
+				324F4A42726A2B9D6075E13C /* WatchTableViewCell.swift in Sources */,
+				324F41881656651BDDC0EAFC /* CellViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -733,6 +743,8 @@
 				324F423DB5BBBCFA378CEE65 /* ModalAutocompleteView.swift in Sources */,
 				324F42E87A7405B138729C48 /* LineChartKomponent.swift in Sources */,
 				324F4668D934EAEBFF2A5B6C /* Header.swift in Sources */,
+				324F44EE9459EB55E5FD0C64 /* WatchTableViewCell.swift in Sources */,
+				324F4F3D9FFC574F76C85894 /* CellViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -19,7 +19,9 @@ class TradesView: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
         controller = tabBarController as! MyTabBarController
 
-        let header = Header().withTitle("Trades").withRightButton("+", action:addTrade)
+        let header = Header()
+        .withTitle("Trades", color: UIColor.whiteColor(), font: nil)
+        .withRightButtonText("+", action:addTrade)
 //
 //        addTrade = createButton("Add Trade")
 //        addTrade.addTarget(self, action: "addTrade:", forControlEvents: .TouchUpInside)

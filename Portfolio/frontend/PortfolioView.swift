@@ -2,6 +2,7 @@ import Foundation
 import Charts
 import SnapKit
 import BrightFutures
+import Font_Awesome_Swift
 
 class PortfolioView: UIViewController {
 
@@ -27,8 +28,8 @@ class PortfolioView: UIViewController {
         chart.refreshData()
 
         let header = Header()
-        .withTitle("Din protefølje")
-        .withRightButton("+", action: testAction)
+        .withTitle("Din portefølje", color: UIColor.whiteColor(), font: nil)
+
         valueLabel = createLabel("Nåværende verdi: ")
         incLabel = createLabel("Dagens endring: ")
         valueTextLabel = createLabel("22")

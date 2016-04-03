@@ -17,6 +17,7 @@ class StockMeta {
     var TIME: Double?
     var TRADE_TIME: Double?
     var TURNOVER_TOTAL: Double?
+    var LONG_NAME: String?
     var timestamp:NSDate!
 
     init(data: [String:AnyObject]) {
@@ -35,6 +36,7 @@ class StockMeta {
         TIME = data["TIME"] as? Double
         TRADE_TIME = data["TRADE_TIME"] as? Double
         TURNOVER_TOTAL = data["TURNOVER_TOTAL"] as? Double
+        LONG_NAME = data["LONG_NAME"] as? String
         timestamp = NSDate()
     }
 
