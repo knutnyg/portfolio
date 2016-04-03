@@ -31,7 +31,6 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
         view.addSubview(header.view)
         view.addSubview(watchList)
 
-
         let comp = [
             ComponentWrapper(view: header.view, rules: ConstraintRules(parentView: view).snapTop().horizontalFullWithMargin(0).height(60)),
             ComponentWrapper(view: watchList, rules: ConstraintRules(parentView: view).snapBottom().horizontalFullWithMargin(0).snapTop(header.view.snp_bottom))
@@ -59,8 +58,10 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
             (stocks:[Stock]) in
             store.watchedStocks = stocks
             self.watchList.reloadData()
+        }.onFailure{
+            error in
+            print(error)
         }
-
     }
 
     public func reload(notification:NSNotification){
@@ -92,7 +93,6 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
 
         return cell
     }
-
 
     func numberOfSectionsInTableView(tableView: UITableView?) -> Int {
         return 1

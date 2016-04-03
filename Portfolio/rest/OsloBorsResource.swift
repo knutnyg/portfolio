@@ -201,7 +201,7 @@ class OsloBorsResource {
                 if let data = JSON.findNodeInJSON("values", node: json) as? [String:AnyObject] {
                     promise.success(Stock(ticker: stock.ticker).withMeta(StockMeta(data: data)))
                 } else {
-                    promise.failure(NSError(domain: "meta", code: 500, userInfo: nil))
+                    promise.success(Stock(ticker: stock.ticker))
                 }
             }
         } catch {
