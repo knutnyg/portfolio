@@ -17,6 +17,12 @@ link_with 'Portfolio', 'PortfolioTests'
 pod 'MaterialKit', '0.4'
 link_with 'Portfolio', 'PortfolioTests'
 
+pod 'Google-Material-Design-Icons-Swift', '~> 1.0.1'
+link_with 'Portfolio', 'PortfolioTests'
+
+pod 'Font-Awesome-Swift', '~> 1.4.6'
+link_with 'Portfolio', 'PortfolioTests'
+
 post_install do |installer|
   plist_buddy = "/usr/libexec/PlistBuddy"
 
