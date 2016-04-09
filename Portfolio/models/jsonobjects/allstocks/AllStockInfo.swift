@@ -13,7 +13,7 @@ class AllStockInfo: NSObject, Unboxable {
                 (row: Rows) in row.values
             }
             .map {
-                (info: StockInfo) in info.ITEM_SECTOR
+                (info: StockInfo) in info.ITEM_SECTOR ?? "?"
             }
         } catch {
             return []
@@ -27,7 +27,7 @@ class AllStockInfo: NSObject, Unboxable {
                 (row: Rows) in row.values
             }
             .map {
-                (info: StockInfo) in AutocompleteDataItem(text: info.ITEM_SECTOR, detail: info.LONG_NAME)
+                (info: StockInfo) in AutocompleteDataItem(text: info.ITEM_SECTOR ?? "?", detail: info.LONG_NAME ?? "?")
             }.filter {
                 (di: AutocompleteDataItem) in di.text.lowercaseString.containsString("ose")
             }

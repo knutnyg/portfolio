@@ -26,6 +26,9 @@ class AutocompleteView: UIViewController, UITableViewDataSource, UITableViewDele
 
         searchBar = UISearchBar()
         searchBar.searchBarStyle = UISearchBarStyle.Minimal
+        searchBar.placeholder = "Search"
+
+        searchBar.translucent = false
         searchBar.delegate = self
         searchActive = false
 
@@ -37,6 +40,7 @@ class AutocompleteView: UIViewController, UITableViewDataSource, UITableViewDele
         view.addSubview(tableView)
 
         visibleData = limit(filter(data), count: 6)
+
 
         let components: [ComponentWrapper] =
         [

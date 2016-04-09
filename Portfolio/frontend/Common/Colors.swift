@@ -10,6 +10,7 @@ let YELLOW = UIColor(hex: 0xFFC107)
 let DARK_GREY = UIColor(hex: 0x455A64)
 let LIGHT_GREY = UIColor(hex: 0xCFD8DC)
 let BLUE_GREY = UIColor(hex: 0x607D8B)
+let WHITE = UIColor(hex: 0xFFFFFF)
 
 //FONTS
 let SUBTITLE_FONT_COLOR = UIColor(hex: 0x727272)

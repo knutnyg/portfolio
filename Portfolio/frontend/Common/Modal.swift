@@ -16,6 +16,7 @@ class Modal : UIViewController, UIGestureRecognizerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.7)
+        view.alpha = 0
 
         addChildViewController(vc)
         view.addSubview(vc.view)
@@ -30,10 +31,10 @@ class Modal : UIViewController, UIGestureRecognizerDelegate {
         view.addGestureRecognizer(touch)
         touch.delegate = self
 
-        vc.view.backgroundColor = BLUE_GREY
+        vc.view.backgroundColor = WHITE
 
         let comp = [
-                ComponentWrapper(view: vc.view, rules: ConstraintRules(parentView: view).snapBottom().marginBottom(-150).horizontalFullWithMargin(0).height(300))
+                ComponentWrapper(view: vc.view, rules: ConstraintRules(parentView: view).snapBottom().marginBottom(190).horizontalFullWithMargin(12).height(300))
         ]
 
         SnapKitHelpers.setConstraints(comp)
@@ -42,8 +43,12 @@ class Modal : UIViewController, UIGestureRecognizerDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        SnapKitHelpers.updateConstraints([ComponentWrapper(view: vc.view, rules: ConstraintRules(parentView: view).snapBottom().marginBottom(190).horizontalFullWithMargin(12).height(300))])
-        UIView.animateWithDuration(0.30, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: view.layoutIfNeeded, completion: nil)
+//        SnapKitHelpers.updateConstraints([ComponentWrapper(view: vc.view, rules: ConstraintRules(parentView: view).snapBottom().marginBottom(190).horizontalFullWithMargin(12).height(300))])
+//        UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: view.layoutIfNeeded, completion: nil)
+        UIView.animateWithDuration(0.2, animations: {
+            self.view.alpha = 1.0
+
+        })
 
     }
 

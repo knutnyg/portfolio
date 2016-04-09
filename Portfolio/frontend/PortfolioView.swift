@@ -30,6 +30,7 @@ class PortfolioView: UIViewController {
         let header = Header()
         .withTitle("Din portefølje", color: UIColor.whiteColor(), font: nil)
 
+
         valueLabel = createLabel("Nåværende verdi: ")
         incLabel = createLabel("Dagens endring: ")
         valueTextLabel = createLabel("22")

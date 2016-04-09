@@ -4,6 +4,7 @@ import UIKit
 import SnapKit
 import MaterialKit
 import BrightFutures
+import Font_Awesome_Swift
 
 class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -22,7 +23,7 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
 
         let header = Header()
         .withTitle("Watches", color: UIColor.whiteColor(), font: nil)
-        .withRightButtonText("+", action: toNewStock)
+        .withRightButtonIcon(FAType.FAPlus, action: toNewStock, color: UIColor.whiteColor())
 
         watchList = UITableView()
         watchList.dataSource = self
@@ -69,8 +70,6 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
     public func reload(notification:NSNotification){
         watchList.reloadData()
     }
-
-
 
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
