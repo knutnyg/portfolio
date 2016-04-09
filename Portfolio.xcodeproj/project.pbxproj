@@ -48,6 +48,7 @@
 		324F4698355A300A3C5C29A3 /* SnapKitHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F42DC23274717E9AF481A /* SnapKitHelpers.swift */; };
 		324F46B233FC8BC1E163871B /* StockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4658B323261850F80940 /* StockView.swift */; };
 		324F46C49A6E0A114D934200 /* TradesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F41257CFE52E9421CFEAA /* TradesView.swift */; };
+		324F46D1FC5166048DC32038 /* ModalPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F49011374EEBEE0C141E1 /* ModalPresentable.swift */; };
 		324F46D5167E21EA332B8A6C /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4CB31B879D624A99A082 /* Modal.swift */; };
 		324F4702737B8AF85A5791BF /* WatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4ACB488080841C0000E3 /* WatchView.swift */; };
 		324F474AA52B9D29E8519306 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4A1C87153F970666A183 /* Colors.swift */; };
@@ -749,6 +750,7 @@
 				324F44EE9459EB55E5FD0C64 /* WatchTableViewCell.swift in Sources */,
 				324F4F3D9FFC574F76C85894 /* CellViewController.swift in Sources */,
 				324F40E30B6DC52A10B775D7 /* AddWatch.swift in Sources */,
+				324F46D1FC5166048DC32038 /* ModalPresentable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
