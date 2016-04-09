@@ -22,9 +22,6 @@ class TradesView: UIViewController, UITableViewDataSource, UITableViewDelegate {
         let header = Header()
         .withTitle("Trades", color: UIColor.whiteColor(), font: nil)
         .withRightButtonText("+", action:addTrade)
-//
-//        addTrade = createButton("Add Trade")
-//        addTrade.addTarget(self, action: "addTrade:", forControlEvents: .TouchUpInside)
 
         tradesTable = UITableView()
         tradesTable.dataSource = self
@@ -33,7 +30,6 @@ class TradesView: UIViewController, UITableViewDataSource, UITableViewDelegate {
         addChildViewController(header)
 
         view.addSubview(header.view)
-//        view.addSubview(addTrade)
         view.addSubview(tradesTable)
 
         let components:[ComponentWrapper] = [
@@ -45,7 +41,8 @@ class TradesView: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
 
     func addTrade(){
-        let vc = NewTrade(store: controller.store)
+        let vc = Modal(vc: NewTrade(store: controller.store), callback: nil)
+        vc.modalPresentationStyle = .OverCurrentContext
         presentViewController(vc, animated: false, completion: nil)
     }
 

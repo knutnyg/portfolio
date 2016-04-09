@@ -110,7 +110,7 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
 
     func toNewStock(){
-        let autoCompleteView = ModalAutocompleteView(title: "Legg til aksje", store: controller.store, callback: callback)
+        let autoCompleteView = AddWatch(title: "Legg til aksje", store: controller.store, callback: callback)
 
         let vc = Modal(vc: autoCompleteView, callback: callback)
         vc.modalPresentationStyle = .OverCurrentContext

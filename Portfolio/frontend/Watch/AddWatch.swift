@@ -3,22 +3,23 @@ import Foundation
 import UIKit
 import Font_Awesome_Swift
 
-class ModalAutocompleteView : UIViewController, AutocompleteViewDelegate {
+class AddWatch: ModalViewController, AutocompleteViewDelegate {
 
     var titleText:String!
 
-    let store:Store!
-    var callback:(() -> Void)?
+    var store:Store!
 
     init(title: String, store:Store, callback:(()->Void)?){
+        super.init(nibName: nil, bundle: nil)
         self.titleText = title
         self.store = store
         self.callback = callback
-        super.init(nibName: nil, bundle: nil)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        height = 300
 
         let header = Header()
         .withTitle(titleText, color: WHITE, font: nil)
@@ -43,22 +44,20 @@ class ModalAutocompleteView : UIViewController, AutocompleteViewDelegate {
         SnapKitHelpers.setConstraints(comp)
     }
 
-    func cancel(){
-        UIView.animateWithDuration(0.3, animations: {
-            self.view.alpha = 0.0
 
-        }, completion: d)
+
+    func hideSubComponents() -> Void {
+    }
+
+    func showSubComponents() -> Void {
     }
 
     func userSelectedItem(item:String) {
+        store.addWatch(Stock(ticker: item))
         UIView.animateWithDuration(0.3, animations: {
             self.view.alpha = 0.0
 
-        }, completion: d)
-    }
-
-    func d(bool:Bool) {
-        self.dismissViewControllerAnimated(false, completion: callback)
+        }, completion: dismiss)
     }
 
     required init(coder aDecoder: NSCoder) {

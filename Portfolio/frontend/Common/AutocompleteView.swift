@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-class AutocompleteView: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
+class AutocompleteView: ModalViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
 
     var searchBar: UISearchBar!
     var tableView: UITableView!
@@ -12,17 +12,18 @@ class AutocompleteView: UIViewController, UITableViewDataSource, UITableViewDele
     var data: [AutocompleteDataItem]!
     var visibleData: [AutocompleteDataItem]!
     var store:Store
-    var callback:(()->Void)?
 
     init(store:Store, callback:(()->Void)?){
         self.store = store
         self.data = store.allStockInfo.getTickersForAutocomplete()
-        self.callback = callback
         super.init(nibName: nil, bundle: nil)
+        self.callback = callback
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        height = 300
 
         searchBar = UISearchBar()
         searchBar.searchBarStyle = UISearchBarStyle.Minimal
@@ -89,6 +90,12 @@ class AutocompleteView: UIViewController, UITableViewDataSource, UITableViewDele
         SnapKitHelpers.updateConstraints([
                 ComponentWrapper(view: tableView, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(8).snapTop(searchBar.snp_bottom).height(30*tableHeight))
         ])
+        if tableHeight > 0 {
+            delegate.hideSubComponents()
+        } else {
+            delegate.showSubComponents()
+        }
+
     }
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -106,8 +113,10 @@ class AutocompleteView: UIViewController, UITableViewDataSource, UITableViewDele
         self.searchBar.text = visibleData[indexPath.item].text
         self.tableView.hidden = true
         delegate.userSelectedItem(visibleData[indexPath.item].text)
-        store.addWatch(Stock(ticker: visibleData[indexPath.item].text))
+        delegate.showSubComponents()
     }
+
+
 
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 30

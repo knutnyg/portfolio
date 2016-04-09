@@ -4,10 +4,10 @@ import UIKit
 
 class Modal : UIViewController, UIGestureRecognizerDelegate {
 
-    let vc:UIViewController
+    let vc:ModalViewController
     var callback:(() -> Void)?
 
-    init(vc:UIViewController, callback:(() -> Void)?) {
+    init(vc:ModalViewController, callback:(() -> Void)?) {
         self.vc = vc
         self.callback = callback
         super.init(nibName: nil, bundle: nil)
@@ -34,7 +34,7 @@ class Modal : UIViewController, UIGestureRecognizerDelegate {
         vc.view.backgroundColor = WHITE
 
         let comp = [
-                ComponentWrapper(view: vc.view, rules: ConstraintRules(parentView: view).snapBottom().marginBottom(190).horizontalFullWithMargin(12).height(300))
+                ComponentWrapper(view: vc.view, rules: ConstraintRules(parentView: view).centerY().horizontalFullWithMargin(12).height(vc.height))
         ]
 
         SnapKitHelpers.setConstraints(comp)
