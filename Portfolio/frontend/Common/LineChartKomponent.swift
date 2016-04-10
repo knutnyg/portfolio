@@ -3,7 +3,7 @@ import Foundation
 import Charts
 import UIKit
 
-class LineChartKomponent : UIViewController{
+class LineChartKomponent : UIViewController, ChartViewDelegate{
 
     var chart:LineChartView!
     var data:[StockPriceInstance]!
@@ -13,10 +13,16 @@ class LineChartKomponent : UIViewController{
         chart = LineChartView()
         chart.rightAxis.enabled = false
         chart.noDataText = "You must give me the datas!"
-
+        chart.legend.enabled = false
+        chart.descriptionText = ""
         self.data = []
-
         super.init(nibName: nil, bundle: nil)
+        chart.delegate = self
+    }
+
+    func chartValueSelected(chartView: ChartViewBase, entry: ChartDataEntry, dataSetIndex: Int, highlight: ChartHighlight) {
+        print(entry)
+        print(dataSetIndex)
     }
 
     override func viewDidLoad() {
