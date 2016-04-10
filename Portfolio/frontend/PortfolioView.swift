@@ -24,12 +24,11 @@ class PortfolioView: UIViewController {
         view.backgroundColor = UIColor.whiteColor()
 
         chart = LineChartKomponent(data: gatherChartData(tbvc.store))
-        chart.visibleXRange = 31
+        chart.mode = TimeSpan.MONTH
         chart.refreshData()
 
         let header = Header()
         .withTitle("Din portefølje", color: UIColor.whiteColor(), font: nil)
-
 
         valueLabel = createLabel("Nåværende verdi: ")
         incLabel = createLabel("Dagens endring: ")
@@ -52,7 +51,7 @@ class PortfolioView: UIViewController {
                 ComponentWrapper(view: incLabel, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(20).width(150).snapTop(valueLabel.snp_bottom).marginTop(10)),
                 ComponentWrapper(view: valueTextLabel, rules: ConstraintRules(parentView: view).snapLeft(valueLabel.snp_right).snapTop(valueLabel.snp_top)),
                 ComponentWrapper(view: incValue, rules: ConstraintRules(parentView: view).snapLeft(incLabel.snp_right).snapTop(incLabel.snp_top)),
-                ComponentWrapper(view: chart.view, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(10).snapBottom().height(400))]
+                ComponentWrapper(view: chart.view, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(10).snapBottom().marginBottom(80).height(350))]
 
         SnapKitHelpers.setConstraints(comp)
     }
@@ -86,10 +85,6 @@ class PortfolioView: UIViewController {
             }
         }
         return nil
-    }
-
-    func testAction(){
-        print("test")
     }
 
     func redraw(notification: NSNotification) {

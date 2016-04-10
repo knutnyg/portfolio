@@ -42,6 +42,7 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
         SnapKitHelpers.setConstraints(comp)
 
         updateAllStockMeta()
+//        updateAllStockHistories()
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -49,9 +50,25 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
         updateAllStockMeta()
     }
 
+    func updateAllStockHistories(){
+        let store = controller.store
 
-    public func updateAllStockMeta(){
-        print("updating stocks")
+        store.watchedStocks
+        .map{borsResource.stockMetaInformation($0)}
+        .sequence()
+        .onSuccess{
+            (stocks:[Stock]) in
+            store.watchedStocks = stocks
+            self.watchList.reloadData()
+        }.onFailure{
+            error in
+            print(error)
+        }
+    }
+
+
+    func updateAllStockMeta(){
+        print("updating stocks meta")
         let store = controller.store
 
         store.watchedStocks
@@ -105,7 +122,12 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let vc = StockView(store: controller.store, stock: controller.store.watchedStocks[indexPath.item])
+        let stockView = StockView(store: controller.store, stock: controller.store.watchedStocks[indexPath.item])
+        stockView.callback = callback
+
+        let vc = Modal(vc: stockView, callback: callback)
+        vc.modalPresentationStyle = .OverCurrentContext
+
         presentViewController(vc, animated: false, completion: nil)
     }
 

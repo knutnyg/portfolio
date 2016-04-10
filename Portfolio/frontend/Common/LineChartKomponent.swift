@@ -7,15 +7,14 @@ class LineChartKomponent : UIViewController{
 
     var chart:LineChartView!
     var data:[StockPriceInstance]!
-    var visibleXRange:CGFloat!
+    var mode:TimeSpan!
 
     init(data: [StockPriceInstance]){
         chart = LineChartView()
         chart.rightAxis.enabled = false
         chart.noDataText = "You must give me the datas!"
 
-        self.data = data
-        visibleXRange = 0
+        self.data = []
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -41,18 +40,23 @@ class LineChartKomponent : UIViewController{
             dataEntries.append(ChartDataEntry(value: data[i].price, xIndex: i))
         }
 
-        let dataset = LineChartDataSet(yVals: dataEntries, label: "Value")
+        let dataset = LineChartDataSet(yVals: dataEntries, label: "Verdi")
         dataset.lineWidth = 2.0
         dataset.drawCircleHoleEnabled = false
         dataset.circleRadius = 0.0
         dataset.drawValuesEnabled = false
+        dataset.setColor(BLUE_GREY)
 
-        chart.data = LineChartData(xVals: data.map{(pair:StockPriceInstance) in pair.date.isInSameDayAs(date: NSDate()) ? pair.date.timeOfDayShortPrintable() : pair.date.shortPrintable()}, dataSet: dataset)
-        chart.setVisibleXRangeMaximum(visibleXRange)
-        chart.moveViewToX(CGFloat(data.count - Int(visibleXRange)))
+        chart.data = LineChartData(xVals: data.map{(pair:StockPriceInstance) in mode == TimeSpan.DAY ? pair.date.timeOfDayShortPrintable() : pair.date.mediumMinusPrintable()}, dataSet: dataset)
+        chart.setVisibleXRangeMaximum(CGFloat(mode.rawValue))
+        chart.moveViewToX(CGFloat(data.count - Int(mode.rawValue)))
     }
 
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+enum TimeSpan: Double {
+    case DAY = 100001.0, MONTH = 31.0, HALF_YEAR = 182.0, YEAR = 365.0, ALL = 100000.0
 }

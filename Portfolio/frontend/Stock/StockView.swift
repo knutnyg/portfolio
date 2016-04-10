@@ -3,8 +3,9 @@ import UIKit
 import SnapKit
 import Charts
 import BrightFutures
+import Font_Awesome_Swift
 
-class StockView: UIViewController {
+class StockView: ModalViewController {
 
     var titleLabel: UILabel!
     var lastLabel: UILabel!
@@ -24,12 +25,12 @@ class StockView: UIViewController {
 
     var newsButton: UIButton!
     var timeresolutionSelector: UISegmentedControl!
-    var chart: LineChartView!
+    var chart: LineChartKomponent!
 
     var stock: Stock!
     var store: Store!
 
-    init(store:Store, stock:Stock){
+    init(store: Store, stock: Stock) {
         self.store = store
         self.stock = stock
         super.init(nibName: nil, bundle: nil)
@@ -40,10 +41,25 @@ class StockView: UIViewController {
 
         view.backgroundColor = UIColor.whiteColor()
 
-        titleLabel = createLabel(stock.ticker)
+        height = 540
+
+        var title = "title"
+
+        if let meta = stock.meta {
+            if let longName = meta.LONG_NAME {
+                title = longName
+            }
+        } else {
+            title = stock.ticker
+        }
+
+        let header = Header()
+        .withTitle(title, color: WHITE, font: nil)
+        .withRightButtonIcon(FAType.FAClose, action: cancel, color: WHITE)
+
         lastLabel = createLabel("Siste")
-        buyLabel = createLabel("Kjøper")
-        sellLabel = createLabel("Selger")
+//        buyLabel = createLabel("Kjøper")
+//        sellLabel = createLabel("Selger")
         incLabel = createLabel("Avk. i dag")
         turnoverLabel = createLabel("Omsatt (MNOK)")
         highLabel = createLabel("Høy")
@@ -62,17 +78,20 @@ class StockView: UIViewController {
         timeresolutionSelector.addTarget(self, action: "selectorChanged:", forControlEvents: UIControlEvents.ValueChanged)
         timeresolutionSelector.selectedSegmentIndex = 0
 
-        chart = LineChartView()
-        chart.rightAxis.enabled = false
-        chart.noDataText = "You must give me the datas!"
+        chart = LineChartKomponent(data: gatherChartData(stock, timespan: TimeSpan.DAY))
+        chart.mode = TimeSpan.DAY
+        chart.refreshData()
 
+        addChildViewController(header)
+        addChildViewController(chart)
+
+        view.addSubview(header.view)
         view.addSubview(lastLabel)
-        view.addSubview(titleLabel)
         view.addSubview(lastValue)
-        view.addSubview(buyLabel)
-        view.addSubview(buyValue)
-        view.addSubview(sellLabel)
-        view.addSubview(sellValue)
+//        view.addSubview(buyLabel)
+//        view.addSubview(buyValue)
+//        view.addSubview(sellLabel)
+//        view.addSubview(sellValue)
         view.addSubview(incLabel)
         view.addSubview(incValue)
         view.addSubview(turnoverLabel)
@@ -83,27 +102,27 @@ class StockView: UIViewController {
         view.addSubview(lowValue)
         view.addSubview(newsButton)
         view.addSubview(timeresolutionSelector)
-        view.addSubview(chart)
+        view.addSubview(chart.view)
 
         let comp: [ComponentWrapper] = [
-                ComponentWrapper(view: titleLabel, rules: ConstraintRules(parentView: view).snapTop().marginTop(20).centerX()),
-                ComponentWrapper(view: lastLabel, rules: ConstraintRules(parentView: view).snapTop(titleLabel.snp_bottom).marginTop(10).snapLeft().marginLeft(8).width(150)),
-                ComponentWrapper(view: buyLabel, rules: ConstraintRules(parentView: view).snapTop(lastLabel.snp_bottom).marginTop(8).snapLeft().marginLeft(8).width(150)),
-                ComponentWrapper(view: sellLabel, rules: ConstraintRules(parentView: view).snapTop(buyLabel.snp_bottom).marginTop(8).snapLeft().marginLeft(8).width(150)),
-                ComponentWrapper(view: incLabel, rules: ConstraintRules(parentView: view).snapTop(sellLabel.snp_bottom).marginTop(8).snapLeft().marginLeft(8).width(150)),
-                ComponentWrapper(view: turnoverLabel, rules: ConstraintRules(parentView: view).snapTop(incLabel.snp_bottom).marginTop(8).snapLeft().marginLeft(8).width(150)),
-                ComponentWrapper(view: lowLabel, rules: ConstraintRules(parentView: view).snapTop(turnoverLabel.snp_bottom).marginTop(8).snapLeft().marginLeft(8).width(150)),
-                ComponentWrapper(view: highLabel, rules: ConstraintRules(parentView: view).snapTop(lowLabel.snp_bottom).marginTop(8).snapLeft().marginLeft(8).width(150)),
+                ComponentWrapper(view: header.view, rules: ConstraintRules(parentView: view).snapTop().horizontalFullWithMargin(0).height(40)),
+                ComponentWrapper(view: lastLabel, rules: ConstraintRules(parentView: view).snapTop(header.view.snp_bottom).marginTop(14).centerX(-40).width(150)),
+//                ComponentWrapper(view: buyLabel, rules: ConstraintRules(parentView: view).snapTop(lastLabel.snp_bottom).marginTop(8).centerX(-40).width(150)),
+//                ComponentWrapper(view: sellLabel, rules: ConstraintRules(parentView: view).snapTop(buyLabel.snp_bottom).marginTop(8).centerX(-40).width(150)),
+                ComponentWrapper(view: incLabel, rules: ConstraintRules(parentView: view).snapTop(lastLabel.snp_bottom).marginTop(8).centerX(-40).width(150)),
+                ComponentWrapper(view: turnoverLabel, rules: ConstraintRules(parentView: view).snapTop(incLabel.snp_bottom).marginTop(8).centerX(-40).width(150)),
+                ComponentWrapper(view: lowLabel, rules: ConstraintRules(parentView: view).snapTop(turnoverLabel.snp_bottom).marginTop(8).centerX(-40).width(150)),
+                ComponentWrapper(view: highLabel, rules: ConstraintRules(parentView: view).snapTop(lowLabel.snp_bottom).marginTop(8).centerX(-40).width(150)),
                 ComponentWrapper(view: lastValue, rules: ConstraintRules(parentView: view).snapLeft(lastLabel.snp_right).marginLeft(20).snapTop(lastLabel.snp_top)),
-                ComponentWrapper(view: buyValue, rules: ConstraintRules(parentView: view).snapLeft(buyLabel.snp_right).marginLeft(20).snapTop(buyLabel.snp_top)),
-                ComponentWrapper(view: sellValue, rules: ConstraintRules(parentView: view).snapLeft(sellLabel.snp_right).marginLeft(20).snapTop(sellLabel.snp_top)),
+//                ComponentWrapper(view: buyValue, rules: ConstraintRules(parentView: view).snapLeft(buyLabel.snp_right).marginLeft(20).snapTop(buyLabel.snp_top)),
+//                ComponentWrapper(view: sellValue, rules: ConstraintRules(parentView: view).snapLeft(sellLabel.snp_right).marginLeft(20).snapTop(sellLabel.snp_top)),
                 ComponentWrapper(view: incValue, rules: ConstraintRules(parentView: view).snapLeft(incLabel.snp_right).marginLeft(20).snapTop(incLabel.snp_top)),
                 ComponentWrapper(view: turnoverValue, rules: ConstraintRules(parentView: view).snapLeft(turnoverLabel.snp_right).marginLeft(20).snapTop(turnoverLabel.snp_top)),
                 ComponentWrapper(view: highValue, rules: ConstraintRules(parentView: view).snapLeft(highLabel.snp_right).marginLeft(20).snapTop(highLabel.snp_top)),
                 ComponentWrapper(view: lowValue, rules: ConstraintRules(parentView: view).snapLeft(lowLabel.snp_right).marginLeft(20).snapTop(lowLabel.snp_top)),
                 ComponentWrapper(view: newsButton, rules: ConstraintRules(parentView: view).snapBottom(timeresolutionSelector.snp_top).marginBottom(10).snapRight(timeresolutionSelector.snp_right)),
-                ComponentWrapper(view: timeresolutionSelector, rules: ConstraintRules(parentView: view).snapBottom(chart.snp_top).marginBottom(10).centerX()),
-                ComponentWrapper(view: chart, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(10).snapBottom().height(250))
+                ComponentWrapper(view: timeresolutionSelector, rules: ConstraintRules(parentView: view).snapBottom(chart.view.snp_top).marginBottom(10).centerX()),
+                ComponentWrapper(view: chart.view, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(10).snapBottom().height(250))
         ]
 
         SnapKitHelpers.setConstraints(comp)
@@ -112,38 +131,34 @@ class StockView: UIViewController {
         [osbResource.updateIntradayHistoryForStock(stock),
          osbResource.getHistoryForStock(store, stock: stock),
          osbResource.stockMetaInformation(stock)
-        ].sequence().onSuccess{
-            (stocks:[Stock]) in
+        ].sequence().onSuccess {
+            (stocks: [Stock]) in
             self.stock = self.stock
             .withIntradayHistory(stocks[0])
             .withHistory(stocks[1].history!)
             .withMeta(stocks[2].meta!)
             self.refreshData(.DAY)
-        }.onFailure{
+        }.onFailure {
             err in
             print(err)
         }
     }
 
-    func dismiss(sender:UIButton){
-        dismissViewControllerAnimated(false, completion: nil)
-    }
-
-    func selectorChanged(sender: UISegmentedControl){
-        var mode:TimeSpan = .DAY
-        switch(sender.selectedSegmentIndex) {
-            case 0: mode = .DAY; break;
-            case 1: mode = .MONTH; break;
-            case 2: mode = .HALF_YEAR; break;
-            case 3: mode = .YEAR; break;
-            case 4: mode = .ALL; break;
-            default: mode = .DAY; break;
+    func selectorChanged(sender: UISegmentedControl) {
+        var mode: TimeSpan = .DAY
+        switch (sender.selectedSegmentIndex) {
+        case 0: mode = .DAY; break;
+        case 1: mode = .MONTH; break;
+        case 2: mode = .HALF_YEAR; break;
+        case 3: mode = .YEAR; break;
+        case 4: mode = .ALL; break;
+        default: mode = .DAY; break;
         }
         print("updating")
         refreshData(mode)
     }
 
-    func refreshData(timespan:TimeSpan) {
+    func refreshData(timespan: TimeSpan) {
 
         if let meta = stock.meta {
             buyValue.text = String(meta.ASK ?? -1)
@@ -154,64 +169,40 @@ class StockView: UIViewController {
             lowValue.text = String(meta.LOW ?? -1)
             lastValue.text = String(meta.LASTNZ_DIV ?? -1)
         }
+//
+        chart.data = gatherChartData(stock, timespan: timespan)
+        chart.mode = timespan
+        chart.refreshData()
 
-        var data: [DateValue] = []
+        setIncBackgroundColor(incValue, stock: stock)
 
-        if timespan == TimeSpan.DAY {
-            if let history = stock.intraDayHistory {
-                data = try! history.history.map({ (instance: StockPriceInstance) in DateValue(date: instance.date, value: instance.price) })
-            }
-        } else {
-            if let history = stock.history {
-                data = filter(try! history.history
-                .map({ (instance: StockPriceInstance) in DateValue(date: instance.date, value: instance.price) }), mode: timespan)
-            }
-        }
-
-        setChart(data, timespan: timespan)
     }
 
-    func setChart(data: [DateValue], timespan:TimeSpan) {
-
-        var dataEntries: [ChartDataEntry] = []
-
-        for i in 0 ..< data.count {
-            dataEntries.append(ChartDataEntry(value: data[i].value, xIndex: i))
-        }
-
-        let dataset = LineChartDataSet(yVals: dataEntries, label: "Value")
-        dataset.lineWidth = 2.0
-        dataset.drawCircleHoleEnabled = false
-        dataset.circleRadius = 0.0
-        dataset.drawValuesEnabled = false
-
-        switch timespan {
-        case .DAY:
-            let datas = try! LineChartData(xVals: data.map {(pair:DateValue) in
-                pair.date.timeOfDayShortPrintable()
-            }, dataSets: [dataset])
-
-            chart.data = datas
-            break;
-        default:
-            let datas = try! LineChartData(xVals: data.map {(pair:DateValue) in
-                pair.date.shortPrintable()
-            }, dataSets: [dataset])
-            chart.data = datas
-            break;
-        }
-    }
-
-    func filter(data:[DateValue], mode:TimeSpan) -> [DateValue]{
-        return data.filter({(dateValue:DateValue) in dateValue.date.laterDate(NSDate(timeIntervalSinceNow: -86400*mode.rawValue)) == dateValue.date})
-    }
-
-    enum TimeSpan: Double {
-        case DAY = 1.0, MONTH = 31.0, HALF_YEAR = 182.0, YEAR = 365.0, ALL = 100000.0
+    func filter(data: [StockPriceInstance], mode: TimeSpan) -> [StockPriceInstance] {
+        return data.filter({ (spi: StockPriceInstance) in spi.date.laterDate(NSDate(timeIntervalSinceNow: -86400 * mode.rawValue)) == spi.date })
     }
 
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func setIncBackgroundColor(label:UILabel, stock:Stock) {
+        if let meta = stock.meta {
+            if meta.CHANGE_PCT_SLACK >= 0 {
+                label.backgroundColor = UIColor.greenColor()
+            } else {
+                label.backgroundColor = UIColor.redColor()
+            }
+        }
+    }
+
+    func gatherChartData(stock: Stock, timespan:TimeSpan) -> [StockPriceInstance]{
+        guard let intra = stock.intraDayHistory, full = stock.history else {
+                return []
+        }
+        print(filter(full.history, mode:timespan).count)
+        return timespan == TimeSpan.DAY ? intra.history : filter(full.history, mode:timespan)
+
     }
 
 }
