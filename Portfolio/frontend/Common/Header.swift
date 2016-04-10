@@ -58,7 +58,7 @@ class Header: UIViewController {
         view.addSubview(button)
 
         SnapKitHelpers.setConstraints(
-        [ComponentWrapper(view: button, rules: ConstraintRules(parentView: view).snapBottom().snapRight().marginBottom(0).marginRight(4))]
+        [ComponentWrapper(view: button, rules: ConstraintRules(parentView: view).snapBottom().snapRight().marginBottom(2).marginRight(4))]
         )
 
         return self
