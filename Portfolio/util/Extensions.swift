@@ -27,6 +27,13 @@ extension NSDate {
         
         return dateFormatter.stringFromDate(self)
     }
+
+    func mediumMinusPrintable()-> String{
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "dd.MM.yy"
+
+        return dateFormatter.stringFromDate(self)
+    }
     
     func mediumPrintable() -> String {
         let dateFormatter = NSDateFormatter()
