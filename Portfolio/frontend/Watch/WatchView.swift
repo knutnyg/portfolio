@@ -12,6 +12,7 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
     var watchList:UITableView!
     var newWatchButton:MKButton!
     var borsResource:OsloBorsResource!
+    var shouldRefresh = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,33 +43,29 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
         SnapKitHelpers.setConstraints(comp)
 
         updateAllStockMeta()
-//        updateAllStockHistories()
+
+        NSTimer.scheduledTimerWithTimeInterval(30, target: self, selector: "doAction", userInfo: nil, repeats: true)
     }
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        shouldRefresh = true
         updateAllStockMeta()
     }
 
-    func updateAllStockHistories(){
-        let store = controller.store
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        shouldRefresh = false
+    }
 
-        store.watchedStocks
-        .map{borsResource.stockMetaInformation($0)}
-        .sequence()
-        .onSuccess{
-            (stocks:[Stock]) in
-            store.watchedStocks = stocks
-            self.watchList.reloadData()
-        }.onFailure{
-            error in
-            print(error)
+    func doAction() {
+        if shouldRefresh == true {
+            updateAllStockMeta()
         }
     }
 
 
     func updateAllStockMeta(){
-        print("updating stocks meta")
         let store = controller.store
 
         store.watchedStocks
