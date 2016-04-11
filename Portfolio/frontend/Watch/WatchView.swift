@@ -13,6 +13,7 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
     var newWatchButton:MKButton!
     var borsResource:OsloBorsResource!
     var shouldRefresh = false
+    var isRefreshing = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,13 +45,12 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
 
         updateAllStockMeta()
 
-        NSTimer.scheduledTimerWithTimeInterval(30, target: self, selector: "doAction", userInfo: nil, repeats: true)
+        NSTimer.scheduledTimerWithTimeInterval(45, target: self, selector: "doAction", userInfo: nil, repeats: true)
     }
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         shouldRefresh = true
-        updateAllStockMeta()
     }
 
     override func viewDidDisappear(animated: Bool) {
@@ -59,7 +59,9 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
 
     func doAction() {
+
         if shouldRefresh == true {
+            isRefreshing = true
             updateAllStockMeta()
         }
     }
@@ -74,7 +76,8 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
         .onSuccess{
             (stocks:[Stock]) in
             store.watchedStocks = stocks
-            self.watchList.reloadData()
+            self.watchList.reloadData({ self.isRefreshing = false })
+
         }.onFailure{
             error in
             print(error)
@@ -102,6 +105,11 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let stock:Stock = controller.store.watchedStocks[indexPath.item]
         let cell = WatchTableViewCell(stock: stock)
+
+        if isRefreshing == true {
+            cell.alpha = 0
+            UIView.animateWithDuration(0.5, animations: { cell.alpha = 1 }, completion: nil)
+        }
 
         return cell;
     }
