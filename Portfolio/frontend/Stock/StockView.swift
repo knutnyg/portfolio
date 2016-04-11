@@ -154,7 +154,6 @@ class StockView: ModalViewController {
         case 4: mode = .ALL; break;
         default: mode = .DAY; break;
         }
-        print("updating")
         refreshData(mode)
     }
 
@@ -200,7 +199,6 @@ class StockView: ModalViewController {
         guard let intra = stock.intraDayHistory, full = stock.history else {
                 return []
         }
-        print(filter(full.history, mode:timespan).count)
         return timespan == TimeSpan.DAY ? intra.history : filter(full.history, mode:timespan)
 
     }
