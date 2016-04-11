@@ -79,13 +79,21 @@ class OsloBorsResource {
     }
 
     func updateIntradayHistoryForStock(stock: Stock) -> Future<Stock, NSError> {
+
+        if let history = stock.intraDayHistory {
+            if history.timestamp.laterDate(NSDate(timeIntervalSinceNow: -30)) == history.timestamp {
+                print("OsloBorsResource:updateIntradayHistoryForStock - Returning cached value for stock")
+                return Future(value: stock)
+            }
+        }
+
         let promise = Promise<Stock, NSError>()
 
         let url = "http://www.oslobors.no/ob/servlets/components/graphdata/s1/tick/\(stock.ticker)?points=500"
 
         do {
+
             let request = try HTTP.GET(url)
-            print("not using cache")
             request.start {
                 response in
                 if let err = response.error {
@@ -127,19 +135,22 @@ class OsloBorsResource {
     }
 
     func getHistoryForStock(store: Store, stock: Stock) -> Future<Stock, NSError> {
+
+        if let stock: Stock = store.stocks[stock.ticker] {
+            if let timestamp = stock.historyTimestamp {
+                if timestamp.laterDate(NSDate(timeIntervalSinceNow: -3600 * 24)) == timestamp {
+                    print("OsloBorsResource:getHistoryForStock: Returning cached values")
+                    return Future(value: stock)
+                }
+            }
+        }
+
         let promise = Promise<Stock, NSError>()
 
         let url = "http://www.oslobors.no/ob/servlets/components/graphdata/(CLOSE_CA)/day/\(stock.ticker)?points=500"
 
         do {
-            if let stock: Stock = store.stocks[stock.ticker] {
-                if let timestamp = stock.historyTimestamp {
-                    if timestamp.laterDate(NSDate(timeIntervalSinceNow: -3600 * 24)) == timestamp {
-                        print("HistoricalDataFetcher: Returning cached datas")
-                        return Future(value: stock)
-                    }
-                }
-            }
+
 
             let request = try HTTP.GET(url)
 
@@ -159,7 +170,6 @@ class OsloBorsResource {
                     for datePricePair in data {
                         histories.append(StockPriceInstance(date: NSDate(timeIntervalSince1970: (datePricePair[0] / 1000)), price: datePricePair[1]))
                     }
-                    print("not using cache")
                     stock.history = StockHistory(history: histories)
                     stock.historyTimestamp = NSDate()
                     promise.success(stock)

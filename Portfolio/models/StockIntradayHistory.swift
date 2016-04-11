@@ -3,10 +3,12 @@ import Foundation
 class StockIntradayHistory : NSObject {
 
     var history: [StockPriceInstance]!
+    var timestamp: NSDate!
     var dateValCache: [String:Double] = [:]
 
     init(history: [StockPriceInstance]) {
         self.history = history
+        self.timestamp = NSDate()
         for h in history {
             dateValCache[h.date.timeOfDayPrintable()] = h.price
         }
