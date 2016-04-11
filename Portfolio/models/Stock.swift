@@ -9,6 +9,7 @@ class Stock : NSObject{
     var history:StockHistory?
     var historyTimestamp:NSDate?
     var meta:StockMeta?
+    var dividends:StockDividends?
 
     init(ticker:String){
         self.ticker = ticker
@@ -47,6 +48,11 @@ class Stock : NSObject{
 
     func withMeta(meta:StockMeta) -> Stock {
         self.meta = meta
+        return self
+    }
+
+    func withDividends(dividends:StockDividends) -> Stock {
+        self.dividends = dividends
         return self
     }
 
