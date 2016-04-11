@@ -176,7 +176,7 @@ class OsloBorsResource {
     func stockMetaInformation(stock: Stock) -> Future<Stock, NSError> {
 
         if let meta = stock.meta {
-            if meta.timestamp.laterDate(NSDate(timeIntervalSinceNow: -60)) == meta.timestamp {
+            if meta.timestamp.laterDate(NSDate(timeIntervalSinceNow: -15)) == meta.timestamp {
                 print("OsloBorsResource:stockMetaInformation - Returning cached value for stock")
                 return Future(value: stock)
             }
@@ -209,5 +209,6 @@ class OsloBorsResource {
 
         return promise.future
     }
+
 
 }
