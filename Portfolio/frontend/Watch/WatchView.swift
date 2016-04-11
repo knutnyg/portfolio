@@ -8,7 +8,7 @@ import Font_Awesome_Swift
 
 class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-    var controller:MyTabBarController!
+    var controller: TabBarController!
     var watchList:UITableView!
     var newWatchButton:MKButton!
     var borsResource:OsloBorsResource!
@@ -18,14 +18,12 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "reload:", name:"StoreChanged", object:nil)
-
-        controller = tabBarController as! MyTabBarController
+        controller = tabBarController as! TabBarController
         borsResource = OsloBorsResource()
 
         let header = Header()
         .withTitle("Watches", color: UIColor.whiteColor(), font: nil)
-        .withRightButtonIcon(FAType.FAPlus, action: toNewStock, color: UIColor.whiteColor())
+        .withRightButtonIcon(FAType.FAPlus, action: toNewWatch, color: UIColor.whiteColor())
 
         watchList = UITableView()
         watchList.dataSource = self
@@ -45,7 +43,7 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
 
         updateAllStockMeta()
 
-        NSTimer.scheduledTimerWithTimeInterval(45, target: self, selector: "doAction", userInfo: nil, repeats: true)
+        NSTimer.scheduledTimerWithTimeInterval(45, target: self, selector: "timedReloadOfData", userInfo: nil, repeats: true)
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -58,14 +56,12 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
         shouldRefresh = false
     }
 
-    func doAction() {
-
+    func timedReloadOfData() {
         if shouldRefresh == true {
             isRefreshing = true
             updateAllStockMeta()
         }
     }
-
 
     func updateAllStockMeta(){
         let store = controller.store
@@ -77,15 +73,10 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
             (stocks:[Stock]) in
             store.watchedStocks = stocks
             self.watchList.reloadData({ self.isRefreshing = false })
-
         }.onFailure{
             error in
             print(error)
         }
-    }
-
-    public func reload(notification:NSNotification){
-        watchList.reloadData()
     }
 
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
@@ -136,8 +127,8 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
         presentViewController(vc, animated: false, completion: nil)
     }
 
-    func toNewStock(){
-        let autoCompleteView = AddWatch(title: "Legg til aksje", store: controller.store, callback: callback)
+    func toNewWatch(){
+        let autoCompleteView = AddWatch(store: controller.store, callback: callback)
 
         let vc = Modal(vc: autoCompleteView, callback: callback)
         vc.modalPresentationStyle = .OverCurrentContext

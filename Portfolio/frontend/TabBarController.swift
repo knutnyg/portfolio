@@ -3,7 +3,7 @@ import Foundation
 import UIKit
 import BrightFutures
 
-class MyTabBarController : UITabBarController {
+class TabBarController: UITabBarController {
     var store:Store!
 
     init(){

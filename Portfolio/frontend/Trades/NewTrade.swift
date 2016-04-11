@@ -6,7 +6,7 @@ import Font_Awesome_Swift
 
 class NewTrade: ModalViewController, UITextFieldDelegate, AutocompleteViewDelegate {
 
-    let store:Store!
+    var store:Store!
 
     var tickerLabel: UILabel!
     var dateLabel: UILabel!
@@ -23,9 +23,10 @@ class NewTrade: ModalViewController, UITextFieldDelegate, AutocompleteViewDelega
 
     var datePicker:UIDatePicker!
 
-    init(store:Store){
-        self.store = store
+    init(store:Store, callback:(()->Void)?){
         super.init(nibName: nil, bundle: nil)
+        self.store = store
+        self.callback = callback
     }
 
     override func viewDidLoad() {
@@ -134,7 +135,8 @@ class NewTrade: ModalViewController, UITextFieldDelegate, AutocompleteViewDelega
                     ticker: autocompleteView.searchBar.text!,
                     count: Double(countTextField.text!)!,
                     action: action))
-        self.dismissViewControllerAnimated(false, completion: nil)
+        print("ready to dismiss")
+        self.dismissViewControllerAnimated(false, completion: callback)
     }
 
     func dateSelected(sender:UIDatePicker){

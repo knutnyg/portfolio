@@ -1,7 +1,3 @@
-//
-// Created by Knut Nygaard on 03/04/16.
-// Copyright (c) 2016 Knut Nygaard. All rights reserved.
-//
 
 import Foundation
 import UIKit
@@ -35,14 +31,12 @@ class WatchTableViewCell : UITableViewCell {
         addSubview(value)
         addSubview(inc)
 
-        let comp = [
+        SnapKitHelpers.setConstraints([
                 ComponentWrapper(view: name, rules: ConstraintRules(parentView: self).snapLeft().marginLeft(8).snapTop().marginTop(5)),
                 ComponentWrapper(view: ticker, rules: ConstraintRules(parentView: self).snapLeft().marginLeft(8).snapTop(name.snp_bottom).marginTop(2)),
                 ComponentWrapper(view: value, rules: ConstraintRules(parentView: self).snapRight(inc.snp_left).centerY().marginRight(20)),
                 ComponentWrapper(view: inc, rules: ConstraintRules(parentView: self).snapRight().marginRight(20).centerY().width(70).height(30))
-        ]
-
-        SnapKitHelpers.setConstraints(comp)
+        ])
 
 
     }

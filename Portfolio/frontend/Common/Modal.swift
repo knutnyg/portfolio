@@ -43,11 +43,8 @@ class Modal : UIViewController, UIGestureRecognizerDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-//        SnapKitHelpers.updateConstraints([ComponentWrapper(view: vc.view, rules: ConstraintRules(parentView: view).snapBottom().marginBottom(190).horizontalFullWithMargin(12).height(300))])
-//        UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: view.layoutIfNeeded, completion: nil)
         UIView.animateWithDuration(0.2, animations: {
             self.view.alpha = 1.0
-
         })
 
     }
@@ -64,13 +61,8 @@ class Modal : UIViewController, UIGestureRecognizerDelegate {
     func dismiss(sender: UITapGestureRecognizer){
         UIView.animateWithDuration(0.3, animations: {
             self.view.alpha = 0.0
+        }, completion: {bool in self.dismissViewControllerAnimated(false, completion: self.callback)})
 
-        }, completion: d)
-
-    }
-
-    func d(bool:Bool) {
-        self.dismissViewControllerAnimated(false, completion: callback)
     }
 
     required init(coder aDecoder: NSCoder) {

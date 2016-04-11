@@ -69,7 +69,7 @@ class Store: NSObject {
         }
     }
 
-    func removeWatch(stock:Stock){
+    func removeWatch(stock: Stock) {
         if let idx = watchedStocks.indexOf(stock) {
             watchedStocks.removeAtIndex(idx)
             saveStore()
@@ -97,44 +97,50 @@ class Store: NSObject {
     }
 
     func updateStockIntradayHistory(stock: Stock) {
-        if let maybeStock:Stock = stocks[stock.ticker] {
+        if let maybeStock: Stock = stocks[stock.ticker] {
             stocks[maybeStock.ticker] = maybeStock.withIntradayHistory(stock)
         } else {
             stocks[stock.ticker] = stock
         }
     }
 
-    func refreshStoreStockData(){
-        OsloBorsResource().allStockInformation(self).onSuccess{
+    func updateAllStockInfo() {
+        OsloBorsResource().allStockInformation(self).onSuccess {
             info in
-            self.allStockInfo = info
-            self.allStockInfo.lastUpdated = NSDate()
-            self.saveStore()
-        }.onFailure{
+            if self.allStockInfo != info {
+                self.allStockInfo = info
+                self.allStockInfo.lastUpdated = NSDate()
+                self.saveStore()
+            } else {
+                self.allStockInfo.lastUpdated = NSDate()
+            }
+        }.onFailure {
             error in
             print("Failure from OsloStockResource")
         }
+    }
 
-        OsloBorsResource().updateStockHistories(self, stocks: Portfolio.stocksFromTrades(trades)).onSuccess{
-            stocks in
-            for stock in stocks {
-                self.updateStockHistory(stock)
-            }
-            self.saveStore()
-        }
+    func refreshStoreStockData() {
 
         let one = Portfolio.stocksFromTrades(trades)
-        let two:[Stock] = watchedStocks
+        let two: [Stock] = watchedStocks
 
-        OsloBorsResource().updateIntradayHistoryForStocks(Array(Set(one + two)))
-        .onSuccess{
+        let v = Array(Set(one + two))
+        [
+                OsloBorsResource().updateStockHistories(self, stocks: Portfolio.stocksFromTrades(trades)),
+                OsloBorsResource().updateIntradayHistoryForStocks(v)
+        ].sequence().onSuccess {
             stocks in
-            for stock in stocks {
+            for stock in stocks[0] {
+                self.updateStockHistory(stock)
+            }
+
+            for stock in stocks[1] {
                 self.updateStockIntradayHistory(stock)
             }
+
             self.saveStore()
         }
-
     }
 
     internal func saveStore() {
@@ -144,7 +150,7 @@ class Store: NSObject {
                     print("Saving store...")
                     NSKeyedArchiver.archiveRootObject(self, toFile: filePath.path!)
                 }
-                NSNotificationCenter.defaultCenter().postNotification(NSNotification(name:"StoreChanged", object: self))
+                NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "StoreChanged", object: self))
             }
         } else {
             print("Skipping saving store because no url!")
@@ -156,9 +162,9 @@ class Store: NSObject {
     required convenience init?(coder decoder: NSCoder) {
         self.init(
         trades: decoder.decodeObjectForKey("trades") as! [Trade],
-        allStockInfo: decoder.decodeObjectForKey("allStockInfo") as! AllStockInfo,
-        stocks: decoder.decodeObjectForKey("stocks") as! [String:Stock],
-        watchedStocks: decoder.decodeObjectForKey("watchedStocks") as! [Stock]
+                allStockInfo: decoder.decodeObjectForKey("allStockInfo") as! AllStockInfo,
+                stocks: decoder.decodeObjectForKey("stocks") as! [String:Stock],
+                watchedStocks: decoder.decodeObjectForKey("watchedStocks") as! [Stock]
         )
     }
 

@@ -5,13 +5,10 @@ import Font_Awesome_Swift
 
 class AddWatch: ModalViewController, AutocompleteViewDelegate {
 
-    var titleText:String!
-
     var store:Store!
 
-    init(title: String, store:Store, callback:(()->Void)?){
+    init(store:Store, callback:(()->Void)?){
         super.init(nibName: nil, bundle: nil)
-        self.titleText = title
         self.store = store
         self.callback = callback
     }
@@ -22,7 +19,7 @@ class AddWatch: ModalViewController, AutocompleteViewDelegate {
         height = 300
 
         let header = Header()
-        .withTitle(titleText, color: WHITE, font: nil)
+        .withTitle("Legg til aksje", color: WHITE, font: nil)
         .withRightButtonIcon(FAType.FAClose, action: cancel, color: WHITE)
 
         let autoCompleteView = AutocompleteView(store: store, callback:callback)
@@ -43,8 +40,6 @@ class AddWatch: ModalViewController, AutocompleteViewDelegate {
 
         SnapKitHelpers.setConstraints(comp)
     }
-
-
 
     func hideSubComponents() -> Void {
     }

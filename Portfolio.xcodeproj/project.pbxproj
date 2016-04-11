@@ -30,7 +30,7 @@
 		324F4482045596B6715C74D8 /* WatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4ACB488080841C0000E3 /* WatchView.swift */; };
 		324F44992B97C2651999610D /* CommonComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F48ACA03E397682E1A4DA /* CommonComponents.swift */; };
 		324F44C242191932C12EB2DD /* StockIntradayHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F460AFA9302C38DFDA114 /* StockIntradayHistory.swift */; };
-		324F44CE19B6CEC02C734B1B /* MyTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F44B0695D580D520E0414 /* MyTabBarController.swift */; };
+		324F44CE19B6CEC02C734B1B /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F44B0695D580D520E0414 /* TabBarController.swift */; };
 		324F44DACB703A3C2C30033F /* LocaleUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4B2C8F36E27EC9C08723 /* LocaleUtils.swift */; };
 		324F44DB171EAABF93160BC0 /* ComponentWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4C3C1006401B9F76C214 /* ComponentWrapper.swift */; };
 		324F44EE9459EB55E5FD0C64 /* WatchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4B52A13E632957A7D390 /* WatchTableViewCell.swift */; };
@@ -53,7 +53,7 @@
 		324F4702737B8AF85A5791BF /* WatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4ACB488080841C0000E3 /* WatchView.swift */; };
 		324F474AA52B9D29E8519306 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4A1C87153F970666A183 /* Colors.swift */; };
 		324F475A8931103EC0D3D472 /* Portfolio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4E5BF0A257E1C62B06BE /* Portfolio.swift */; };
-		324F475DFF8D017B5EC2D80D /* MyTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F44B0695D580D520E0414 /* MyTabBarController.swift */; };
+		324F475DFF8D017B5EC2D80D /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F44B0695D580D520E0414 /* TabBarController.swift */; };
 		324F4772D08AB91AFDBFB22C /* AllStockInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F48845B31B62573EED5C0 /* AllStockInfoTests.swift */; };
 		324F477651E3491A975BEFD4 /* StockIntraDayHistoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F4AFB03EAFF32663605A2 /* StockIntraDayHistoryTests.swift */; };
 		324F478707EE54D57C641E4E /* StockDividends.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324F46EFE9BFD6198FEFCDB4 /* StockDividends.swift */; };
@@ -142,7 +142,7 @@
 		324F441292FB301A2832A467 /* DiskUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskUtils.swift; sourceTree = "<group>"; };
 		324F444F0225091336532BB3 /* Dividends.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dividends.swift; sourceTree = "<group>"; };
 		324F44552945E81E5746DAA0 /* Stock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stock.swift; sourceTree = "<group>"; };
-		324F44B0695D580D520E0414 /* MyTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTabBarController.swift; sourceTree = "<group>"; };
+		324F44B0695D580D520E0414 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		324F4543E037F86F23822FF2 /* PortfolioView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortfolioView.swift; sourceTree = "<group>"; };
 		324F457F7978E0DE7E537B72 /* Trade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trade.swift; sourceTree = "<group>"; };
 		324F460AFA9302C38DFDA114 /* StockIntradayHistory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockIntradayHistory.swift; sourceTree = "<group>"; };
@@ -372,7 +372,7 @@
 			children = (
 				324F4543E037F86F23822FF2 /* PortfolioView.swift */,
 				324F438BEAB1A9AE1BC6F7E9 /* Trades */,
-				324F44B0695D580D520E0414 /* MyTabBarController.swift */,
+				324F44B0695D580D520E0414 /* TabBarController.swift */,
 				324F4E065D183C25E2F9A842 /* Stock */,
 				324F45833F60828B105C732E /* Portfolio */,
 				324F435E58E4FD7D490A947B /* Common */,
@@ -682,7 +682,7 @@
 				324F4F9FE3FE2EAAD619A30C /* PortfolioView.swift in Sources */,
 				324F46C49A6E0A114D934200 /* TradesView.swift in Sources */,
 				324F45DF75726A3F616377AE /* NewTrade.swift in Sources */,
-				324F44CE19B6CEC02C734B1B /* MyTabBarController.swift in Sources */,
+				324F44CE19B6CEC02C734B1B /* TabBarController.swift in Sources */,
 				324F462345CC95836F27A646 /* OsloBorsResource.swift in Sources */,
 				324F4C0DE7BA290CF092646B /* OsloBorsResourceMock.swift in Sources */,
 				324F481153F8163ED706A74F /* StockPriceInstance.swift in Sources */,
@@ -735,7 +735,7 @@
 				324F4DB00D3264C06BFA68D1 /* Store.swift in Sources */,
 				324F465B2F976257902D854A /* Errors.swift in Sources */,
 				324F4CCA54D5AED18F74D0F3 /* PortfolioView.swift in Sources */,
-				324F475DFF8D017B5EC2D80D /* MyTabBarController.swift in Sources */,
+				324F475DFF8D017B5EC2D80D /* TabBarController.swift in Sources */,
 				324F443F6D45D3F39F1FF8E2 /* StoreTests.swift in Sources */,
 				324F4691DF2DBF93A40476E6 /* OsloBorsResource.swift in Sources */,
 				324F43F00ECFF2F2D112EE38 /* OsloBorsResouceTests.swift in Sources */,

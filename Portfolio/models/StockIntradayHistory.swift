@@ -14,6 +14,14 @@ class StockIntradayHistory : NSObject {
         }
     }
 
+    func currentValue() -> Double {
+        if let last = history.sort({(i:StockPriceInstance, i1:StockPriceInstance) in i.date.compare(i1.date) == NSComparisonResult.OrderedAscending}).last {
+            return last.price
+        } else {
+            return 0.0
+        }
+    }
+
     func stockValueAtDay(date: NSDate) -> Double? {
         return dateValCache[date.timeOfDayPrintable()]
     }
@@ -30,14 +38,6 @@ class StockIntradayHistory : NSObject {
 
     func encodeWithCoder(coder: NSCoder) {
         coder.encodeObject(self.history, forKey: "history")
-    }
-
-    func earliestDate() -> NSDate{
-        return history.sort({(i:StockPriceInstance, i1:StockPriceInstance) in i.date.compare(i1.date) == NSComparisonResult.OrderedDescending}).first!.date
-    }
-
-    func currentValue() -> Double {
-        return history.sort({(i:StockPriceInstance, i1:StockPriceInstance) in i.date.compare(i1.date) == NSComparisonResult.OrderedAscending}).last!.price
     }
 }
 

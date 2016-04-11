@@ -5,19 +5,12 @@ import SnapKit
 class TradesView: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     var tradesTable:UITableView!
-
-    var controller:MyTabBarController!
-
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-    }
+    var controller: TabBarController!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "reload:", name:"StoreChanged", object:nil)
-
-        controller = tabBarController as! MyTabBarController
+        controller = tabBarController as! TabBarController
 
         let header = Header()
         .withTitle("Trades", color: UIColor.whiteColor(), font: nil)
@@ -32,19 +25,55 @@ class TradesView: UIViewController, UITableViewDataSource, UITableViewDelegate {
         view.addSubview(header.view)
         view.addSubview(tradesTable)
 
-        let components:[ComponentWrapper] = [
-            ComponentWrapper(view: header.view, rules: ConstraintRules(parentView: view).snapTop().horizontalFullWithMargin(0).height(60)),
-            ComponentWrapper(view: tradesTable, rules: ConstraintRules(parentView: view).snapBottom().snapTop(header.view.snp_bottom).horizontalFullWithMargin(0))
-        ]
+        SnapKitHelpers.setConstraints([
+                ComponentWrapper(view: header.view, rules: ConstraintRules(parentView: view).snapTop().horizontalFullWithMargin(0).height(60)),
+                ComponentWrapper(view: tradesTable, rules: ConstraintRules(parentView: view).snapBottom().snapTop(header.view.snp_bottom).horizontalFullWithMargin(0))
+        ])
+    }
 
-        SnapKitHelpers.setConstraints(components)
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
     }
 
     func addTrade(){
-        let vc = Modal(vc: NewTrade(store: controller.store), callback: nil)
+        let newTradeModal = NewTrade(store: controller.store, callback: callback)
+        let vc = Modal(vc: newTradeModal, callback: callback)
         vc.modalPresentationStyle = .OverCurrentContext
         presentViewController(vc, animated: false, completion: nil)
     }
+
+    func callback() {
+        print("reloading")
+        tradesTable.reloadData()
+
+    }
+
+    private func yearsOfTrades() -> [String]{
+        return Array(Set<String>(controller.store.trades.map{$0.date.onlyYear()})).sort({ $0 > $1 })
+    }
+
+    private func tradesFromYear(year:String) -> [Trade] {
+        return controller.store.trades.filter{$0.date.onlyYear() == year}.sort({ $0.date.compare($1.date) == NSComparisonResult.OrderedAscending })
+    }
+
+    private func tradesGroupedByYear() -> [String:[Trade]]{
+        var map:[String:[Trade]] = [:]
+        for trade in controller.store.trades {
+            if var arr = map[trade.date.onlyYear()] {
+                map[trade.date.onlyYear()] = arr + [trade]
+            } else {
+                map[trade.date.onlyYear()] = [trade]
+            }
+        }
+        return map
+    }
+
+    private func tradeAtIndexPath(indexPath:NSIndexPath) -> Trade {
+        return tradesGroupedByYear()[yearsOfTrades()[indexPath.section]]!
+        .sort({$0.date.compare($1.date) == NSComparisonResult.OrderedDescending})[indexPath.item]
+    }
+
+    // --- TABLEVIEW DELEGATES --- //
 
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
@@ -83,36 +112,6 @@ class TradesView: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 40
-    }
-
-    private func yearsOfTrades() -> [String]{
-        return Array(Set<String>(controller.store.trades.map{$0.date.onlyYear()})).sort({ $0 > $1 })
-    }
-
-    private func tradesFromYear(year:String) -> [Trade] {
-        return controller.store.trades.filter{$0.date.onlyYear() == year}.sort({ $0.date.compare($1.date) == NSComparisonResult.OrderedAscending })
-    }
-
-    public func reload(notification:NSNotification){
-        tradesTable.reloadData()
-    }
-
-    private func tradesGroupedByYear() -> [String:[Trade]]{
-        var map:[String:[Trade]] = [:]
-        for trade in controller.store.trades {
-            if var arr = map[trade.date.onlyYear()] {
-                map[trade.date.onlyYear()] = arr + [trade]
-            } else {
-                map[trade.date.onlyYear()] = [trade]
-            }
-        }
-
-        return map
-    }
-
-    private func tradeAtIndexPath(indexPath:NSIndexPath) -> Trade {
-        return tradesGroupedByYear()[yearsOfTrades()[indexPath.section]]!
-        .sort({$0.date.compare($1.date) == NSComparisonResult.OrderedDescending})[indexPath.item]
     }
 
 }

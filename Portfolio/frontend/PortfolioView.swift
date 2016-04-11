@@ -14,16 +14,15 @@ class PortfolioView: UIViewController {
     var incLabel: UILabel!
     var incValue: UILabel!
 
+    var controller:TabBarController!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "redraw:", name: "StoreChanged", object: nil)
-
-        //get the reference to the shared model
-        let tbvc = tabBarController as! MyTabBarController
+        controller = tabBarController as! TabBarController
         view.backgroundColor = UIColor.whiteColor()
 
-        chart = LineChartKomponent(data: gatherChartData(tbvc.store))
+        chart = LineChartKomponent(data: gatherChartData(controller.store))
         chart.mode = TimeSpan.MONTH
         chart.refreshData()
 
@@ -45,16 +44,17 @@ class PortfolioView: UIViewController {
         view.addSubview(incValue)
         view.addSubview(valueTextLabel)
 
-        let comp: [ComponentWrapper] = [
+        SnapKitHelpers.setConstraints([
                 ComponentWrapper(view: header.view, rules: ConstraintRules(parentView: view).snapTop().horizontalFullWithMargin(0).height(60)),
                 ComponentWrapper(view: valueLabel, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(20).width(150).snapTop(header.view.snp_bottom).marginTop(50)),
                 ComponentWrapper(view: incLabel, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(20).width(150).snapTop(valueLabel.snp_bottom).marginTop(10)),
                 ComponentWrapper(view: valueTextLabel, rules: ConstraintRules(parentView: view).snapLeft(valueLabel.snp_right).snapTop(valueLabel.snp_top)),
                 ComponentWrapper(view: incValue, rules: ConstraintRules(parentView: view).snapLeft(incLabel.snp_right).snapTop(incLabel.snp_top)),
-                ComponentWrapper(view: chart.view, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(10).snapBottom().marginBottom(80).height(350))]
-
-        SnapKitHelpers.setConstraints(comp)
+                ComponentWrapper(view: chart.view, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(10).snapBottom().marginBottom(80).height(350))
+        ])
     }
+
+
 
     func gatherChartData(store: Store) -> [StockPriceInstance]{
 
@@ -87,15 +87,11 @@ class PortfolioView: UIViewController {
         return nil
     }
 
-    func redraw(notification: NSNotification) {
-        chart.data = gatherChartData(notification.object as! Store)
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        chart.data = gatherChartData(controller.store)
         chart.refreshData()
-        print("received notification of store changed.. redraw!")
-    }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        controller.store.updateAllStockInfo()
     }
-
 }
