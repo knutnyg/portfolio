@@ -48,7 +48,6 @@ class Portfolio {
     static func valueAtDay(store: Store, date: NSDate) -> Double? {
 
         do {
-
             let now = NSDate()
             let assets: [Stock:Double] = try stocksAtDay(store, date: date)
 
@@ -74,6 +73,38 @@ class Portfolio {
             return value
         } catch {
             return nil
+        }
+    }
+
+    static func lastClosingValue(store:Store) -> Double?{
+        let counter = 1.0
+
+        var date = NSDate()
+        var val:Double?
+
+        while counter < 30 {
+            val = valueAtDay(store, date: date)
+            if let v = val {
+                return v
+            } else {
+                date = NSDate(timeInterval: -86400 * counter, sinceDate: date)
+            }
+        }
+        return nil
+    }
+
+    static func valueNow(store: Store) -> Double? {
+        return valueAtDay(store, date: NSDate())
+    }
+
+    static func rawCost(trades: [Trade]) -> Double {
+        do {
+            return try trades
+            .filter{(trade:Trade) in trade.action == Action.BUY}
+            .map{(trade:Trade) in (trade.price * trade.count) + trade.fee}
+            .reduce(0,combine: +)
+        } catch {
+            return 0.0
         }
     }
 

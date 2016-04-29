@@ -14,3 +14,7 @@ Portfolio.app.dSYM.zip
 *.xcuserstate
 
 *.cer
+
+*.certSigningRequest
+
+*.p12

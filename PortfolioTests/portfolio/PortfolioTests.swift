@@ -11,25 +11,30 @@ class PortfolioTests: XCTestCase {
                         price: 297.00,
                         ticker: "NAS.OL",
                         count: 16,
-                        action: Action.BUY
+                        action: Action.BUY,
+                        fee: 0
+
                 ),
                 Trade(date: NSDate(dateString: "2015-06-13"),
                         price: 49.30,
                         ticker: "NOD.OL",
                         count: 60,
-                        action: Action.BUY
+                        action: Action.BUY,
+                        fee: 0
                 ),
                 Trade(date: NSDate(dateString: "2015-06-19"),
                         price: 43.30,
                         ticker: "NOD.OL",
                         count: 40,
-                        action: Action.BUY
+                        action: Action.BUY,
+                        fee: 0
                 ),
                 Trade(date: NSDate(dateString: "2015-06-21"),
                         price: 37.30,
                         ticker: "NOD.OL",
                         count: 90,
-                        action: Action.SELL
+                        action: Action.SELL,
+                        fee: 0
                 )]
 
         store.stocks["NOD.OL"] = Stock(ticker: "NOD.OL")
@@ -62,19 +67,22 @@ class PortfolioTests: XCTestCase {
                         price: 49.30,
                         ticker: "NOD.OL",
                         count: 60,
-                        action: Action.BUY
+                        action: Action.BUY,
+                        fee: 0
                 ),
                 Trade(date: NSDate(dateString: "2015-06-19"),
                         price: 43.30,
                         ticker: "NOD.OL",
                         count: 40,
-                        action: Action.BUY
+                        action: Action.BUY,
+                        fee: 0
                 ),
                 Trade(date: NSDate(dateString: "2015-06-21"),
                         price: 37.30,
                         ticker: "NOD.OL",
                         count: 110,
-                        action: Action.SELL
+                        action: Action.SELL,
+                        fee: 0
                 )]
 
         do {
@@ -93,7 +101,8 @@ class PortfolioTests: XCTestCase {
                         price: 49.30,
                         ticker: "NOD.OL",
                         count: 60,
-                        action: Action.SELL
+                        action: Action.SELL,
+                        fee: 0
                 )]
 
         do {
@@ -122,13 +131,15 @@ class PortfolioTests: XCTestCase {
                         price: 49.30,
                         ticker: "NOD.OL",
                         count: 60,
-                        action: Action.BUY
+                        action: Action.BUY,
+                        fee: 0
                 ),
                 Trade(date: NSDate(dateString: "2016-02-25"),
                         price: 43.30,
                         ticker: "NOD.OL",
                         count: 40,
-                        action: Action.BUY
+                        action: Action.BUY,
+                        fee: 0
                 )]
 
         var value = Portfolio.valueAtDay(store, date: NSDate(dateString: "2016-02-20"))
@@ -145,6 +156,34 @@ class PortfolioTests: XCTestCase {
 
         value = Portfolio.valueAtDay(store, date: NSDate())
         XCTAssertEqual(value, 6000)
+
+    }
+
+    func testCalculateRawCost() {
+
+        let trades = [
+                Trade(date: NSDate(dateString: "2015-06-13"),
+                        price: 49.30,
+                        ticker: "NOD.OL",
+                        count: 60,
+                        action: Action.BUY,
+                        fee: 29
+                ),
+                Trade(date: NSDate(dateString: "2015-06-19"),
+                        price: 43.30,
+                        ticker: "NOD.OL",
+                        count: 40,
+                        action: Action.BUY,
+                        fee: 29
+                ),
+                Trade(date: NSDate(dateString: "2015-06-21"),
+                        price: 37.30,
+                        ticker: "NOD.OL",
+                        count: 40,
+                        action: Action.SELL,
+                        fee: 29
+                )]
+        XCTAssertEqual(Portfolio.rawCost(trades), 4748)
 
     }
 

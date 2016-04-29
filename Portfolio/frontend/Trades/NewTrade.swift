@@ -134,7 +134,8 @@ class NewTrade: ModalViewController, UITextFieldDelegate, AutocompleteViewDelega
                     price: Double(priceTextField.text!)!,
                     ticker: autocompleteView.searchBar.text!,
                     count: Double(countTextField.text!)!,
-                    action: action))
+                    action: action,
+                    fee: 0))
         print("ready to dismiss")
         self.dismissViewControllerAnimated(false, completion: callback)
     }
