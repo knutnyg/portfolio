@@ -187,4 +187,30 @@ class PortfolioTests: XCTestCase {
 
     }
 
+    func testActualSales() {
+        let trades = [
+                Trade(date: NSDate(dateString: "2015-06-13"),
+                        price: 10,
+                        ticker: "NOD.OL",
+                        count: 10,
+                        action: Action.BUY,
+                        fee: 29
+                ),
+                Trade(date: NSDate(dateString: "2015-06-19"),
+                        price: 20,
+                        ticker: "NOD.OL",
+                        count: 5,
+                        action: Action.BUY,
+                        fee: 29
+                ),
+                Trade(date: NSDate(dateString: "2015-06-21"),
+                        price: 22,
+                        ticker: "NOD.OL",
+                        count: 15,
+                        action: Action.SELL,
+                        fee: 29
+                )]
+    XCTAssertEqual(Portfolio.calculateActualSales(trades), 43.000000000000007)
+    }
+
 }

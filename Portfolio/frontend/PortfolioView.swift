@@ -11,8 +11,8 @@ class PortfolioView: UIViewController {
     var titleLabel: UILabel!
     var valueLabel: UILabel!
     var valueTextLabel: UILabel!
-    var incLabel: UILabel!
-    var incValue: UILabel!
+    var totalIncLabel: UILabel!
+    var totalIncValue: UILabel!
     var incToday: UILabel!
     var incTodayValue: UILabel!
     var urealisertGevinst: UILabel!
@@ -21,7 +21,7 @@ class PortfolioView: UIViewController {
     var realisertGevinstVerdi: UILabel!
 
 
-    var controller:TabBarController!
+    var controller: TabBarController!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,8 +38,8 @@ class PortfolioView: UIViewController {
 
         valueLabel = createLabel("Nåværende verdi: ")
         valueTextLabel = createLabel("0")
-        incLabel = createLabel("Total endring")
-        incValue = createLabel("0 %")
+        totalIncLabel = createLabel("Total endring")
+        totalIncValue = createLabel("0 %")
         incToday = createLabel("Dagens endring")
         incTodayValue = createLabel("0")
         urealisertGevinst = createLabel("Urealisert gevinst")
@@ -54,8 +54,8 @@ class PortfolioView: UIViewController {
         view.addSubview(header.view)
         view.addSubview(valueTextLabel)
         view.addSubview(valueLabel)
-        view.addSubview(incLabel)
-        view.addSubview(incValue)
+        view.addSubview(totalIncLabel)
+        view.addSubview(totalIncValue)
         view.addSubview(incToday)
         view.addSubview(incTodayValue)
         view.addSubview(urealisertGevinst)
@@ -66,20 +66,20 @@ class PortfolioView: UIViewController {
         SnapKitHelpers.setConstraints([
                 ComponentWrapper(view: header.view, rules: ConstraintRules(parentView: view).snapTop().horizontalFullWithMargin(0).height(60)),
                 ComponentWrapper(view: valueLabel, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(20).width(150).snapTop(header.view.snp_bottom).marginTop(50)),
-                ComponentWrapper(view: incLabel, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(20).width(150).snapTop(valueLabel.snp_bottom).marginTop(10)),
-                ComponentWrapper(view: incToday, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(20).width(150).snapTop(incLabel.snp_bottom).marginTop(10)),
+                ComponentWrapper(view: totalIncLabel, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(20).width(150).snapTop(valueLabel.snp_bottom).marginTop(10)),
+                ComponentWrapper(view: incToday, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(20).width(150).snapTop(totalIncLabel.snp_bottom).marginTop(10)),
                 ComponentWrapper(view: urealisertGevinst, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(20).width(150).snapTop(incToday.snp_bottom).marginTop(10)),
                 ComponentWrapper(view: realisertGevinst, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(20).width(150).snapTop(urealisertGevinst.snp_bottom).marginTop(10)),
-                ComponentWrapper(view: valueTextLabel, rules: ConstraintRules(parentView: view).snapLeft(valueLabel.snp_right).snapTop(valueLabel.snp_top)),
-                ComponentWrapper(view: incValue, rules: ConstraintRules(parentView: view).snapLeft(incLabel.snp_right).snapTop(incLabel.snp_top)),
-                ComponentWrapper(view: incTodayValue, rules: ConstraintRules(parentView: view).snapLeft(incToday.snp_right).snapTop(incToday.snp_top)),
-                ComponentWrapper(view: urealisertGevinstVerdi, rules: ConstraintRules(parentView: view).snapLeft(urealisertGevinst.snp_right).snapTop(urealisertGevinst.snp_top)),
-                ComponentWrapper(view: realisertGevinstVerdi, rules: ConstraintRules(parentView: view).snapLeft(realisertGevinst.snp_right).snapTop(realisertGevinst.snp_top)),
+                ComponentWrapper(view: valueTextLabel, rules: ConstraintRules(parentView: view).snapLeft(valueLabel.snp_right).marginLeft(50).snapTop(valueLabel.snp_top)),
+                ComponentWrapper(view: totalIncValue, rules: ConstraintRules(parentView: view).snapLeft(totalIncLabel.snp_right).marginLeft(50).snapTop(totalIncLabel.snp_top)),
+                ComponentWrapper(view: incTodayValue, rules: ConstraintRules(parentView: view).snapLeft(incToday.snp_right).marginLeft(50).snapTop(incToday.snp_top)),
+                ComponentWrapper(view: urealisertGevinstVerdi, rules: ConstraintRules(parentView: view).snapLeft(urealisertGevinst.snp_right).marginLeft(50).snapTop(urealisertGevinst.snp_top)),
+                ComponentWrapper(view: realisertGevinstVerdi, rules: ConstraintRules(parentView: view).snapLeft(realisertGevinst.snp_right).marginLeft(50).snapTop(realisertGevinst.snp_top)),
                 ComponentWrapper(view: chart.view, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(10).snapBottom().marginBottom(80).height(250))
         ])
     }
 
-    func gatherChartData(store: Store) -> [StockPriceInstance]{
+    func gatherChartData(store: Store) -> [StockPriceInstance] {
 
         if store.trades.count == 0 {
             return []
@@ -100,9 +100,9 @@ class PortfolioView: UIViewController {
         return portfolioData
     }
 
-    func findLastClosingValue(store: Store) -> Double?{
+    func findLastClosingValue(store: Store) -> Double? {
         for i in 1 ... 30 {
-            let dayBefore = NSDate(timeIntervalSinceNow: (Double(-i)*86400.0))
+            let dayBefore = NSDate(timeIntervalSinceNow: (Double(-i) * 86400.0))
             if let value = Portfolio.valueAtDay(store, date: dayBefore) {
                 return value
             }
@@ -119,14 +119,21 @@ class PortfolioView: UIViewController {
         controller.store.updateAllStockInfo()
     }
 
-    func setLabels(){
-        valueTextLabel.text = "\(Portfolio.valueNow(controller.store))" ?? "?"
-        incValue.text = String(format: "%.2f", (Portfolio.valueNow(controller.store) ?? 0.0) / Portfolio.rawCost(controller.store.trades) * 100) + " %"
-        incTodayValue.text = String(format: "%.2f", calcTodayInc()) + " %"
-        urealisertGevinstVerdi.text = "\(Portfolio.valueNow(controller.store)! - Portfolio.rawCost(controller.store.trades))"
+    func setLabels() {
+        let valueNow = Portfolio.valueNow(controller.store)!
+        let incValue:Double = (Portfolio.valueNow(controller.store))! / Portfolio.rawCost(controller.store.trades) * 100
+        let incToday:Double = calcTodayInc()
+        let potentialValue = Portfolio.valueNow(controller.store)! - Portfolio.rawCost(controller.store.trades)
+        let sales = Portfolio.calculateActualSales(controller.store.trades)
+
+        valueTextLabel.text = "\(valueNow)"
+        totalIncValue.text = String(format: "%.2f", incValue) + " %"
+        incTodayValue.text = String(format: "%.2f", incToday) + " %"
+        urealisertGevinstVerdi.text = "\(potentialValue)"
+        realisertGevinstVerdi.text = String(format: "%.2f", sales)
     }
 
-    func calcTodayInc() -> Double{
+    func calcTodayInc() -> Double {
         let today = Portfolio.valueAtDay(controller.store, date: NSDate())
         let lastclosing = Portfolio.lastClosingValue(controller.store)
 

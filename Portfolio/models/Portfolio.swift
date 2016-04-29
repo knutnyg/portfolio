@@ -79,7 +79,7 @@ class Portfolio {
     static func lastClosingValue(store:Store) -> Double?{
         let counter = 1.0
 
-        var date = NSDate()
+        var date = NSDate(timeInterval: -86400, sinceDate: NSDate())
         var val:Double?
 
         while counter < 30 {
@@ -112,5 +112,47 @@ class Portfolio {
         return Array(Set(trades.map {
             Stock(ticker: $0.ticker)
         }))
+    }
+
+    static func averageCostOfStock(stockTrades:[Trade]) -> Double? {
+        do {
+            let sumBuy = try! stockTrades
+            .filter{$0.action == Action.BUY}
+            .map{($0.price * $0.count) + $0.fee}
+            .reduce(0,combine: +)
+
+            return try! sumBuy / Double(stockTrades.filter{$0.action == Action.BUY}.map{$0.count}.reduce(0,combine: +))
+        } catch {
+        }
+    }
+
+    static func averageSaleOfStock(stockTrades:[Trade]) -> Double? {
+        do {
+            let sumSell = try (stockTrades
+            .filter{$0.action == Action.SELL}
+            .map{($0.price * $0.count) - $0.fee}
+            .reduce(0, combine: +))
+
+            return try! sumSell / Double(stockTrades.filter{$0.action == Action.BUY}.map{$0.count}.reduce(0,combine: +))
+        } catch {
+        }
+    }
+
+    static func calculateActualSales(trades:[Trade]) -> Double{
+        let groupedTrades = trades.categorise{ $0.ticker }
+
+        var actualSales = 0.0
+
+        for (ticker, trades) in groupedTrades {
+
+            let numSoldStocks = trades
+                .filter{$0.action == Action.SELL}
+                .map{$0.count}
+                .reduce(0, combine: +)
+
+            actualSales += Double(numSoldStocks) * (averageSaleOfStock(trades)! - averageCostOfStock(trades)!)
+        }
+
+        return actualSales
     }
 }
