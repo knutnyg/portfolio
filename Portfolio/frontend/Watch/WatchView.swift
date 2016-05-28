@@ -43,7 +43,7 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
 
         updateAllStockMeta()
 
-        NSTimer.scheduledTimerWithTimeInterval(45, target: self, selector: "timedReloadOfData", userInfo: nil, repeats: true)
+        NSTimer.scheduledTimerWithTimeInterval(45, target: self, selector: #selector(timedReloadOfData), userInfo: nil, repeats: true)
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -105,7 +105,7 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
         return cell;
     }
 
-    func numberOfSectionsInTableView(tableView: UITableView?) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
 

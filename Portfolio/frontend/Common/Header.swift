@@ -17,11 +17,11 @@ class Header: UIViewController {
         let label = createLabel(text)
 
         if let col = color {
-            label.textColor = color
+            label.textColor = col
         }
 
         if let f = font {
-            label.font = font
+            label.font = f
         }
 
         view.addSubview(label)
@@ -36,7 +36,7 @@ class Header: UIViewController {
     func withRightButtonText(text: String, action: (() -> Void)) -> Header {
         let button = UIButton()
         button.setTitle(text, forState: .Normal)
-        button.addTarget(self, action: "rightButtonAction:", forControlEvents: .TouchUpInside)
+        button.addTarget(self, action: #selector(rightButtonAction), forControlEvents: .TouchUpInside)
         rightButtonCallback = action
 
         view.addSubview(button)
@@ -52,7 +52,7 @@ class Header: UIViewController {
         let button = UIButton()
         button.setFAIcon(icon, iconSize: 20, forState: .Normal)
         button.setTitleColor(color, forState: .Normal)
-        button.addTarget(self, action: "rightButtonAction:", forControlEvents: .TouchUpInside)
+        button.addTarget(self, action: #selector(rightButtonAction), forControlEvents: .TouchUpInside)
         rightButtonCallback = action
 
         view.addSubview(button)

@@ -59,7 +59,7 @@ class TradesView: UIViewController, UITableViewDataSource, UITableViewDelegate {
     private func tradesGroupedByYear() -> [String:[Trade]]{
         var map:[String:[Trade]] = [:]
         for trade in controller.store.trades {
-            if var arr = map[trade.date.onlyYear()] {
+            if let arr = map[trade.date.onlyYear()] {
                 map[trade.date.onlyYear()] = arr + [trade]
             } else {
                 map[trade.date.onlyYear()] = [trade]
@@ -90,7 +90,6 @@ class TradesView: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
         let cell = UITableViewCell(style: .Subtitle, reuseIdentifier: "Cell")
 
-        let section = indexPath.section
         let trade = tradeAtIndexPath(indexPath)
 
         cell.textLabel?.text = "\(trade.date.shortPrintable())   \(trade.ticker)   \(trade.price)kr   \(trade.count)stk   \(trade.action)"
@@ -102,7 +101,7 @@ class TradesView: UIViewController, UITableViewDataSource, UITableViewDelegate {
         return yearsOfTrades()[section]
     }
 
-    func numberOfSectionsInTableView(tableView: UITableView?) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return yearsOfTrades().count
     }
 

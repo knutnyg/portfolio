@@ -50,11 +50,11 @@ class PortfolioView: UIViewController {
         todaysReturnValue = createButton("0")
         returnOnSalesValue = createLabel("0")
 
-        totalReturnValue.addTarget(self, action: "switchTotalReturnValue:", forControlEvents: .TouchUpInside)
-        todaysReturnValue.addTarget(self, action: "switchTodaysReturnValue:", forControlEvents: .TouchUpInside)
+        totalReturnValue.addTarget(self, action: #selector(switchTotalReturnValue), forControlEvents: .TouchUpInside)
+        todaysReturnValue.addTarget(self, action: #selector(switchTodaysReturnValue), forControlEvents: .TouchUpInside)
 
         timeresolutionSelector = UISegmentedControl(items: ["1 uke","1 mnd", "6 mnd", "1 år", "alt"])
-        timeresolutionSelector.addTarget(self, action: "selectorChanged:", forControlEvents: UIControlEvents.ValueChanged)
+        timeresolutionSelector.addTarget(self, action: #selector(selectorChanged), forControlEvents: UIControlEvents.ValueChanged)
         timeresolutionSelector.selectedSegmentIndex = 4
 
         addChildViewController(chart)

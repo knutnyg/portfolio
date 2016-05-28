@@ -68,7 +68,7 @@ class OsloBorsResource {
     func updateIntradayHistoryForStocks(stocks: [Stock]) -> Future<[Stock], NSError> {
         let promise = Promise<[Stock], NSError>()
 
-        try! stocks.map({
+        stocks.map({
             (stock: Stock) in updateIntradayHistoryForStock(stock)
         }).sequence().onSuccess {
             updatedStocks in
@@ -124,7 +124,7 @@ class OsloBorsResource {
     func updateStockHistories(store: Store, stocks: [Stock]) -> Future<[Stock], NSError> {
         let promise = Promise<[Stock], NSError>()
 
-        try! stocks.map({
+        stocks.map({
             (stock: Stock) in getHistoryForStock(store, stock: stock)
         }).sequence().onSuccess {
             updatedStocks in

@@ -99,12 +99,10 @@ class Portfolio {
 
     static func rawCost(trades: [Trade]) -> Double {
         do {
-            return try trades
+            return trades
             .filter{(trade:Trade) in trade.action == Action.BUY}
             .map{(trade:Trade) in (trade.price * trade.count) + trade.fee}
             .reduce(0,combine: +)
-        } catch {
-            return 0.0
         }
     }
 
@@ -116,25 +114,23 @@ class Portfolio {
 
     static func averageCostOfStock(stockTrades:[Trade]) -> Double? {
         do {
-            let sumBuy = try! stockTrades
+            let sumBuy = stockTrades
             .filter{$0.action == Action.BUY}
             .map{($0.price * $0.count) + $0.fee}
             .reduce(0,combine: +)
 
-            return try! sumBuy / Double(stockTrades.filter{$0.action == Action.BUY}.map{$0.count}.reduce(0,combine: +))
-        } catch {
+            return sumBuy / Double(stockTrades.filter{$0.action == Action.BUY}.map{$0.count}.reduce(0,combine: +))
         }
     }
 
     static func averageSaleOfStock(stockTrades:[Trade]) -> Double? {
         do {
-            let sumSell = try (stockTrades
+            let sumSell = (stockTrades
             .filter{$0.action == Action.SELL}
             .map{($0.price * $0.count) - $0.fee}
             .reduce(0, combine: +))
 
-            return try! sumSell / Double(stockTrades.filter{$0.action == Action.BUY}.map{$0.count}.reduce(0,combine: +))
-        } catch {
+            return sumSell / Double(stockTrades.filter{$0.action == Action.BUY}.map{$0.count}.reduce(0,combine: +))
         }
     }
 
@@ -143,7 +139,7 @@ class Portfolio {
 
         var actualSales = 0.0
 
-        for (ticker, trades) in groupedTrades {
+        for (_, trades) in groupedTrades {
 
             let numSoldStocks = trades
                 .filter{$0.action == Action.SELL}

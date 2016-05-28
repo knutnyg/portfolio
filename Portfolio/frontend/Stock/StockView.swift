@@ -71,9 +71,9 @@ class StockView: ModalViewController {
         lowValue = createLabel("")
 
         newsButton = createButton("nyheter (dismiss)")
-        newsButton.addTarget(self, action: "dismiss:", forControlEvents: .TouchUpInside)
+        newsButton.addTarget(self, action: #selector(dismiss), forControlEvents: .TouchUpInside)
         timeresolutionSelector = UISegmentedControl(items: ["i dag", "1 mnd", "6 mnd", "1 år", "alt"])
-        timeresolutionSelector.addTarget(self, action: "selectorChanged:", forControlEvents: UIControlEvents.ValueChanged)
+        timeresolutionSelector.addTarget(self, action: #selector(selectorChanged), forControlEvents: UIControlEvents.ValueChanged)
         timeresolutionSelector.selectedSegmentIndex = 0
 
         chart = LineChartKomponent(data: gatherChartData(stock, timespan: TimeSpan.DAY))

@@ -8,21 +8,19 @@ class AllStockInfo: NSObject, Unboxable {
 
     func getAllTickers() -> [String]{
         do {
-            return try rows
+            return rows
             .map {
                 (row: Rows) in row.values
             }
             .map {
                 (info: StockInfo) in info.ITEM_SECTOR ?? "?"
             }
-        } catch {
-            return []
         }
     }
 
     func getTickersForAutocomplete() -> [AutocompleteDataItem] {
         do {
-            return try rows
+            return rows
             .map {
                 (row: Rows) in row.values
             }
@@ -31,9 +29,7 @@ class AllStockInfo: NSObject, Unboxable {
             }.filter {
                 (di: AutocompleteDataItem) in di.text.lowercaseString.containsString("ose")
             }
-        } catch {
-            return []
-        }
+        } 
     }
 
     override init(){

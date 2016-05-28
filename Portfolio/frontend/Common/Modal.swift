@@ -27,7 +27,7 @@ class Modal : UIViewController, UIGestureRecognizerDelegate {
         vc.view.layer.shadowOpacity = 0.5
         vc.view.layer.shadowRadius = 5
 
-        let touch = UITapGestureRecognizer(target:self, action:"dismiss:")
+        let touch = UITapGestureRecognizer(target:self, action:#selector(dismiss))
         view.addGestureRecognizer(touch)
         touch.delegate = self
 
@@ -50,7 +50,7 @@ class Modal : UIViewController, UIGestureRecognizerDelegate {
     }
 
 
-    public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
         if(touch.view == view) {
             return true
         } else {

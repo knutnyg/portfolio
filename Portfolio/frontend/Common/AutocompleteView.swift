@@ -61,7 +61,7 @@ class AutocompleteView: ModalViewController, UITableViewDataSource, UITableViewD
     func limit(input:[AutocompleteDataItem], count:Int) -> [AutocompleteDataItem] {
         var limited:[AutocompleteDataItem] = []
 
-        for var i = 0; i < input.count; i++ {
+        for i in  0...input.count - 1 {
             if i < count {
                 limited.append(input[i])
             }

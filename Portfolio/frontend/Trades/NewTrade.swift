@@ -52,7 +52,7 @@ class NewTrade: ModalViewController, UITextFieldDelegate, AutocompleteViewDelega
         datePicker = UIDatePicker()
         datePicker.date = NSDate()
         datePicker.datePickerMode = UIDatePickerMode.Date
-        datePicker.addTarget(self, action: "dateSelected:", forControlEvents: .ValueChanged)
+        datePicker.addTarget(self, action: #selector(dateSelected), forControlEvents: .ValueChanged)
 
         dateTextField = createTextField("")
         dateTextField.text =  NSDate().shortPrintable()
@@ -69,7 +69,7 @@ class NewTrade: ModalViewController, UITextFieldDelegate, AutocompleteViewDelega
         actionSegmentedControl.selectedSegmentIndex = 0
 
         saveButton = createButton("Save trade")
-        saveButton.addTarget(self, action: "saveTrade:", forControlEvents: .TouchUpInside)
+        saveButton.addTarget(self, action: #selector(saveTrade), forControlEvents: .TouchUpInside)
 
         addChildViewController(header)
         addChildViewController(autocompleteView)
