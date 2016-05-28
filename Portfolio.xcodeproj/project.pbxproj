@@ -290,13 +290,6 @@
 			path = Watch;
 			sourceTree = "<group>";
 		};
-		324F45833F60828B105C732E /* Portfolio */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Portfolio;
-			sourceTree = "<group>";
-		};
 		324F4665C502136E13F22940 /* models */ = {
 			isa = PBXGroup;
 			children = (
@@ -378,7 +371,6 @@
 				324F438BEAB1A9AE1BC6F7E9 /* Trades */,
 				324F44B0695D580D520E0414 /* TabBarController.swift */,
 				324F4E065D183C25E2F9A842 /* Stock */,
-				324F45833F60828B105C732E /* Portfolio */,
 				324F435E58E4FD7D490A947B /* Common */,
 				324F4452763E562B27401D26 /* Watch */,
 			);
