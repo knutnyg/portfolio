@@ -46,9 +46,15 @@ class PortfolioView: UIViewController {
         returnOnSalesLabel = createLabel("Realisert gevinst:")
 
         totalValueValue = createLabel("0")
+        totalValueValue.textAlignment = .Right
         totalReturnValue = createButton("0")
+        totalReturnValue.setTitleColor(UIColor.blackColor(), forState: .Normal)
+        totalReturnValue.titleLabel?.font = UIFont(name: "Helvetica", size: 18)
         todaysReturnValue = createButton("0")
+        todaysReturnValue.setTitleColor(UIColor.blackColor(), forState: .Normal)
+        todaysReturnValue.titleLabel?.font = UIFont(name: "Helvetica", size: 18)
         returnOnSalesValue = createLabel("0")
+        returnOnSalesValue.textAlignment = .Right
 
         totalReturnValue.addTarget(self, action: #selector(switchTotalReturnValue), forControlEvents: .TouchUpInside)
         todaysReturnValue.addTarget(self, action: #selector(switchTodaysReturnValue), forControlEvents: .TouchUpInside)
@@ -59,7 +65,7 @@ class PortfolioView: UIViewController {
 
         addChildViewController(chart)
         addChildViewController(header)
-
+        
         view.addSubview(timeresolutionSelector)
         view.addSubview(chart.view)
         view.addSubview(header.view)
@@ -78,14 +84,16 @@ class PortfolioView: UIViewController {
                 ComponentWrapper(view: header.view, rules: ConstraintRules(parentView: view).snapTop().horizontalFullWithMargin(0).height(60)),
 
                 ComponentWrapper(view: totalValueLabel, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(20).width(150).snapTop(header.view.snp_bottom).marginTop(50)),
-                ComponentWrapper(view: totalReturnLabel, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(20).width(150).snapTop(totalValueLabel.snp_bottom).marginTop(10)),
-                ComponentWrapper(view: todaysReturnLabel, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(20).width(150).snapTop(totalReturnLabel.snp_bottom).marginTop(10)),
-                ComponentWrapper(view: returnOnSalesLabel, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(20).width(150).snapTop(todaysReturnLabel.snp_bottom).marginTop(10)),
+                ComponentWrapper(view: returnOnSalesLabel, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(20).width(150).snapTop(totalValueLabel.snp_bottom).marginTop(15)),
+                ComponentWrapper(view: totalReturnLabel, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(20).width(150).snapTop(returnOnSalesLabel.snp_bottom).marginTop(30)),
+                ComponentWrapper(view: todaysReturnLabel, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(20).width(150).snapTop(totalReturnLabel.snp_bottom).marginTop(15)),
+            
 
-                ComponentWrapper(view: totalValueValue, rules: ConstraintRules(parentView: view).snapLeft(totalValueLabel.snp_right).marginLeft(50).snapTop(totalValueLabel.snp_top)),
-                ComponentWrapper(view: totalReturnValue, rules: ConstraintRules(parentView: view).snapLeft(totalReturnLabel.snp_right).marginLeft(50).snapTop(totalReturnLabel.snp_top)),
-                ComponentWrapper(view: todaysReturnValue, rules: ConstraintRules(parentView: view).snapLeft(todaysReturnLabel.snp_right).marginLeft(50).snapTop(todaysReturnLabel.snp_top)),
-                ComponentWrapper(view: returnOnSalesValue, rules: ConstraintRules(parentView: view).snapLeft(returnOnSalesLabel.snp_right).marginLeft(50).snapTop(returnOnSalesLabel.snp_top)),
+                ComponentWrapper(view: totalValueValue, rules: ConstraintRules(parentView: view).snapLeft(totalValueLabel.snp_right).marginLeft(50).snapTop(totalValueLabel.snp_top).width(90)),
+            ComponentWrapper(view: returnOnSalesValue, rules: ConstraintRules(parentView: view).snapLeft(returnOnSalesLabel.snp_right).marginLeft(50).snapTop(returnOnSalesLabel.snp_top).width(90)),
+            ComponentWrapper(view: totalReturnValue, rules: ConstraintRules(parentView: view).snapLeft(totalReturnLabel.snp_right).marginLeft(50).width(90).snapCenterY(totalReturnLabel.snp_centerY)),
+                ComponentWrapper(view: todaysReturnValue, rules:ConstraintRules(parentView:view).snapLeft(todaysReturnLabel.snp_right).marginLeft(50).width(90).snapCenterY(todaysReturnLabel.snp_centerY)),
+            
 
                 ComponentWrapper(view: timeresolutionSelector, rules: ConstraintRules(parentView: view).snapBottom(chart.view.snp_top).marginBottom(10).centerX()),
                 ComponentWrapper(view: chart.view, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(10).snapBottom().marginBottom(80).height(250))
@@ -94,6 +102,10 @@ class PortfolioView: UIViewController {
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        refresh()
+    }
+
+    func refresh(){
         setLabels()
         chart.data = gatherChartData(controller.store, timespan:chart.mode)
         chart.refreshData()
@@ -118,6 +130,14 @@ class PortfolioView: UIViewController {
         chart.data = gatherChartData(controller.store, timespan: timespan)
         chart.mode = timespan
         chart.refreshData()
+    }
+
+    func setIncBackgroundColor(view:UIView, val:Double) {
+        if val >= 0 {
+            view.backgroundColor = UIColor.greenColor()
+        } else {
+            view.backgroundColor = UIColor.redColor()
+        }
     }
 
     func switchTotalReturnValue(sender: UIButton) {
@@ -180,6 +200,9 @@ class PortfolioView: UIViewController {
         totalReturnValue.setTitle(String(format: "%.2f", incValue) + " %", forState: .Normal)
         todaysReturnValue.setTitle(String(format: "%.2f", incToday) + " %", forState: .Normal)
         returnOnSalesValue.text = String(format: "%.2f", sales) + " kr"
+
+        setIncBackgroundColor(totalReturnValue, val: incValue)
+        setIncBackgroundColor(todaysReturnValue, val: incValue)
     }
 
     func calcTodayInc() -> Double {
