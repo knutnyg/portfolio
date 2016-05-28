@@ -3,8 +3,6 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 use_frameworks!
 
-platform :ios, '9.0'
-
 def production
     pod 'BrightFutures', '4.0.0-beta.1'
     pod 'SwiftHTTP', '1.0.5'
