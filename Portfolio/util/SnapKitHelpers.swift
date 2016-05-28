@@ -67,6 +67,16 @@ class SnapKitHelpers {
                 if let snap = constraints.i_snapRight {
                     comp.right.equalTo(snap).offset(-marginRight)
                 }
+                
+                //Snap Center Y
+                if let snap = constraints.i_snapCenterY {
+                    comp.centerY.equalTo(snap)
+                }
+                
+                //Snap Center X
+                if let snap = constraints.i_snapCenterX {
+                    comp.centerX.equalTo(snap)
+                }
 
                 //Width
                 if let width = constraints.i_width {

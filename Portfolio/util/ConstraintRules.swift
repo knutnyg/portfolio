@@ -16,6 +16,7 @@ class ConstraintRules {
     var i_centerY: Bool?
     var i_offsetY: Int?
     var i_snapTop: ConstraintItem?
+    var i_snapCenterY: ConstraintItem?
     var i_snapBottom: ConstraintItem?
 
     var i_width: Int?
@@ -25,6 +26,7 @@ class ConstraintRules {
     var i_marginRight: Int?
     var i_snapLeft: ConstraintItem?
     var i_snapRight: ConstraintItem?
+    var i_snapCenterX: ConstraintItem?
 
 
     init(parentView: View) {
@@ -54,6 +56,16 @@ class ConstraintRules {
     func centerY(offset:Int) -> ConstraintRules {
         i_centerY = true
         i_offsetY = offset
+        return self
+    }
+    
+    func snapCenterY(snap:ConstraintItem) -> ConstraintRules {
+        i_snapCenterY = snap
+        return self
+    }
+    
+    func snapCenterX(snap:ConstraintItem) -> ConstraintRules {
+        i_snapCenterX = snap
         return self
     }
 
