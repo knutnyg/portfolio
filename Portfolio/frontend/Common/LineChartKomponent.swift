@@ -64,5 +64,5 @@ class LineChartKomponent : UIViewController, ChartViewDelegate{
 }
 
 enum TimeSpan: Double {
-    case DAY = 100001.0, MONTH = 31.0, HALF_YEAR = 182.0, YEAR = 365.0, ALL = 100000.0
+    case DAY = 100001.0, WEEK = 7.0, MONTH = 31.0, HALF_YEAR = 182.0, YEAR = 365.0, ALL = 100000.0
 }

@@ -158,17 +158,13 @@ class StockView: ModalViewController {
             lowValue.text = String(meta.LOW ?? -1)
             lastValue.text = String(meta.LASTNZ_DIV ?? -1)
         }
-//
+
         chart.data = gatherChartData(stock, timespan: timespan)
         chart.mode = timespan
         chart.refreshData()
 
         setIncBackgroundColor(incValue, stock: stock)
 
-    }
-
-    func filter(data: [StockPriceInstance], mode: TimeSpan) -> [StockPriceInstance] {
-        return data.filter({ (spi: StockPriceInstance) in spi.date.laterDate(NSDate(timeIntervalSinceNow: -86400 * mode.rawValue)) == spi.date })
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -191,6 +187,10 @@ class StockView: ModalViewController {
         }
         return timespan == TimeSpan.DAY ? intra.history : filter(full.history, mode:timespan)
 
+    }
+
+    func filter(data: [StockPriceInstance], mode: TimeSpan) -> [StockPriceInstance] {
+        return data.filter({ (spi: StockPriceInstance) in spi.date.laterDate(NSDate(timeIntervalSinceNow: -86400 * mode.rawValue)) == spi.date })
     }
 
 }

@@ -25,6 +25,7 @@ class PortfolioView: UIViewController {
     var showingTodaysPercentage = true
 
     var controller: TabBarController!
+    var timeresolutionSelector: UISegmentedControl!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,8 +33,8 @@ class PortfolioView: UIViewController {
         controller = tabBarController as! TabBarController
         view.backgroundColor = UIColor.whiteColor()
 
-        chart = LineChartKomponent(data: gatherChartData(controller.store))
-        chart.mode = TimeSpan.MONTH
+        chart = LineChartKomponent(data: gatherChartData(controller.store, timespan: TimeSpan.ALL))
+        chart.mode = TimeSpan.ALL
         chart.refreshData()
 
         let header = Header()
@@ -52,9 +53,14 @@ class PortfolioView: UIViewController {
         totalReturnValue.addTarget(self, action: "switchTotalReturnValue:", forControlEvents: .TouchUpInside)
         todaysReturnValue.addTarget(self, action: "switchTodaysReturnValue:", forControlEvents: .TouchUpInside)
 
+        timeresolutionSelector = UISegmentedControl(items: ["1 uke","1 mnd", "6 mnd", "1 år", "alt"])
+        timeresolutionSelector.addTarget(self, action: "selectorChanged:", forControlEvents: UIControlEvents.ValueChanged)
+        timeresolutionSelector.selectedSegmentIndex = 4
+
         addChildViewController(chart)
         addChildViewController(header)
 
+        view.addSubview(timeresolutionSelector)
         view.addSubview(chart.view)
         view.addSubview(header.view)
 
@@ -81,6 +87,7 @@ class PortfolioView: UIViewController {
                 ComponentWrapper(view: todaysReturnValue, rules: ConstraintRules(parentView: view).snapLeft(todaysReturnLabel.snp_right).marginLeft(50).snapTop(todaysReturnLabel.snp_top)),
                 ComponentWrapper(view: returnOnSalesValue, rules: ConstraintRules(parentView: view).snapLeft(returnOnSalesLabel.snp_right).marginLeft(50).snapTop(returnOnSalesLabel.snp_top)),
 
+                ComponentWrapper(view: timeresolutionSelector, rules: ConstraintRules(parentView: view).snapBottom(chart.view.snp_top).marginBottom(10).centerX()),
                 ComponentWrapper(view: chart.view, rules: ConstraintRules(parentView: view).horizontalFullWithMargin(10).snapBottom().marginBottom(80).height(250))
         ])
     }
@@ -88,12 +95,30 @@ class PortfolioView: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         setLabels()
-        chart.data = gatherChartData(controller.store)
+        chart.data = gatherChartData(controller.store, timespan:chart.mode)
         chart.refreshData()
 
         controller.store.updateAllStockInfo()
     }
 
+    func selectorChanged(sender: UISegmentedControl) {
+        var mode: TimeSpan = .DAY
+        switch (sender.selectedSegmentIndex) {
+        case 0: mode = .WEEK; break;
+        case 1: mode = .MONTH; break;
+        case 2: mode = .HALF_YEAR; break;
+        case 3: mode = .YEAR; break;
+        case 4: mode = .ALL; break;
+        default: mode = .ALL; break;
+        }
+        refreshData(mode)
+    }
+
+    func refreshData(timespan: TimeSpan) {
+        chart.data = gatherChartData(controller.store, timespan: timespan)
+        chart.mode = timespan
+        chart.refreshData()
+    }
 
     func switchTotalReturnValue(sender: UIButton) {
         if (showingTotalPercentage) {
@@ -113,13 +138,13 @@ class PortfolioView: UIViewController {
         showingTodaysPercentage = !showingTodaysPercentage
     }
 
-    func gatherChartData(store: Store) -> [StockPriceInstance] {
+    func gatherChartData(store: Store, timespan:TimeSpan) -> [StockPriceInstance] {
 
         if store.trades.count == 0 {
             return []
         }
 
-        let earliestDate = store.trades[0].date
+        let earliestDate = store.trades[0].date.laterDate(NSDate(timeIntervalSinceNow: -(timespan.rawValue * 86400)))
         var dateInc = earliestDate
         let today = NSDate()
         var portfolioData: [StockPriceInstance] = []
