@@ -367,9 +367,9 @@
 		324F4EAB58E7C4784C0407A5 /* frontend */ = {
 			isa = PBXGroup;
 			children = (
+				324F44B0695D580D520E0414 /* TabBarController.swift */,
 				324F4543E037F86F23822FF2 /* PortfolioView.swift */,
 				324F438BEAB1A9AE1BC6F7E9 /* Trades */,
-				324F44B0695D580D520E0414 /* TabBarController.swift */,
 				324F4E065D183C25E2F9A842 /* Stock */,
 				324F435E58E4FD7D490A947B /* Common */,
 				324F4452763E562B27401D26 /* Watch */,

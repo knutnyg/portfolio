@@ -89,10 +89,10 @@ class PortfolioView: UIViewController {
                 ComponentWrapper(view: todaysReturnLabel, rules: ConstraintRules(parentView: view).snapLeft().marginLeft(20).width(150).snapTop(totalReturnLabel.snp_bottom).marginTop(15)),
             
 
-                ComponentWrapper(view: totalValueValue, rules: ConstraintRules(parentView: view).snapLeft(totalValueLabel.snp_right).marginLeft(50).snapTop(totalValueLabel.snp_top).width(90)),
-            ComponentWrapper(view: returnOnSalesValue, rules: ConstraintRules(parentView: view).snapLeft(returnOnSalesLabel.snp_right).marginLeft(50).snapTop(returnOnSalesLabel.snp_top).width(90)),
-            ComponentWrapper(view: totalReturnValue, rules: ConstraintRules(parentView: view).snapLeft(totalReturnLabel.snp_right).marginLeft(50).width(90).snapCenterY(totalReturnLabel.snp_centerY)),
-                ComponentWrapper(view: todaysReturnValue, rules:ConstraintRules(parentView:view).snapLeft(todaysReturnLabel.snp_right).marginLeft(50).width(90).snapCenterY(todaysReturnLabel.snp_centerY)),
+                ComponentWrapper(view: totalValueValue, rules: ConstraintRules(parentView: view).snapLeft(totalValueLabel.snp_right).snapRight().marginRight(20).snapTop(totalValueLabel.snp_top).width(140)),
+                ComponentWrapper(view: returnOnSalesValue, rules: ConstraintRules(parentView: view).snapRight().marginRight(20).snapTop(returnOnSalesLabel.snp_top).width(140)),
+                ComponentWrapper(view: totalReturnValue, rules: ConstraintRules(parentView: view).snapRight().marginRight(20).width(140).snapCenterY(totalReturnLabel.snp_centerY)),
+                ComponentWrapper(view: todaysReturnValue, rules:ConstraintRules(parentView:view).snapRight().marginRight(20).width(140).snapCenterY(todaysReturnLabel.snp_centerY)),
             
 
                 ComponentWrapper(view: timeresolutionSelector, rules: ConstraintRules(parentView: view).snapBottom(chart.view.snp_top).marginBottom(10).centerX()),
