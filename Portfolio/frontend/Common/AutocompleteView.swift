@@ -60,10 +60,10 @@ class AutocompleteView: ModalViewController, UITableViewDataSource, UITableViewD
 
     func limit(input:[AutocompleteDataItem], count:Int) -> [AutocompleteDataItem] {
         var limited:[AutocompleteDataItem] = []
-
-        for i in  0...input.count - 1 {
+        
+        for (i, element) in input.enumerate() {
             if i < count {
-                limited.append(input[i])
+                limited.append(element)
             }
         }
         return limited
