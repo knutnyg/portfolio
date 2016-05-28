@@ -58,8 +58,6 @@ class StockView: ModalViewController {
         .withRightButtonIcon(FAType.FAClose, action: cancel, color: WHITE)
 
         lastLabel = createLabel("Siste")
-//        buyLabel = createLabel("Kjøper")
-//        sellLabel = createLabel("Selger")
         incLabel = createLabel("Avk. i dag")
         turnoverLabel = createLabel("Omsatt (MNOK)")
         highLabel = createLabel("Høy")
@@ -88,10 +86,6 @@ class StockView: ModalViewController {
         view.addSubview(header.view)
         view.addSubview(lastLabel)
         view.addSubview(lastValue)
-//        view.addSubview(buyLabel)
-//        view.addSubview(buyValue)
-//        view.addSubview(sellLabel)
-//        view.addSubview(sellValue)
         view.addSubview(incLabel)
         view.addSubview(incValue)
         view.addSubview(turnoverLabel)
@@ -107,15 +101,11 @@ class StockView: ModalViewController {
         let comp: [ComponentWrapper] = [
                 ComponentWrapper(view: header.view, rules: ConstraintRules(parentView: view).snapTop().horizontalFullWithMargin(0).height(40)),
                 ComponentWrapper(view: lastLabel, rules: ConstraintRules(parentView: view).snapTop(header.view.snp_bottom).marginTop(14).centerX(-40).width(150)),
-//                ComponentWrapper(view: buyLabel, rules: ConstraintRules(parentView: view).snapTop(lastLabel.snp_bottom).marginTop(8).centerX(-40).width(150)),
-//                ComponentWrapper(view: sellLabel, rules: ConstraintRules(parentView: view).snapTop(buyLabel.snp_bottom).marginTop(8).centerX(-40).width(150)),
                 ComponentWrapper(view: incLabel, rules: ConstraintRules(parentView: view).snapTop(lastLabel.snp_bottom).marginTop(8).centerX(-40).width(150)),
                 ComponentWrapper(view: turnoverLabel, rules: ConstraintRules(parentView: view).snapTop(incLabel.snp_bottom).marginTop(8).centerX(-40).width(150)),
                 ComponentWrapper(view: lowLabel, rules: ConstraintRules(parentView: view).snapTop(turnoverLabel.snp_bottom).marginTop(8).centerX(-40).width(150)),
                 ComponentWrapper(view: highLabel, rules: ConstraintRules(parentView: view).snapTop(lowLabel.snp_bottom).marginTop(8).centerX(-40).width(150)),
                 ComponentWrapper(view: lastValue, rules: ConstraintRules(parentView: view).snapLeft(lastLabel.snp_right).marginLeft(20).snapTop(lastLabel.snp_top)),
-//                ComponentWrapper(view: buyValue, rules: ConstraintRules(parentView: view).snapLeft(buyLabel.snp_right).marginLeft(20).snapTop(buyLabel.snp_top)),
-//                ComponentWrapper(view: sellValue, rules: ConstraintRules(parentView: view).snapLeft(sellLabel.snp_right).marginLeft(20).snapTop(sellLabel.snp_top)),
                 ComponentWrapper(view: incValue, rules: ConstraintRules(parentView: view).snapLeft(incLabel.snp_right).marginLeft(20).snapTop(incLabel.snp_top)),
                 ComponentWrapper(view: turnoverValue, rules: ConstraintRules(parentView: view).snapLeft(turnoverLabel.snp_right).marginLeft(20).snapTop(turnoverLabel.snp_top)),
                 ComponentWrapper(view: highValue, rules: ConstraintRules(parentView: view).snapLeft(highLabel.snp_right).marginLeft(20).snapTop(highLabel.snp_top)),
