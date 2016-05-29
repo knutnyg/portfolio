@@ -13,5 +13,12 @@ enum Action:Int {
         }
     }
 
+    func toString() -> String {
+        switch(self){
+            case .BUY: return "Kjøp"
+            case .SELL: return "Salg"
+        }
+    }
+
 
 }
