@@ -26,6 +26,12 @@ extension SequenceType {
     }
 }
 
+extension Array {
+    func contains<T where T : Equatable>(obj: T) -> Bool {
+        return self.filter({$0 as? T == obj}).count > 0
+    }
+}
+
 extension NSDate {
 
     func onlyYear()-> String{
