@@ -16,12 +16,13 @@ class StoreTests: XCTestCase {
 
         required init?(coder decoder: NSCoder) {
             super.init(
-
-            trades: decoder.decodeObjectForKey("trades") as! [Trade],
-                    allStockInfo: decoder.decodeObjectForKey("allStockInfo") as! AllStockInfo,
-                    stocks: decoder.decodeObjectForKey("stocks") as! [String:Stock],
-                    watchedStocks: decoder.decodeObjectForKey("watchedStocks") as! [Stock]
+                trades: decoder.decodeObjectForKey("trades") as! [Trade],
+                allStockInfo: decoder.decodeObjectForKey("allStockInfo") as! AllStockInfo,
+                stocks: decoder.decodeObjectForKey("stocks") as! [String:Stock],
+                watchedStocks: decoder.decodeObjectForKey("watchedStocks") as! [Stock],
+                userPrefs: decoder.decodeObjectForKey("userPrefs") as? UserPreferences
             )
+
         }
 
 

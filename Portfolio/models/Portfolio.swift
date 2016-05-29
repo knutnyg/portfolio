@@ -75,6 +75,21 @@ class Portfolio {
             return nil
         }
     }
+    
+    static func costAtDay(store: Store, date: NSDate) -> Double? {
+        
+        var sum = 0.0
+        
+        
+        for (stock, _) in try! Portfolio.stocksAtDay(store, date: date){
+            print(stock.ticker)
+            sum = sum + Portfolio.averageCostOfStock(store.trades
+                .filter{(trade:Trade) in trade.ticker == stock.ticker}
+            )!
+        }
+        
+        return sum
+    }
 
     static func lastClosingValue(store:Store) -> Double?{
         let counter = 1.0
@@ -100,9 +115,19 @@ class Portfolio {
     static func rawCost(trades: [Trade]) -> Double {
         do {
             return trades
-            .filter{(trade:Trade) in trade.action == Action.BUY}
-            .map{(trade:Trade) in (trade.price * trade.count) + trade.fee}
+                .map{(trade:Trade) in
+                    return ((trade.action==Action.SELL ? -1 : 1) * ((trade.price * trade.count) + ((trade.action==Action.SELL ? -1 : 1) * trade.fee)))}
             .reduce(0,combine: +)
+        }
+    }
+    
+    static func rawCostAtDate(trades: [Trade], date:NSDate) -> Double {
+        do {
+            return trades
+                .filter{(trade:Trade) in trade.date.earlierDate(NSDate(timeInterval: 86400, sinceDate: date)) == trade.date}
+                .map{(trade:Trade) in
+                    return ((trade.action==Action.SELL ? -1 : 1) * ((trade.price * trade.count) + ((trade.action==Action.SELL ? -1 : 1) * trade.fee)))}
+                .reduce(0,combine: +)
         }
     }
 
@@ -118,8 +143,23 @@ class Portfolio {
             .filter{$0.action == Action.BUY}
             .map{($0.price * $0.count) + $0.fee}
             .reduce(0,combine: +)
-
-            return sumBuy / Double(stockTrades.filter{$0.action == Action.BUY}.map{$0.count}.reduce(0,combine: +))
+            
+            let numBoughtStocks = Double(stockTrades.filter{$0.action == Action.BUY}.map{$0.count}.reduce(0,combine: +))
+            return numBoughtStocks != 0 ? sumBuy/numBoughtStocks : 0
+        }
+    }
+    
+    static func averageCostOfStockAtDate(stockTrades:[Trade], date:NSDate) -> Double? {
+        do {
+            let relevantTrades = stockTrades
+                .filter{$0.date.earlierDate(NSDate(timeInterval: 86400, sinceDate: date)) == $0.date}
+                .filter{$0.action == Action.BUY}
+            let sumBuy = relevantTrades
+                .map{($0.price * $0.count) + $0.fee}
+                .reduce(0,combine: +)
+            
+            let numBoughtStocks = Double(relevantTrades.map{$0.count}.reduce(0,combine: +))
+            return numBoughtStocks != 0 ? sumBuy/numBoughtStocks : 0
         }
     }
 
@@ -129,8 +169,9 @@ class Portfolio {
             .filter{$0.action == Action.SELL}
             .map{($0.price * $0.count) - $0.fee}
             .reduce(0, combine: +))
-
-            return sumSell / Double(stockTrades.filter{$0.action == Action.BUY}.map{$0.count}.reduce(0,combine: +))
+            
+            let numSoldStocks = Double(stockTrades.filter{$0.action == Action.SELL}.map{$0.count}.reduce(0,combine: +))
+            return numSoldStocks != 0 ? sumSell/numSoldStocks : 0
         }
     }
 

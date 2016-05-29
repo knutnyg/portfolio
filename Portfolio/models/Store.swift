@@ -7,14 +7,7 @@ class Store: NSObject {
     var storedFileName: String?
     var allStockInfo: AllStockInfo!
     var watchedStocks: [Stock]!
-
-    override init() {
-        super.init()
-        self.trades = []
-        self.stocks = [:]
-        self.allStockInfo = AllStockInfo()
-        self.watchedStocks = []
-    }
+    var userPrefs: UserPreferences!
 
     init(dataFile: String) {
         super.init()
@@ -26,14 +19,33 @@ class Store: NSObject {
             self.stocks = store.stocks
             self.allStockInfo = store.allStockInfo
             self.watchedStocks = store.watchedStocks
+            self.userPrefs = store.userPrefs
         } else {
             print("Failed to load store!")
             self.trades = []
             self.stocks = [:]
             self.allStockInfo = AllStockInfo()
             self.watchedStocks = []
+            self.userPrefs = UserPreferences()
         }
         refreshStoreStockData()
+    }
+    
+    override init() {
+        super.init()
+        self.trades = []
+        self.stocks = [:]
+        self.allStockInfo = AllStockInfo()
+        self.watchedStocks = []
+        self.userPrefs = UserPreferences()
+    }
+    
+    init(trades: [Trade], allStockInfo: AllStockInfo, stocks: [String:Stock], watchedStocks: [Stock], userPrefs: UserPreferences?) {
+        self.trades = trades
+        self.allStockInfo = allStockInfo
+        self.stocks = stocks
+        self.watchedStocks = watchedStocks
+        self.userPrefs = userPrefs ?? UserPreferences()
     }
 
     private func addAllStocks(tickers: [String]) {
@@ -161,18 +173,12 @@ class Store: NSObject {
 
     required convenience init?(coder decoder: NSCoder) {
         self.init(
-        trades: decoder.decodeObjectForKey("trades") as! [Trade],
-                allStockInfo: decoder.decodeObjectForKey("allStockInfo") as! AllStockInfo,
-                stocks: decoder.decodeObjectForKey("stocks") as! [String:Stock],
-                watchedStocks: decoder.decodeObjectForKey("watchedStocks") as! [Stock]
+            trades: decoder.decodeObjectForKey("trades") as! [Trade],
+            allStockInfo: decoder.decodeObjectForKey("allStockInfo") as! AllStockInfo,
+            stocks: decoder.decodeObjectForKey("stocks") as! [String:Stock],
+            watchedStocks: decoder.decodeObjectForKey("watchedStocks") as! [Stock],
+            userPrefs: decoder.decodeObjectForKey("userPrefs") as? UserPreferences
         )
-    }
-
-    init(trades: [Trade], allStockInfo: AllStockInfo, stocks: [String:Stock], watchedStocks: [Stock]) {
-        self.trades = trades
-        self.allStockInfo = allStockInfo
-        self.stocks = stocks
-        self.watchedStocks = watchedStocks
     }
 
     func encodeWithCoder(coder: NSCoder) {
@@ -180,5 +186,6 @@ class Store: NSObject {
         coder.encodeObject(self.allStockInfo, forKey: "allStockInfo")
         coder.encodeObject(self.stocks, forKey: "stocks")
         coder.encodeObject(self.watchedStocks, forKey: "watchedStocks")
+        coder.encodeObject(self.userPrefs, forKey: "userPrefs")
     }
 }

@@ -163,27 +163,27 @@ class PortfolioTests: XCTestCase {
 
         let trades = [
                 Trade(date: NSDate(dateString: "2015-06-13"),
-                        price: 49.30,
+                        price: 100.0,
                         ticker: "NOD.OL",
-                        count: 60,
+                        count: 10,
                         action: Action.BUY,
                         fee: 29
                 ),
                 Trade(date: NSDate(dateString: "2015-06-19"),
-                        price: 43.30,
+                        price: 200.0,
                         ticker: "NOD.OL",
-                        count: 40,
+                        count: 10,
                         action: Action.BUY,
                         fee: 29
                 ),
                 Trade(date: NSDate(dateString: "2015-06-21"),
-                        price: 37.30,
+                        price: 150.0,
                         ticker: "NOD.OL",
-                        count: 40,
+                        count: 10,
                         action: Action.SELL,
                         fee: 29
                 )]
-        XCTAssertEqual(Portfolio.rawCost(trades), 4748)
+        XCTAssertEqual(Portfolio.rawCost(trades), 1587)
 
     }
 
@@ -211,6 +211,61 @@ class PortfolioTests: XCTestCase {
                         fee: 29
                 )]
     XCTAssertEqual(Portfolio.calculateActualSales(trades), 43.000000000000007)
+    }
+    
+    func testAverageCostOfStockAtDate(){
+        let trades = [
+            Trade(date: NSDate(dateString: "2015-06-13"),
+                price: 10,
+                ticker: "NOD.OL",
+                count: 10,
+                action: Action.BUY,
+                fee: 29
+            ),
+            Trade(date: NSDate(dateString: "2015-06-19"),
+                price: 20,
+                ticker: "NOD.OL",
+                count: 5,
+                action: Action.BUY,
+                fee: 29
+            )]
+        XCTAssertEqual(Portfolio.averageCostOfStockAtDate(trades, date: NSDate(dateString: "2015-06-13")), 12.9)
+        XCTAssertEqual(Portfolio.averageCostOfStockAtDate(trades, date: NSDate(dateString: "2015-06-20")), 17.2)
+    }
+    
+    func testCostAtDay(){
+        
+        let store = Store()
+        store.stocks["NOD.OL"] = Stock(ticker: "NOD.OL")
+        store.stocks["NAS.OL"] = Stock(ticker: "NAS.OL")
+        
+        let trades = [
+            Trade(date: NSDate(dateString: "2015-06-13"),
+                price: 10,
+                ticker: "NOD.OL",
+                count: 10,
+                action: Action.BUY,
+                fee: 29
+            ),
+            Trade(date: NSDate(dateString: "2015-06-13"),
+                price: 30,
+                ticker: "NAS.OL",
+                count: 10,
+                action: Action.BUY,
+                fee: 29
+            ),
+            Trade(date: NSDate(dateString: "2015-06-19"),
+                price: 20,
+                ticker: "NOD.OL",
+                count: 5,
+                action: Action.BUY,
+                fee: 29
+            )]
+        
+        store.trades = trades
+        
+        XCTAssertEqual(Portfolio.rawCostAtDate(trades, date: NSDate(dateString: "2015-06-14")), 129.0+329.0)
+        XCTAssertEqual(Portfolio.rawCostAtDate(trades, date: NSDate(dateString: "2015-06-20")), 17.2*15 + 329)
     }
 
 }

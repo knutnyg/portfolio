@@ -27,7 +27,7 @@ class AutocompleteView: ModalViewController, UITableViewDataSource, UITableViewD
 
         searchBar = UISearchBar()
         searchBar.searchBarStyle = UISearchBarStyle.Minimal
-        searchBar.placeholder = "Search"
+        searchBar.placeholder = "Søk"
 
         searchBar.translucent = false
         searchBar.delegate = self

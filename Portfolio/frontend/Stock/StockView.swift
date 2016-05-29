@@ -76,7 +76,7 @@ class StockView: ModalViewController {
         timeresolutionSelector.addTarget(self, action: #selector(selectorChanged), forControlEvents: UIControlEvents.ValueChanged)
         timeresolutionSelector.selectedSegmentIndex = 0
 
-        chart = LineChartKomponent(data: gatherChartData(stock, timespan: TimeSpan.DAY))
+        chart = LineChartKomponent(data: gatherChartData(stock, timespan: TimeSpan.DAY), chartmode: ChartMode.STOCK)
         chart.mode = TimeSpan.DAY
         chart.refreshData()
 
