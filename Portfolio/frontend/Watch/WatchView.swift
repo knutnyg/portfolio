@@ -22,7 +22,7 @@ class WatchView : UIViewController, UITableViewDataSource, UITableViewDelegate {
         borsResource = OsloBorsResource()
 
         let header = Header()
-        .withTitle("Watches", color: UIColor.whiteColor(), font: nil)
+        .withTitle("Aksjekurser", color: UIColor.whiteColor(), font: nil)
         .withRightButtonIcon(FAType.FAPlus, action: toNewWatch, color: UIColor.whiteColor())
 
         watchList = UITableView()

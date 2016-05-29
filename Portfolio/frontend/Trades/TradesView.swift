@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import SnapKit
+import Font_Awesome_Swift
 
 class TradesView: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -13,8 +14,8 @@ class TradesView: UIViewController, UITableViewDataSource, UITableViewDelegate {
         controller = tabBarController as! TabBarController
 
         let header = Header()
-        .withTitle("Trades", color: UIColor.whiteColor(), font: nil)
-        .withRightButtonText("+", action:addTrade)
+        .withTitle("Handler", color: UIColor.whiteColor(), font: nil)
+        .withRightButtonIcon(FAType.FAPlus, action: addTrade, color: UIColor.whiteColor())
 
         tradesTable = UITableView()
         tradesTable.dataSource = self
@@ -92,7 +93,7 @@ class TradesView: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
         let trade = tradeAtIndexPath(indexPath)
 
-        cell.textLabel?.text = "\(trade.date.shortPrintable())   \(trade.ticker)   \(trade.price)kr   \(trade.count)stk   \(trade.action)"
+        cell.textLabel?.text = "\(trade.date.shortPrintable())   \(trade.ticker)   \(trade.price)kr   \(trade.count)stk   \(trade.action.toString())"
 
         return cell
     }
