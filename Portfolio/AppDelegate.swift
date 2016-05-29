@@ -14,15 +14,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let tabBarController = TabBarController()
 
         let portfolio = PortfolioView()
-        portfolio.tabBarItem = UITabBarItem(title: "Portfolio", image: nil, tag: 0)
+        portfolio.tabBarItem = UITabBarItem(title: "Portfølje", image: nil, tag: 0)
         portfolio.tabBarItem.setFAIcon(FAType.FAAreaChart)
 
         let trades = TradesView()
-        trades.tabBarItem = UITabBarItem(title: "Trades", image: nil, tag: 1)
+        trades.tabBarItem = UITabBarItem(title: "Handler", image: nil, tag: 1)
         trades.tabBarItem.setFAIcon(FAType.FAExchange)
 
         let watch = WatchView()
-        watch.tabBarItem = UITabBarItem(title: "Watch", image: nil, tag: 2)
+        watch.tabBarItem = UITabBarItem(title: "Aksjekurser", image: nil, tag: 2)
         watch.tabBarItem.setFAIcon(FAType.FAEye)
 
         let controllers = [portfolio, trades, watch]
