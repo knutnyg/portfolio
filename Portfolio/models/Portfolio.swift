@@ -76,6 +76,21 @@ class Portfolio {
         }
     }
     
+    static func relativeValueAtDay(store:Store, date: NSDate) -> Double{
+        var value = 0.0
+        
+        do {
+            let assets: [Stock:Double] = try stocksAtDay(store, date: NSDate())
+            for (stock,count) in assets {
+                print(stock,count)
+                value += (stock.history?.stockValueAtDay(date))! * count
+            }
+        } catch {
+            return value
+        }
+        return value
+    }
+    
     static func costAtDay(store: Store, date: NSDate) -> Double? {
         
         var sum = 0.0

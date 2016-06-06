@@ -15,6 +15,18 @@ class StockHistory : NSObject {
     func stockValueAtDay(date: NSDate) -> Double? {
         return dateValCache[date.mediumPrintable()]
     }
+    
+    func lastClosingValue() -> Double{
+        if let last = history.sort({(i:StockPriceInstance, i1:StockPriceInstance) in i.date.compare(i1.date) == NSComparisonResult.OrderedAscending}).last {
+            return last.price
+        } else {
+            return 0.0
+        }
+    }
+    
+    func firstClosingValueBeforeDate() -> Double{
+        
+    }
 
     required convenience init?(coder decoder: NSCoder) {
         guard

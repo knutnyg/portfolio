@@ -203,7 +203,6 @@ class PortfolioView: UIViewController {
     func setLabels() {
         let valueNow = Portfolio.valueNow(controller.store)!
         let incValue:Double = ((Portfolio.valueNow(controller.store))! / Portfolio.rawCost(controller.store.trades) - 1) * 100
-//        let incToday:Double = calcTodayInc()
         let sales = Portfolio.calculateActualSales(controller.store.trades)
 
         totalValueValue.text = String(format: "%.2f", valueNow) + " kr"
@@ -215,23 +214,72 @@ class PortfolioView: UIViewController {
         setIncBackgroundColor(todaysReturnValue, val: incValue)
     }
 
-    func calcTodayInc() -> Double {
-        let today = Portfolio.valueAtDay(controller.store, date: NSDate())
-        let lastclosing = Portfolio.lastClosingValue(controller.store)
-
-        guard let t = today, l = lastclosing else {
-            return 0
-        }
-        return (t / l) - 1
-    }
+ 
 
     func calcTodayChange() -> Double {
-        let today = Portfolio.valueAtDay(controller.store, date: NSDate())
-        let lastclosing = Portfolio.lastClosingValue(controller.store)
+        var today = Portfolio.valueAtDay(controller.store, date: NSDate())!
+        var lastclosing = Portfolio.lastClosingValue(controller.store)!
 
-        guard let t = today, l = lastclosing else {
-            return 0
+        let dagensHandler = controller.store.trades.filter{(trade:Trade) in trade.date.isInSameDayAs(date: NSDate())}
+        for handel in dagensHandler {
+            if handel.action == .BUY {
+                today = today -
+                    (handel.price * handel.count) +
+                    ((controller.store.stocks[handel.ticker]?.intraDayHistory?.currentValue())! * handel.count) - (handel.count * handel.price)
+            } else {
+                lastclosing = lastclosing - (handel.count *
+                    (controller.store.stocks[handel.ticker]?.history)!.lastClosingValue())
+            }
         }
-        return t - l
+        
+        return today - lastclosing
     }
+    
+    func calcTodayInc() -> Double {
+        var today = Portfolio.valueAtDay(controller.store, date: NSDate())!
+        var lastclosing = Portfolio.relativeValueAtDay(controller.store, date: NSDate(timeInterval: -86400, sinceDate: NSDate()))
+            
+//        
+//        let dagensHandler = controller.store.trades.filter{(trade:Trade) in trade.date.isInSameDayAs(date: NSDate())}
+//        for handel in dagensHandler {
+//            if handel.action == .BUY {
+//                today = today -
+//                    (handel.price * handel.count) +
+//                    ((controller.store.stocks[handel.ticker]?.intraDayHistory?.currentValue())! * handel.count) - (handel.count * handel.price)
+//            } else {
+//                lastclosing = lastclosing - (handel.count *
+//                    (controller.store.stocks[handel.ticker]?.history)!.lastClosingValue())
+//            }
+//        }
+        
+        return (today / lastclosing) - 1
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
